@@ -26,8 +26,11 @@ do
         git fetch
         echo "Pulling"
         git pull
-        echo "Updating requirements"
-        .venv/bin/pip install -r requirements_test.txt
+
+        if [ -f "$REPOPATH/requirements_test.txt" ]; then
+          echo "Updating requirements"
+          .venv/bin/pip install -r requirements_test.txt
+        fi
       )
       echo "Done"
     else
