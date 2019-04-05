@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: uktrade-local/postgres
+    build:
+      context: docker-postgres-multi/
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USERS=debug:debug
+      - POSTGRES_DATABASES=directory_api_debug:debug|sso_debug:debug|navigator:debug|directory_cms_debug:debug|directory_forms_api_debug:debug|export_opportunities_dev_zeus:debug
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  elastic:
+    image: elasticsearch:5.6.8
+    ports:
+      - '9200:9200'
+    environment:
+      # Set memory
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      # Disable security
+      xpack.security.enabled: "false"
+      xpack.monitoring.enabled: "false"
+      xpack.graph.enabled: "false"
+      xpack.watcher.enabled: "false"
+      # Run in development mode to ignore bootstrap checks
+      transport.host: "localhost"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  redis:
+    image: redis:3.2.11
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+
+  redis-cluster:
+    image: grokzen/redis-cluster:3.2.11
+    ports:
+      - '7000:7000'
+    environment:
+      CLUSTER_ONLY: 'true'
+    volumes:
+      - redis-cluster-data:/redis-data
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    ports:
+      - '8081:8081'
+
+volumes:
+  pgdata:
+  esdata:
+  redis-data:
+  redis-cluster-data:
+
