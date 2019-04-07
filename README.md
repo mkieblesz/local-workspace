@@ -14,7 +14,6 @@ Run `make ultimate` to run all services.
 
 ## TODO
 
-* add export-opportunities to setup.sh and update.sh (only if required ruby version is installed)
 * docker-compose.base.yml with all apps and default settings
 * environment variables for all services
 * ability to run apps on host via makefile

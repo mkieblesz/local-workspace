@@ -30,6 +30,14 @@ do
         if [ -f "$REPOPATH/requirements_test.txt" ]; then
           echo "Updating requirements"
           .venv/bin/pip install -r requirements_test.txt
+        elif [ -f "$REPOPATH/Gemfile" ]; then
+          (
+            cd $REPOPATH
+            echo "Installing gems"
+            bundle _1.16.6_ install
+            # for some reason bundler=1.16.6 cannot be used with update command
+            # bundle _1.16.3_ update
+          )
         fi
       )
       echo "Done"
