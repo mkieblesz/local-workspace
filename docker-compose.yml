@@ -1,19 +1,43 @@
 version: '3.7'
 
 services:
-  postgres:
-    image: uktrade-local/postgres
-    build:
-      context: docker-postgres-multi/
+  local-proxy:
+    image: nginx
+    depends_on:
+      - buyer
+      - sso-profile
+      - exred
+      - soo
+      - international
+    ports:
+      - '80:80'
+    volumes:
+      - './services/local-proxy/nginx_site.conf:/etc/nginx/conf.d/default.conf'
+    networks:
+      uktrade:
+        ipv4_address: 172.28.10.0
+
+  db:
+    image: postgres:9.5
     ports:
       - '5432:5432'
-    environment:
-      - POSTGRES_USERS=debug:debug
-      - POSTGRES_DATABASES=directory_api_debug:debug|sso_debug:debug|navigator:debug|directory_cms_debug:debug|directory_forms_api_debug:debug|export_opportunities_dev_zeus:debug
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
+    networks:
+      uktrade:
+        ipv4_address: 172.28.20.0
 
-  elastic:
+  redis:
+    image: redis:3.2.11
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    networks:
+      uktrade:
+        ipv4_address: 172.28.20.1
+
+  es:
     image: elasticsearch:5.6.8
     ports:
       - '9200:9200'
@@ -28,32 +52,206 @@ services:
       # Run in development mode to ignore bootstrap checks
       transport.host: "localhost"
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      uktrade:
+        ipv4_address: 172.28.20.2
 
-  redis:
-    image: redis:3.2.11
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis-data:/data
+  api:
+    image: local-workspace/directory-api
+    build:
+      context: ../directory-api/
+      dockerfile: services/directory-api/Dockerfile
+    env_file:
+      - services/directory-api/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.0
 
-  redis-cluster:
-    image: grokzen/redis-cluster:3.2.11
-    ports:
-      - '7000:7000'
-    environment:
-      CLUSTER_ONLY: 'true'
-    volumes:
-      - redis-cluster-data:/redis-data
+  buyer:
+    image: local-workspace/directory-ui-buyer
+    build:
+      context: ../directory-ui-buyer/
+      dockerfile: services/directory-ui-buyer/Dockerfile
+    env_file:
+      - services/directory-ui-buyer/.env
+    depends_on:
+      - sso-proxy
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.1
 
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    ports:
-      - '8081:8081'
+  exopps:
+    image: local-workspace/export-opportunities
+    build:
+      context: ../export-opportunities/
+      dockerfile: services/export-opportunities/Dockerfile
+    env_file:
+      - services/export-opportunities/.env
+    depends_on:
+      - db
+      - redis
+      - es
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.2
+
+  sso:
+    image: local-workspace/directory-sso
+    build:
+      context: ../directory-sso/
+      dockerfile: services/directory-sso/Dockerfile
+    env_file:
+      - services/directory-sso/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.3
+
+  sso-proxy:
+    image: local-workspace/directory-sso-proxy
+    build:
+      context: ../directory-sso-proxy/
+      dockerfile: services/directory-sso-proxy/Dockerfile
+    env_file:
+      - services/directory-sso-proxy/.env
+    depends_on:
+      - sso
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.4
+
+  supplier:
+    image: local-workspace/directory-ui-supplier
+    build:
+      context: ../directory-ui-supplier/
+      dockerfile: services/directory-ui-supplier/Dockerfile
+    env_file:
+      - services/directory-ui-supplier/.env
+    depends_on:
+      - sso-proxy
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.5
+
+  sso-profile:
+    image: local-workspace/directory-sso-profile
+    build:
+      context: ../directory-sso-profile/
+      dockerfile: services/directory-sso-profile/Dockerfile
+    env_file:
+      - services/directory-sso-profile/.env
+    depends_on:
+      - sso-proxy
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.6
+
+  exred:
+    image: local-workspace/great-domestic-ui
+    build:
+      context: ../great-domestic-ui/
+      dockerfile: services/great-domestic-ui/Dockerfile
+    env_file:
+      - services/great-domestic-ui/.env
+    depends_on:
+      - db
+      - redis
+      - api
+      - sso-proxy
+      - cms
+      - forms-api
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.7
+
+  soo:
+    image: local-workspace/navigator
+    build:
+      context: ../navigator/
+      dockerfile: services/navigator/Dockerfile
+    env_file:
+      - services/navigator/.env
+    depends_on:
+      - db
+      - sso-proxy
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.8
+
+  cms:
+    image: local-workspace/directory-cms
+    build:
+      context: ../directory-cms/
+      dockerfile: services/directory-cms/Dockerfile
+    env_file:
+      - services/directory-cms/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.10
+
+  forms-api:
+    image: local-workspace/directory-forms-api
+    build:
+      context: ../directory-forms-api/
+      dockerfile: services/directory-forms-api/Dockerfile
+    env_file:
+      - services/directory-forms-api/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.11
+
+  invest:
+    image: local-workspace/invest-ui
+    build:
+      context: ../invest-ui/
+      dockerfile: services/invest-ui/Dockerfile
+    env_file:
+      - services/invest-ui/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.12
+
+  international:
+    image: local-workspace/great-international-ui
+    build:
+      context: ../great-international-ui/
+      dockerfile: services/great-international-ui/Dockerfile
+    env_file:
+      - services/great-international-ui/.env
+    depends_on:
+      - db
+      - redis
+      - sso
+      - cms
+      - forms-api
+    networks:
+      uktrade:
+        ipv4_address: 172.28.0.13
 
 volumes:
-  pgdata:
-  esdata:
+  db-data:
   redis-data:
-  redis-cluster-data:
+  es-data:
 
+networks:
+  uktrade:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
