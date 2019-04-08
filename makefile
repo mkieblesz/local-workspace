@@ -4,25 +4,51 @@ clone:
 update:
 	@./scripts/update.sh
 
-# PROXY TARGETS
-clean:
-	@echo "Kill all containers and processes"
+kill-all:
+	docker-compose kill && docker-compose rm --force
 
-build:
-	@echo "Building app images"
+clean-all: kill-all
+	@./scripts/make.sh clean
 
-create-dbs:
-	@echo "Creating databases"
+build-all:
+	docker-compose build
 
-recreate-dbs:
-	@echo "Drops databases"
-	make create-dbs migrate load-fixtures
+create-db-all:
+	docker-compose exec --user postgres db psql -c "CREATE USER debug WITH PASSWORD 'debug' CREATEDB;"
+	docker-compose exec --user postgres db createdb --owner=debug directory_api_debug
+	docker-compose exec --user postgres db createdb --owner=debug sso_debug
+	docker-compose exec --user postgres db createdb --owner=debug navigator
+	docker-compose exec --user postgres db createdb --owner=debug directory_cms_debug
+	docker-compose exec --user postgres db createdb --owner=debug directory_forms_api_debug
+	docker-compose exec --user postgres db createdb --owner=debug export_opportunities_dev_zeus
 
-migrate:
-	@echo "Migrate database for each app"
+drop-db-all:
+	docker-compose exec --user postgres db dropdb directory_api_debug
+	docker-compose exec --user postgres db dropdb sso_debug
+	docker-compose exec --user postgres db dropdb navigator
+	docker-compose exec --user postgres db dropdb directory_cms_debug
+	docker-compose exec --user postgres db dropdb directory_forms_api_debug
+	docker-compose exec --user postgres db dropdb export_opportunities_dev_zeus
+	docker-compose exec --user postgres db dropuser debug
 
-load-fixtures:
-	@echo "Loading fixtures"
+recreate-db-all:
+	make drop-db-all create-db-all migrate-all load-fixtures-all
 
-ultimate:
-	@./scripts/make.sh ultimate
+migrate-all:
+	@./scripts/make.sh migrate
+
+load-fixtures-all:
+	@./scripts/make.sh load-fixtures
+
+run-dbs:
+	docker-compose up -d db redis es
+
+run-all:
+	docker-compose up -d
+
+run-all-host:
+	@./scripts/make.sh run
+
+ultimate-all: clean-all build-all run-dbs create-db-all migrate-all load-fixtures-all run-all
+
+ultimate-all-host: clean-all run-dbs create-db-all migrate-all load-fixtures-all run-all-host

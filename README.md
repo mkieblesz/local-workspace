@@ -1,35 +1,71 @@
-# local-services
+# local-workspace
 
 ## Setup
 
-1. Make sure you have `python 3.6`, `node 8.x`, `ruby 2.5.1`, `docker>=18.09.3`, `docker-compose>=1.22.0` installed.
+1. Ensure system requirements are met.
+
+    Running all services in docker:
+    - `docker>=18.09.3`
+    - `docker-compose>=1.22.0`
+    - `node==8.x`
+
+    Add following when running dbs in docker and services on host:
+    - `python==3.6`
+    - `ruby==2.5.1` with `bundler==1.16.6` gem
+
+    Add following when running everything on host:
+    - `postgresql==9.5`
+    - `redis==3.2.12`
+    - `elasticsearch==5.6.8`
+
 2. Update local hosts file, usually found in `/etc/hosts` with following lines.
-    - 172.28.0.0      api.trade.great
-    - 172.28.0.1      buyer.trade.great
-    - 172.28.0.2      exopps.export.trade.great
-    - 172.28.0.3      sso.trade.great
-    - 172.28.0.4      sso-proxy.trade.great
-    - 172.28.0.5      supplier.trade.great
-    - 172.28.0.6      profile.trade.great
-    - 172.28.0.7      exred.trade.great
-    - 172.28.0.8      soo.trade.great
-    - 172.28.0.10     cms.trade.great
-    - 172.28.0.11     forms.trade.great
-    - 172.28.0.12     international.trade.great
-    - 172.28.10.0     local-proxy.trade.great
-    - 172.28.20.0     db.trade.great
-    - 172.28.20.1     redis.trade.great
-    - 172.28.20.3     es.trade.great
-3. Create workspace directory with `mkdir -p $WORKSPACE_DIR` which defaults to parent directory.
-4. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR`.
+
+    ```Text
+    127.0.0.1     api.trade.great
+    127.0.0.1     buyer.trade.great
+    127.0.0.1     exopps.export.trade.great
+    127.0.0.1     sso.trade.great
+    127.0.0.1     sso-proxy.trade.great
+    127.0.0.1     supplier.trade.great
+    127.0.0.1     profile.trade.great
+    127.0.0.1     exred.trade.great
+    127.0.0.1     soo.trade.great
+    127.0.0.1     cms.trade.great
+    127.0.0.1     forms.trade.great
+    127.0.0.1     international.trade.great
+    127.0.0.1     local-proxy.trade.great
+    127.0.0.1     db.trade.great
+    127.0.0.1     redis.trade.great
+    127.0.0.1     es.trade.great
+    ```
+
+3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
+4. Add following aliases to your `~/.bash_profile`.
+
+    ```bash
+    alias make-workspace='make -f <path-of-current_directory>/makefile'
+    alias docker-compose-workspace='docker-compose -f <path-of-current_directory>/docker-compose.yml'
+    ```
 
 ## Usage
 
+### All in docker
+
 - `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages.
-- `make clean` kills all processes and removes generated files not included into git repo
-- `make build` builds docker image for all services defined in `services/` directory
-- `make run` runs all services
-- `make ultimate` cleans, builds, runs and prepares all services
+- `make kill-all` kills all running processes/containers
+- `make clean-all` kills all processes and removes generated files not included into git repo
+- `make build-all` builds docker image for each service defined in `services/` directory
+- `make run-all` runs all services
+- `make ultimate-all` cleans, builds, runs and prepares all services for local development
+- `docker-compose up -d <service-name>` to run specific service and all of it's dependencies
+
+### Services on host and dbs in docker
+
+TODO
+
+### All on host
+
+TODO
 
 ## TODO
 

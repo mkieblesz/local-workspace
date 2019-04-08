@@ -32,7 +32,9 @@ services:
     ports:
       - '6379:6379'
     volumes:
+      - ./services/redis/redis.conf:/etc/redis.conf
       - redis-data:/data
+    command: redis-server /etc/redis.conf
     networks:
       uktrade:
         ipv4_address: 172.28.20.1
@@ -62,6 +64,8 @@ services:
     build:
       context: ../directory-api/
       dockerfile: services/directory-api/Dockerfile
+    ports:
+      - '8000:8000'
     env_file:
       - services/directory-api/.env
     depends_on:
@@ -76,6 +80,8 @@ services:
     build:
       context: ../directory-ui-buyer/
       dockerfile: services/directory-ui-buyer/Dockerfile
+    ports:
+      - '8001:8001'
     env_file:
       - services/directory-ui-buyer/.env
     depends_on:
@@ -90,8 +96,8 @@ services:
     build:
       context: ../export-opportunities/
       dockerfile: services/export-opportunities/Dockerfile
-    env_file:
-      - services/export-opportunities/.env
+    ports:
+      - '8002:8002'
     depends_on:
       - db
       - redis
@@ -107,6 +113,8 @@ services:
       dockerfile: services/directory-sso/Dockerfile
     env_file:
       - services/directory-sso/.env
+    ports:
+      - '8003:8003'
     depends_on:
       - db
       - redis
@@ -121,6 +129,8 @@ services:
       dockerfile: services/directory-sso-proxy/Dockerfile
     env_file:
       - services/directory-sso-proxy/.env
+    ports:
+      - '8004:8004'
     depends_on:
       - sso
     networks:
@@ -134,6 +144,8 @@ services:
       dockerfile: services/directory-ui-supplier/Dockerfile
     env_file:
       - services/directory-ui-supplier/.env
+    ports:
+      - '8005:8005'
     depends_on:
       - sso-proxy
     networks:
@@ -147,6 +159,8 @@ services:
       dockerfile: services/directory-sso-profile/Dockerfile
     env_file:
       - services/directory-sso-profile/.env
+    ports:
+      - '8006:8006'
     depends_on:
       - sso-proxy
     networks:
@@ -160,6 +174,8 @@ services:
       dockerfile: services/great-domestic-ui/Dockerfile
     env_file:
       - services/great-domestic-ui/.env
+    ports:
+      - '8007:8007'
     depends_on:
       - db
       - redis
@@ -178,6 +194,8 @@ services:
       dockerfile: services/navigator/Dockerfile
     env_file:
       - services/navigator/.env
+    ports:
+      - '8008:8008'
     depends_on:
       - db
       - sso-proxy
@@ -192,6 +210,8 @@ services:
       dockerfile: services/directory-cms/Dockerfile
     env_file:
       - services/directory-cms/.env
+    ports:
+      - '8010:8010'
     depends_on:
       - db
       - redis
@@ -206,6 +226,8 @@ services:
       dockerfile: services/directory-forms-api/Dockerfile
     env_file:
       - services/directory-forms-api/.env
+    ports:
+      - '8011:8011'
     depends_on:
       - db
       - redis
@@ -220,6 +242,8 @@ services:
       dockerfile: services/invest-ui/Dockerfile
     env_file:
       - services/invest-ui/.env
+    ports:
+      - '8012:8012'
     depends_on:
       - db
       - redis
@@ -234,6 +258,8 @@ services:
       dockerfile: services/great-international-ui/Dockerfile
     env_file:
       - services/great-international-ui/.env
+    ports:
+      - '8013:8013'
     depends_on:
       - db
       - redis
