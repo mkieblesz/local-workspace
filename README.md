@@ -40,28 +40,33 @@
     ```
 
 3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
-4. Add following aliases to your `~/.bash_profile`.
-
-    ```bash
-    alias make-workspace='make -f <path-of-current_directory>/makefile'
-    alias docker-compose-workspace='docker-compose -f <path-of-current_directory>/docker-compose.yml'
-    ```
 
 ## Usage
 
+- `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages.
+
 ### All in docker
 
-- `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages.
-- `make kill-all` kills all running processes/containers
-- `make clean-all` kills all processes and removes generated files not included into git repo
-- `make build-all` builds docker image for each service defined in `services/` directory
-- `make run-all` runs all services
-- `make ultimate-all` cleans, builds, runs and prepares all services for local development
-- `docker-compose up -d <service-name>` to run specific service and all of it's dependencies
+- `make ultimate-all` cleans, builds, runs and prepares all containers for local development
 
 ### Services on host and dbs in docker
 
-TODO
+- `make ultimate-all-host` same as `ultimate-all` but services are run on host
+- to work from repository directory run following from command line in this repo
+
+    ```bash
+    # REPO=<repo-name-here>
+    REPO=navigator
+    source config.sh
+    REPO_PATH=$WORKSPACE_DIR/$REPO
+    REPO_PATCH=$(pwd)/services/$REPO
+    test -d $REPO_PATH/.venv && source $REPO_PATH/.venv/bin/activate
+    test -f $REPO_PATCH/.env && set -o allexport; source $REPO_PATCH/.env; set +o allexport
+    fuser -k $PORT/tcp
+    cd $REPO_PATH
+    alias m="make -f  $REPO_PATCH/makefile"
+    m run
+    ```
 
 ### All on host
 
@@ -69,16 +74,10 @@ TODO
 
 ## TODO
 
-- sort out networking (host file, readme part)
-- docker-compose.base.yml with all apps and default settings
-- environment variables for all services
 - ability to run apps on host via makefile
-- docker-compose.yml with backing-apps
-- docker-compose.yml with backing-apps and persistent volumes
 - ability to migrate dbs via makefile
 - ability load fixtures/patch export opportunities seeds.rb via makefile
 - ability to run apps via makefile (using parrallel)
 - dockerfiles for apps
 - nginx config which will route services which are in same domain
-- docker-compose.full.yml which runs all apps and host configuration
 - create local services graph using docker-compose-viz

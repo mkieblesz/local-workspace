@@ -32,16 +32,17 @@ drop-db-all:
 	docker-compose exec --user postgres db dropuser debug
 
 recreate-db-all:
-	make drop-db-all create-db-all migrate-all load-fixtures-all
+	make drop-db-all create-db-all migrate-host-all load-fixtures-host-all
 
-migrate-all:
+migrate-host-all:
 	@./scripts/make.sh migrate
 
-load-fixtures-all:
+load-fixtures-host-all:
 	@./scripts/make.sh load-fixtures
 
 run-dbs:
 	docker-compose up -d db redis es
+	sleep 5
 
 run-all:
 	docker-compose up -d
@@ -49,6 +50,6 @@ run-all:
 run-all-host:
 	@./scripts/make.sh run
 
-ultimate-all: clean-all build-all run-dbs create-db-all migrate-all load-fixtures-all run-all
+ultimate: clean-all build-all run-dbs create-db-all migrate-all load-fixtures-all run-all
 
-ultimate-all-host: clean-all run-dbs create-db-all migrate-all load-fixtures-all run-all-host
+ultimate-host: clean-all run-dbs create-db-all migrate-host-all load-fixtures-host-all run-all-host

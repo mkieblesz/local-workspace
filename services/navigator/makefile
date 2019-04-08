@@ -1,15 +1,15 @@
 clean:
-	@echo "${PORT} clean-stuff"
+	@echo "clean-stuff"
 
 migrate:
-	python app/manage.py migrate
-	python app/manage.py build_index
+	python $$REPO/app/manage.py migrate
+	python $$REPO/app/manage.py build_index
 
 load-fixtures:
-	python app/manage.py < fixtures/users.py
+	python $$REPO/app/manage.py < fixtures/users.py
 
 collect-assets:
-	python app/manage.py collectstatic --noinput
+	python $$REPO/app/manage.py collectstatic --noinput
 
 test: collect-assets
 	# flake8 app --exclude=migrations,.venv
@@ -20,4 +20,4 @@ test: collect-assets
 	fi
 
 run:
-	python app/manage.py runserver 0.0.0.0:$$PORT
+	python $$REPO/app/manage.py runserver 0.0.0.0:$$PORT
