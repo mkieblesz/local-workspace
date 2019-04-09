@@ -65,18 +65,27 @@ Working on individual repos:
 
 - `make ultimate` setups everything up
 - open new terminal tab
-- `source scripts/activate.sh` loads workspace utility functions
-- `work <repo>` steps into `<repo>` and sets up working environment for it
-- `fuser -k $PORT/tcp` kills webserver for this repo
-- `make run` runs webserver in separate tab
+
+    ```bash
+    source scripts/activate.sh
+    work <repo>
+    fuser -k $PORT/tcp
+    make run
+    ```
+
 - `ctrl+c` stops `<repo>` webserver
 - go back to tab where all services are running
 - `ctrl+c` kills runing servers
 - `make run-all` reruns all services
 - open new terminal tab
-- `work <another-repo>` changes working environment for `<another-repo>`
-- `fuser -k $PORT/tcp` kills webserver for this repo
-- `make run` runs webserver in separate tab
+
+    ```bash
+    source scripts/activate.sh
+    work <another-repo>
+    fuser -k $PORT/tcp
+    make run
+    ```
+
 - `ctrl+c` stops `<repo>` webserver
 - `ctrl+c` from tab where services are running
 - `make stop-dbs` stops db containers
