@@ -21,13 +21,13 @@ create-db-all:
 	docker-compose exec --user postgres db createdb --owner=debug export_opportunities_dev_zeus
 
 drop-db-all:
-	docker-compose exec --user postgres db dropdb directory_api_debug
-	docker-compose exec --user postgres db dropdb sso_debug
-	docker-compose exec --user postgres db dropdb navigator
-	docker-compose exec --user postgres db dropdb directory_cms_debug
-	docker-compose exec --user postgres db dropdb directory_forms_api_debug
-	docker-compose exec --user postgres db dropdb export_opportunities_dev_zeus
-	docker-compose exec --user postgres db dropuser debug
+	docker-compose exec --user postgres db dropdb --if-exists directory_api_debug
+	docker-compose exec --user postgres db dropdb --if-exists sso_debug
+	docker-compose exec --user postgres db dropdb --if-exists navigator
+	docker-compose exec --user postgres db dropdb --if-exists directory_cms_debug
+	docker-compose exec --user postgres db dropdb --if-exists directory_forms_api_debug
+	docker-compose exec --user postgres db dropdb --if-exists export_opportunities_dev_zeus
+	docker-compose exec --user postgres db dropuser --if-exists debug
 
 recreate-db-all:
 	make drop-db-all create-db-all migrate-all load-fixtures-all
