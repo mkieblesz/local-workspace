@@ -64,15 +64,3 @@ for REPO in `cat repolist`; do
   fi
   echo
 done
-
-echo "Setup vendor repositories"
-mkdir -p vendor
-(
-  cd vendor && \
-  test ! -d docker-postgres-multi && \
-  git clone git@github.com:lmm-git/docker-postgres-multi.git
-)
-# replace FROM line to make postgres version modifiable
-sed -i \
-  '/FROM postgres:9.6/c\ARG POSTGRES_VERSION=latest\nFROM postgres:$POSTGRES_VERSION' \
-  vendor/docker-postgres-multi/Dockerfile
