@@ -12,6 +12,7 @@ clean-all: kill-all
 
 create-db-all:
 	docker-compose exec --user postgres db psql -c "CREATE USER debug WITH PASSWORD 'debug' CREATEDB;"
+	docker-compose exec --user postgres db psql -c "ALTER USER debug WITH SUPERUSER;"
 	docker-compose exec --user postgres db createdb --owner=debug directory_api_debug
 	docker-compose exec --user postgres db createdb --owner=debug sso_debug
 	docker-compose exec --user postgres db createdb --owner=debug navigator
@@ -32,13 +33,13 @@ recreate-db-all:
 	make drop-db-all create-db-all migrate-all load-fixtures-all
 
 migrate-all:
-	@./scripts/make.sh migrate
+	@./scripts/parallel_make.sh migrate
 
 load-fixtures-all:
-	@./scripts/make.sh load-fixtures
+	@./scripts/parallel_make.sh load-fixtures
 
 collect-assets-all:
-	@./scripts/make.sh collect-assets
+	@./scripts/parallel_make.sh collect-assets
 
 run-db-all:
 	docker-compose up -d db redis es
@@ -46,6 +47,9 @@ run-db-all:
 
 run-all:
 	@./scripts/parallel_make.sh run
+
+run-proxy:
+	docker-compose up -d local-proxy
 
 ultimate:
 	make clean-all
