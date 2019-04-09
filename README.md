@@ -80,6 +80,10 @@ Working on individual repos:
 - `ctrl+c` from tab where services are running
 - `make clean-all` shuts down dbs and runs `make clean` for each service
 
+Recreating databases:
+
+- `make ultimate-recreate-dbs` same as `make ultimate`, but recreates all databases and runs whole migration history
+
 ### All in docker
 
 - `make ultimate` cleans, builds, runs, migrates, loads fixtures and collects statics for all containers

@@ -58,3 +58,13 @@ ultimate:
 	make load-fixtures-all
 	make collect-assets-all
 	make run-all
+
+ultimate-recreate-dbs:
+	make clean-all
+	make run-db-all
+	make drop-db-all
+	make create-db-all
+	make migrate-all
+	make load-fixtures-all
+	make collect-assets-all
+	make run-all
