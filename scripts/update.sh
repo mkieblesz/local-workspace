@@ -13,48 +13,49 @@ for REPO in `ls "$WORKSPACE_DIR/"`; do
     continue
   fi
 
-  if [ -d "$REPOPATH" ]; then
+  if [ -d "$REPOPATH/.git" ]; then
     echo "Updating $REPO"
-    echo
+    (
+      cd "$REPOPATH"
+      git status
+      echo "Fetching"
+      git fetch
+      echo "Pulling"
+      git pull
 
-    if [ -d "$REPOPATH/.git" ]; then
-      (
-        cd "$REPOPATH"
-        git status
-        echo "Fetching"
-        git fetch
-        echo "Pulling"
-        git pull
-
-        # TODO: move to makefiles
-        if [ -f "$REPOPATH/requirements_test.txt" ]; then
-          if [ ! -d "$REPOPATH/.venv" ]; then
-            echo "Initializing python virtual environment in $REPOPATH/.venv folder"
-            python3 -m venv .venv
-            .venv/bin/pip install --upgrade pip wheel
-          fi
-          echo "Updating pip packages"
-          .venv/bin/pip install -r requirements_test.txt
-        elif [ -f "$REPOPATH/Gemfile" ]; then
-          (
-            cd $REPOPATH
-            echo "Updating gems"
-            bundle _1.16.6_ install
-          )
+      # TODO: move to makefiles
+      if [ -f "$REPOPATH/requirements_test.txt" ]; then
+        if [ ! -d "$REPOPATH/.venv" ]; then
+          echo "Initializing python virtual environment in $REPOPATH/.venv folder"
+          python3 -m venv .venv
+          .venv/bin/pip install --upgrade pip wheel
         fi
+        echo "Updating pip packages"
+        .venv/bin/pip install -r requirements_test.txt
+      fi
 
-        if [ -f "$REPOPATH/package.json" ]; then
-          echo "Updating npm packages"
-          (
-            cd $REPOPATH
-            npm install
-          )
-        fi
-      )
-      echo "Done"
-    else
-      echo "Skipping because it doesn't look like it has a .git folder."
-    fi
-    echo
+      if [ -f "$REPOPATH/Gemfile" ]; then
+        (
+          cd $REPOPATH
+          echo "Updating gems"
+          bundle _1.16.6_ install
+        )
+      fi
+
+      # if [ -f "$REPOPATH/package.json" ]; then
+      #   echo "Updating npm packages"
+      #   (
+      #     cd $REPOPATH
+      #     npm install
+      #   )
+      # fi
+
+      # patch export opportunities separately
+      if [ "$REPO" == "export-opportunities" ]; then
+          cp $(pwd)/services/$REPO/application.yml $REPOPATH/config/application.yml
+          cp $(pwd)/services/$REPO/database.yml $REPOPATH/config/database.yml
+          cp $(pwd)/services/$REPO/seeds.rb $REPOPATH/db/seeds.rb
+      fi
+    )
   fi
 done

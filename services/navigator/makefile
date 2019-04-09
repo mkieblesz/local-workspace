@@ -20,4 +20,4 @@ test: collect-assets
 	fi
 
 run:
-	python app/manage.py runserver 0.0.0.0:$$PORT
+	python app/manage.py runserver 0.0.0.0:8008

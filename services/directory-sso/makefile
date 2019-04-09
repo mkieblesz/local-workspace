@@ -6,13 +6,13 @@ build:
 
 migrate:
 	python manage.py distributed_migrate --noinput
-	python manage.py distributed_elasticsearch_migrate
 
 load-fixtures:
 	python manage.py < fixtures/users.py
+	python manage.py < fixtures/sso_api_clients.py
 
 collect-assets:
 	python manage.py collectstatic --noinput
 
 run:
-	python manage.py runserver 0.0.0.0:8000
+	python manage.py runserver 0.0.0.0:8003

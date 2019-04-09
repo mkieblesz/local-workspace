@@ -56,7 +56,7 @@
 - `make ultimate-all-host` cleans, runs db containers and services on host, loads fixture and collect static for all services
 - `work <repo>` changes working environment for `repo`
 - `deactivate_repo` deactivates current repo working environment if present
-- `deactivate_env` deactivates all working environments
+- `deactivate_env` deactivates all
 
 ### All on host
 
