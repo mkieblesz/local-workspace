@@ -51,7 +51,7 @@ run-all:
 	docker-compose up -d
 
 run-all-host:
-	@./scripts/make.sh make run
+	@./scripts/parallel_make.sh run
 
 ultimate:
 	make clean-all

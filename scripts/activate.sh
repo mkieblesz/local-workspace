@@ -1,52 +1,44 @@
 #!/bin/bash
 
 source scripts/config.sh
-export WORKSPACE_REPO=$(pwd)
 
 # deactivate entire env (with workspace repo)
 deactivate_env () {
   cdworkrepo
+  deactivate_repo
 
-  unset WORKSPACE_REPO
-
-  if [ "$(type -t deactivate_repo)" == "function" ]; then
-    deactivate_repo
-    # unset here because when changing environments it will get lost
-    unset -f deactivate_repo
-    unalias pmake
-  fi
+  unset WORKSPACE_REPO_DIR
   unset -f cdworkrepo
   unset -f deactivate_env
+  unset -f work
 }
 
 cdworkrepo () {
-  cd $WORKSPACE_REPO
+  cd $WORKSPACE_REPO_DIR
 }
 
 # change repo you working on
 work () {
-  if [ "$(type -t deactivate_repo)" == "function" ]; then
-    deactivate_repo
-  fi
+  deactivate_repo nondestructive
 
   cdrepo () {
-    cd $REPO_PATH
+    cd $REPO_DIR
   }
 
   export REPO=$1
-  export REPO_PATH=$WORKSPACE_DIR/$REPO
-  export REPO_PATCH=$WORKSPACE_REPO/services/$REPO
+  export REPO_DIR=$WORKSPACE_DIR/$REPO
+  export REPO_PATCH=$WORKSPACE_REPO_DIR/services/$REPO
 
   # alias to patched make
-  alias pmake="make -f $WORKSPACE_REPO/services/$REPO/makefile"
+  alias pmake="make -f $WORKSPACE_REPO_DIR/services/$REPO/makefile"
 
   # activate venv for repo
-  if [ -d $REPO_PATH/.venv ]; then
-    source $REPO_PATH/.venv/bin/activate
+  if [ -d $REPO_DIR/.venv ]; then
+    source $REPO_DIR/.venv/bin/activate
   fi
 
   # export environment variables
-  if [ -d $REPO_PATH/.venv ]; then
+  if [ -d $REPO_DIR/.venv ]; then
     set -o allexport
     source $REPO_PATCH/.env
     set +o allexport
@@ -58,7 +50,7 @@ work () {
 # deactivate repo env
 deactivate_repo () {
   unset REPO
-  unset REPO_PATH
+  unset REPO_DIR
   # https://unix.stackexchange.com/a/508367
   test -f $REPO_PATCH/.env && while read var; do unset $var; done < <(cat $REPO_PATCH/.env | sed 's/=.*//g')
   unset REPO_PATCH
@@ -69,6 +61,12 @@ deactivate_repo () {
   fi
 
   unset -f cdrepo
+
+  if [ ! "$1" = "nondestructive" ] ; then
+  # Self destruct!
+    unset -f deactivate_repo
+    unalias pmake
+  fi
 }
 
 # if argument passed that means also working on repo

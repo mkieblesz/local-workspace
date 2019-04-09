@@ -9,7 +9,7 @@ for REPO in `ls "$WORKSPACE_DIR/"`; do
   REPOPATH=$WORKSPACE_DIR/$REPO
 
   # if this repo is in workspace folder omit
-  if [ $REPOPATH == $(pwd) ]; then
+  if [ $REPOPATH == $WORKSPACE_REPO_DIR ]; then
     continue
   fi
 
@@ -52,9 +52,9 @@ for REPO in `ls "$WORKSPACE_DIR/"`; do
 
       # patch export opportunities separately
       if [ "$REPO" == "export-opportunities" ]; then
-          cp $(pwd)/services/$REPO/application.yml $REPOPATH/config/application.yml
-          cp $(pwd)/services/$REPO/database.yml $REPOPATH/config/database.yml
-          cp $(pwd)/services/$REPO/seeds.rb $REPOPATH/db/seeds.rb
+          cp $WORKSPACE_REPO_DIR/services/$REPO/application.yml $REPOPATH/config/application.yml
+          cp $WORKSPACE_REPO_DIR/services/$REPO/database.yml $REPOPATH/config/database.yml
+          cp $WORKSPACE_REPO_DIR/services/$REPO/seeds.rb $REPOPATH/db/seeds.rb
       fi
     )
   fi
