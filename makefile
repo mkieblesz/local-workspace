@@ -1,46 +1,41 @@
-clone-all:
+INIT_DBS := \
+	psql -t -c '\du' | cut -d \| -f 1 | grep -qw lol || psql -c \"CREATE USER lol WITH PASSWORD 'lol' CREATEDB; ALTER USER lol WITH SUPERUSER;\"; \
+	psql -lqt | cut -d \| -f 1 | grep -qw directory_api_debug || createdb --owner=debug directory_api_debug; \
+	psql -lqt | cut -d \| -f 1 | grep -qw sso_debug || createdb --owner=debug sso_debug; \
+	psql -lqt | cut -d \| -f 1 | grep -qw navigator || createdb --owner=debug navigator; \
+	psql -lqt | cut -d \| -f 1 | grep -qw directory_cms_debug || createdb --owner=debug directory_cms_debug; \
+	psql -lqt | cut -d \| -f 1 | grep -qw directory_forms_api_debug || createdb --owner=debug directory_forms_api_debug; \
+	psql -lqt | cut -d \| -f 1 | grep -qw export_opportunities_dev_zeus || createdb --owner=debug export_opportunities_dev_zeus;
+
+DROP_DBS := \
+	dropdb --if-exists directory_api_debug; \
+	dropdb --if-exists sso_debug; \
+	dropdb --if-exists navigator; \
+	dropdb --if-exists directory_cms_debug; \
+	dropdb --if-exists directory_forms_api_debug; \
+	dropdb --if-exists export_opportunities_dev_zeus; \
+	dropuser --if-exists debug;
+
+clone:
 	@./scripts/clone.sh
 
-update-all:
+update:
 	@./scripts/update.sh
 
-kill-all:
-	docker-compose kill && docker-compose rm --force
+stop-dbs:
+	docker-compose stop db redis es
 
-clean-all: kill-all
-	@./scripts/make.sh clean
+create-dbs:
+	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
 
-create-db-all:
-	docker-compose exec --user postgres db psql -t -c '\du' | cut -d \| -f 1 | grep -qw debug || docker-compose exec --user postgres db psql -c "CREATE USER debug WITH PASSWORD 'debug' CREATEDB; ALTER USER debug WITH SUPERUSER;"
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw directory_api_debug || docker-compose exec --user postgres db createdb --owner=debug directory_api_debug
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw sso_debug || docker-compose exec --user postgres db createdb --owner=debug sso_debug
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw navigator || docker-compose exec --user postgres db createdb --owner=debug navigator
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw directory_cms_debug || docker-compose exec --user postgres db createdb --owner=debug directory_cms_debug
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw directory_forms_api_debug || docker-compose exec --user postgres db createdb --owner=debug directory_forms_api_debug
-	docker-compose exec --user postgres db psql -lqt | cut -d \| -f 1 | grep -qw export_opportunities_dev_zeus || docker-compose exec --user postgres db createdb --owner=debug export_opportunities_dev_zeus
+drop-dbs:
+	docker-compose exec --user postgres db bash -c "$(DROP_DBS)"
 
-drop-db-all:
-	docker-compose exec --user postgres db dropdb --if-exists directory_api_debug
-	docker-compose exec --user postgres db dropdb --if-exists sso_debug
-	docker-compose exec --user postgres db dropdb --if-exists navigator
-	docker-compose exec --user postgres db dropdb --if-exists directory_cms_debug
-	docker-compose exec --user postgres db dropdb --if-exists directory_forms_api_debug
-	docker-compose exec --user postgres db dropdb --if-exists export_opportunities_dev_zeus
-	docker-compose exec --user postgres db dropuser --if-exists debug
-
-recreate-db-all:
-	make drop-db-all create-db-all migrate-all load-fixtures-all
-
-migrate-all:
+recreate-dbs: drop-dbs create-dbs
 	@./scripts/make.sh migrate
-
-load-fixtures-all:
 	@./scripts/make.sh load-fixtures
 
-collect-assets-all:
-	@./scripts/make.sh collect-assets
-
-run-db-all:
+run-dbs:
 	docker-compose up -d db redis es
 	sleep 10
 
@@ -51,20 +46,12 @@ run-proxy:
 	docker-compose up -d local-proxy
 
 ultimate:
-	make clean-all
-	make run-db-all
-	make create-db-all
-	make migrate-all
-	make load-fixtures-all
-	make collect-assets-all
-	make run-all
-
-ultimate-recreate-dbs:
-	make clean-all
-	make run-db-all
-	make drop-db-all
-	make create-db-all
-	make migrate-all
-	make load-fixtures-all
-	make collect-assets-all
+	make stop-dbs
+	@./scripts/make.sh clean
+	make run-dbs
+	make create-dbs
+	# first run takes 30 min regardless if it's run in parallel or not
+	@./scripts/make.sh migrate
+	@./scripts/make.sh load-fixtures
+	@./scripts/make.sh collect-assets
 	make run-all

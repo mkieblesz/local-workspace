@@ -9,7 +9,7 @@ migrate:
 	python manage.py migrate_translation --noinput
 
 load-fixtures:
-	python manage.py < fixtures/users.py
+	python manage.py < $$REPO_PATCH/fixtures/users.py
 
 collect-assets:
 	python manage.py collectstatic --noinput

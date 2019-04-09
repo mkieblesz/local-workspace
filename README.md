@@ -38,27 +38,27 @@
     127.0.0.1     es
     ```
 
-3. Clone repos defined in `repolist` file with `make clone-all` into `$WORKSPACE_DIR` which defaults to parent directory.
+3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
 
 ## Usage
 
-- `make update-all` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages
+- `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages
 
 ### Services on host and dbs in docker
 
 Testing services:
 
-- `make ultimate` cleans environment, runs db containers and services on host, loads fixtures and collects static for all services
+- `make ultimate` setups everything up
 - go to `<service-domain>:<port>` to test services directly, for example `soo.trade.great:8008`
 - `ctrl+c` from tab where services are running
-- `make clean-all` shuts down dbs and runs `make clean` for each service
+- `make stop-dbs` stops db containers
 
 Testing services via proxy:
 
 - `make ultimate` setups everything up
 - `make run-proxy` and go to `local-proxy.trade.great` to explore website as it is in prod environments through proxy container
 - `ctrl+c` from tab where services are running
-- `make clean-all` shuts down dbs and runs `make clean` for each service
+- `make stop-dbs` stops db containers
 
 Working on individual repos:
 
@@ -78,11 +78,7 @@ Working on individual repos:
 - `make run` runs webserver in separate tab
 - `ctrl+c` stops `<repo>` webserver
 - `ctrl+c` from tab where services are running
-- `make clean-all` shuts down dbs and runs `make clean` for each service
-
-Recreating databases:
-
-- `make ultimate-recreate-dbs` same as `make ultimate`, but recreates all databases and runs whole migration history
+- `make stop-dbs` stops db containers
 
 ### All in docker
 
@@ -94,10 +90,6 @@ TODO
 
 ## TODO
 
-- ability to run apps on host via makefile
-- ability to migrate dbs via makefile
-- ability load fixtures/patch export opportunities seeds.rb via makefile
-- ability to run apps via makefile (using parrallel)
-- dockerfiles for apps
+- ability to run all in docker
 - nginx config which will route services which are in same domain
 - create local services graph using docker-compose-viz
