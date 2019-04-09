@@ -4,9 +4,6 @@ clean:
 build:
 	@echo "Building app images"
 
-migrate:
-	python manage.py distributed_migrate --noinput
-
 load-fixtures:
 	python manage.py < fixtures/users.py
 

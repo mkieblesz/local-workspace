@@ -4,9 +4,6 @@ clean:
 build:
 	@echo "Building app images"
 
-migrate:
-	python manage.py migrate
-
 load-fixtures:
 	python manage.py < fixtures/users.py
 	python manage.py < fixtures/sso_clients.py
