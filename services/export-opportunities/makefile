@@ -15,4 +15,4 @@ load-fixtures:
 	curl -XPUT "http://localhost:9200/opportunities_development/_settings" -d '{ "index" : { "max_result_window" : 500000 } }'
 
 run:
-	THREADS=2 PROCESSES=2 bundle exec rails server -b 0.0.0.0 -p 8002
+	THREADS=2 PROCESSES=2 bundle exec rails server -b 0.0.0.0 -p $$PORT

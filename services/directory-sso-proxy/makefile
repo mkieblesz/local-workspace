@@ -9,4 +9,4 @@ load-fixtures:
 	python manage.py < fixtures/sso_clients.py
 
 run:
-	python manage.py runserver 0.0.0.0:8004
+	python manage.py runserver 0.0.0.0:$$PORT

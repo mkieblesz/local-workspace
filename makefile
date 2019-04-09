@@ -42,8 +42,11 @@ run-dbs:
 run-all:
 	@./scripts/parallel_make.sh run
 
-run-proxy:
-	docker-compose up -d local-proxy
+run-docker-proxy:
+	docker-compose up -d docker-proxy
+
+run-host-proxy:
+	docker-compose up -d host-proxy
 
 ultimate:
 	make stop-dbs

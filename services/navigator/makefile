@@ -6,7 +6,7 @@ migrate:
 	python app/manage.py build_index
 
 load-fixtures:
-	python app/manage.py < $$REPO_PATCH/fixtures/users.py
+	python app/manage.py shell < $$REPO_PATCH/fixtures/users.py
 
 collect-assets:
 	python app/manage.py collectstatic --noinput

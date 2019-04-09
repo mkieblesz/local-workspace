@@ -1,13 +1,12 @@
 from django.contrib.auth import get_user_model
+from sso.user.models import UserProfile
 
 User = get_user_model()
 
 if User.objects.count() == 0:
     user_data = {
-        'username': 'admin',
         'email': 'admin@example.com',
         'password': 'admin',
-        'first_name': 'Mr',
-        'last_name': 'Admin'
     }
-    User.objects.create_superuser(**user_data)
+    user = User.objects.create_superuser(**user_data)
+    UserProfile.objects.create(user=user, first_name='Mr', last_name='Admin', job_title='Admin')

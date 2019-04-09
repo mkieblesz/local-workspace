@@ -22,7 +22,7 @@
     ```Text
     127.0.0.1     api.trade.great
     127.0.0.1     buyer.trade.great
-    127.0.0.1     exopps.export.trade.great
+    127.0.0.1     opportunities.export.great
     127.0.0.1     sso.trade.great
     127.0.0.1     sso-proxy.trade.great
     127.0.0.1     supplier.trade.great
@@ -32,7 +32,8 @@
     127.0.0.1     cms.trade.great
     127.0.0.1     forms.trade.great
     127.0.0.1     international.trade.great
-    127.0.0.1     local-proxy.trade.great
+    127.0.0.1     host-proxy.trade.great
+    127.0.0.1     docker-proxy.trade.great
     127.0.0.1     db
     127.0.0.1     redis
     127.0.0.1     es
@@ -55,8 +56,8 @@ Testing services:
 
 Testing services via proxy:
 
-- `make ultimate` setups everything up
-- `make run-proxy` and go to `local-proxy.trade.great` to explore website as it is in prod environments through proxy container
+- `make run-host-proxy ultimate`
+- go to `local-proxy.trade.great` to test services as they are in prod environments through proxy container
 - `ctrl+c` from tab where services are running
 - `make stop-dbs` stops db containers
 
@@ -90,6 +91,8 @@ TODO
 
 ## TODO
 
-- ability to run all in docker
-- nginx config which will route services which are in same domain
+- create dockerfiles
+- create services/.env.host-proxy with service linking for host-proxy
+- create services/.env.docker-proxy with service linking for docker-proxy
+- update nginx config for host and docker proxy
 - create local services graph using docker-compose-viz
