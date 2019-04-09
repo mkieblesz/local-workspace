@@ -18,8 +18,8 @@ services:
     image: postgres:9.5
     ports:
       - '5432:5432'
-    # volumes:
-    #   - db-data:/var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   redis:
     image: redis:3.2.11
@@ -27,7 +27,7 @@ services:
       - '6379:6379'
     volumes:
       - ./services/redis/redis.conf:/etc/redis.conf
-      # - redis-data:/data
+      - redis-data:/data
     command: redis-server /etc/redis.conf
 
   es:
@@ -44,8 +44,8 @@ services:
       xpack.watcher.enabled: "false"
       # Run in development mode to ignore bootstrap checks
       transport.host: "localhost"
-    # volumes:
-    #   - es-data:/usr/share/elasticsearch/data
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
 
   api:
     image: local-workspace/directory-api
