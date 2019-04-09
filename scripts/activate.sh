@@ -40,10 +40,17 @@ work () {
   # alias to patched make
   alias pmake="make -f $WORKSPACE_REPO/services/$REPO/makefile"
 
-  # activate venv for repo if exists
-  test -d $REPO_PATH/.venv && source $REPO_PATH/.venv/bin/activate
-  # export environment variables if exist
-  test -f $REPO_PATCH/.env && set -o allexport; source $REPO_PATCH/.env; set +o allexport
+  # activate venv for repo
+  if [ -d $REPO_PATH/.venv ]; then
+    source $REPO_PATH/.venv/bin/activate
+  fi
+
+  # export environment variables
+  if [ -d $REPO_PATH/.venv ]; then
+    set -o allexport
+    source $REPO_PATCH/.env
+    set +o allexport
+  fi
 
   cdrepo
 }
