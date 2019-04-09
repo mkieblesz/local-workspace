@@ -1,7 +1,7 @@
-clone:
+clone-all:
 	@./scripts/clone.sh
 
-update:
+update-all:
 	@./scripts/update.sh
 
 kill-all:
@@ -9,9 +9,6 @@ kill-all:
 
 clean-all: kill-all
 	@./scripts/make.sh clean
-
-build-all:
-	docker-compose build
 
 create-db-all:
 	docker-compose exec --user postgres db psql -c "CREATE USER debug WITH PASSWORD 'debug' CREATEDB;"
@@ -32,38 +29,29 @@ drop-db-all:
 	docker-compose exec --user postgres db dropuser debug
 
 recreate-db-all:
-	make drop-db-all create-db-all migrate-host-all load-fixtures-host-all
+	make drop-db-all create-db-all migrate-all load-fixtures-all
 
-migrate-host-all:
+migrate-all:
 	@./scripts/make.sh migrate
 
-load-fixtures-host-all:
+load-fixtures-all:
 	@./scripts/make.sh load-fixtures
 
-collect-assets-host-all:
+collect-assets-all:
 	@./scripts/make.sh collect-assets
 
-run-dbs:
+run-db-all:
 	docker-compose up -d db redis es
-	sleep 5
+	sleep 10
 
 run-all:
-	docker-compose up -d
-
-run-all-host:
 	@./scripts/parallel_make.sh run
 
 ultimate:
 	make clean-all
-	make build-all
-	make run-dbs
+	make run-db-all
 	make create-db-all
-
-ultimate-host:
-	make clean-all
-	make run-dbs
-	make create-db-all
-	make migrate-host-all
-	make load-fixtures-host-all
-	make collect-assets-host-all
-	make run-all-host
+	make migrate-all
+	make load-fixtures-all
+	make collect-assets-all
+	make run-all
