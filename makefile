@@ -40,6 +40,9 @@ migrate-host-all:
 load-fixtures-host-all:
 	@./scripts/make.sh load-fixtures
 
+collect-assets-host-all:
+	@./scripts/make.sh collect-assets
+
 run-dbs:
 	docker-compose up -d db redis es
 	sleep 5
@@ -50,6 +53,17 @@ run-all:
 run-all-host:
 	@./scripts/make.sh run
 
-ultimate: clean-all build-all run-dbs create-db-all migrate-all load-fixtures-all run-all
+ultimate:
+	make clean-all
+	make build-all
+	make run-dbs
+	make create-db-all
 
-ultimate-host: clean-all run-dbs create-db-all migrate-host-all load-fixtures-host-all run-all-host
+ultimate-host:
+	make clean-all
+	make run-dbs
+	make create-db-all
+	make migrate-host-all
+	make load-fixtures-host-all
+	make collect-assets-host-all
+	make run-all-host

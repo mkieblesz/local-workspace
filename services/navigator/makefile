@@ -14,7 +14,7 @@ collect-assets:
 test: collect-assets
 	# flake8 app --exclude=migrations,.venv
 	pycodestyle
-	pytest ./app -v --ignore=node_modules --cov=./app --cov-config=.coveragerc --capture=no
+	pytest ./$$REPO/app -v --ignore=node_modules --cov=./$$REPO/app --cov-config=.coveragerc --capture=no
 	if [ "$$CODECOV_REPO_TOKEN" != "" ]; then \
 	   codecov --token=$$CODECOV_REPO_TOKEN ;\
 	fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source config.sh
+source scripts/config.sh
 
 echo "Do you have Python 3.6 installed? [Y/n]"
 read python_installed
