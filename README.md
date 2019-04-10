@@ -7,6 +7,8 @@
     * databases in docker and services on host with `make ultimate`
     * check out [usage workflows](#usage)
 
+    Additionally some things got fixed like missing env variables required to run in local, fixes seeds.rb for ruby.
+
 2. Upcomming features.
 
     * everything in docker with `make ultimate-docker`
@@ -189,6 +191,7 @@ TODO
 ## TODO
 
 * make proxy work for host and docker (common .env.links env file witch paths without port or similar)
+* allow for load-fixtures rerun in exopps (update seeds.rb)
 * add .env.test to each repo patch + test command to each makefile which will override .env with .env.test
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
