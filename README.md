@@ -34,9 +34,9 @@
     127.0.0.1     international.trade.great
     127.0.0.1     host-proxy.trade.great
     127.0.0.1     docker-proxy.trade.great
-    127.0.0.1     db
-    127.0.0.1     redis
-    127.0.0.1     es
+    127.0.0.1     db.trade.great
+    127.0.0.1     redis.trade.great
+    127.0.0.1     es.trade.great
     ```
 
 3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
@@ -44,6 +44,7 @@
 ## Usage
 
 - `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages
+- `make patch` patches repos with changes required
 
 ### Services on host and dbs in docker
 
@@ -52,14 +53,14 @@ Testing services:
 - `make ultimate` setups everything up
 - go to `<service-domain>:<port>` to test services directly, for example `soo.trade.great:8008`
 - `ctrl+c` from tab where services are running
-- `make stop-dbs` stops db containers
+- `make kill-dbs` kills db containers
 
 Testing services via proxy:
 
 - `make run-host-proxy ultimate`
 - go to `local-proxy.trade.great` to test services as they are in prod environments through proxy container
 - `ctrl+c` from tab where services are running
-- `make stop-dbs` stops db containers
+- `make kill-dbs` kills db containers
 
 Working on individual repos:
 
@@ -88,15 +89,25 @@ Working on individual repos:
 
 - `ctrl+c` stops `<repo>` webserver
 - `ctrl+c` from tab where services are running
-- `make stop-dbs` stops db containers
+- `make kill-dbs` kills db containers
 
 ### All in docker
 
-- `make ultimate` cleans, builds, runs, migrates, loads fixtures and collects statics for all containers
+- `make ultimate-docker` sets everything up in docker
 
 ### All on host
 
 TODO
+
+## Tips
+
+- debugging site-packages in docker
+
+    TODO
+
+- debugging with vscode
+
+    TODO
 
 ## TODO
 

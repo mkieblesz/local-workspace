@@ -25,8 +25,11 @@ update:
 patch:
 	@./scripts/patch.sh
 
-stop-dbs:
-	docker-compose stop db redis es
+kill-dbs:
+	docker-compose kill db redis es && docker-compose rm --force db redis es
+
+stop-all:
+	docker-compose down
 
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
@@ -45,14 +48,11 @@ run-dbs:
 run-all:
 	@./scripts/parallel_make.sh run
 
-run-docker-proxy:
-	docker-compose up -d docker-proxy
-
 run-host-proxy:
 	docker-compose up -d host-proxy
 
 ultimate:
-	make stop-dbs
+	make kill-dbs
 	@./scripts/make.sh clean
 	make run-dbs
 	make create-dbs
@@ -63,3 +63,9 @@ ultimate:
 	@./scripts/make.sh collect-assets
 	# starting all dev servers takes ~1min
 	make run-all
+
+ultimate-docker:
+	docker-compose down
+	make run-dbs
+	make create-dbs
+	make docker-compose up -d

@@ -67,7 +67,6 @@ services:
       - db
       - redis
       - es
-    # command: /bin/bash -x -c 'while true; do sleep 60; done'
 
   buyer:
     image: local-workspace/directory-ui-buyer
