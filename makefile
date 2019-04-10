@@ -28,8 +28,11 @@ patch:
 kill-dbs:
 	docker-compose kill db redis es && docker-compose rm --force db redis es
 
-stop-all:
-	docker-compose down
+kill-all:
+	docker-compose kill && docker-compose rm --force
+
+build-all:
+	docker-compose build
 
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
@@ -65,7 +68,9 @@ ultimate:
 	make run-all
 
 ultimate-docker:
-	docker-compose down
+	make kill-all
+	@./scripts/compose_make.sh clean
+	make build-all
 	make run-dbs
 	make create-dbs
 	make docker-compose up -d
