@@ -2,17 +2,19 @@
 
 ## Intro
 
-1. Tested features (Ubuntu 18.04 only).
-    * clone all repos defined in `repolist` file with `make clone`
-    * databases in docker and services on host with `make ultimate`
-    * check out [usage workflows](#usage)
+1. Features.
+
+    These features where tested on Ubuntu 18.04 only.
+
+    * from cloning this repo to browsing development version of all services defined in `repolist` with one command
+    * `docker + host` and `docker only` workflows
+    * check out for more in [usage workflows](#usage)
 
     Additionally some things got fixed like missing env variables required to run in local, fixes seeds.rb for ruby.
 
 2. Upcomming features.
 
-    * everything in docker with `make ultimate-docker`
-    * path based routing like in prod environments with `make run-proxy`
+    * path based routing like in prod environments with the use of nginx proxy container
 
 3. Directory structure for uktrade workspace assumed by this repo.
 
@@ -110,12 +112,9 @@
     127.0.0.1     es
     ```
 
-3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
-
 ## Usage
 
-* `make update` updates all repositories in `$WORKSPACE_DIR` with installing/updating python/npm/gem packages
-* `make patch` patches repos with changes required
+First run `make clone update patch` to clone, setup environment and patch with new files all repos defined in `repolist`.
 
 ### Services on host and dbs in docker
 
@@ -158,13 +157,14 @@ Working on individual repos:
     make run
     ```
 
-* `ctrl+c` stops `<repo>` webserver
+* `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` kills db containers
 
 ### All in docker
 
 * `make ultimate-docker` sets everything up in docker
+* TODO
 
 ### All on host
 
@@ -190,6 +190,7 @@ TODO
 
 ## TODO
 
+* add `exec` target to makefiles to exec into docker machine
 * make proxy work for host and docker (common .env.links env file witch paths without port or similar)
 * allow for load-fixtures rerun in exopps (update seeds.rb)
 * change exred to domestic

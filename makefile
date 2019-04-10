@@ -74,7 +74,7 @@ ultimate:
 
 ultimate-docker:
 	make kill-all
-	@./scripts/make_compose.sh clean
+	@./scripts/make_host.sh clean
 	make build-all
 	make run-dbs
 	make create-dbs
