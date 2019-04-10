@@ -1,25 +1,12 @@
 version: '3.7'
 
 services:
-  host-proxy:
+  proxy:
     image: nginx
     ports:
       - '80:80'
     volumes:
-      - './docker/local-proxy/host_proxy.conf:/etc/nginx/conf.d/default.conf'
-
-  docker-proxy:
-    image: nginx
-    depends_on:
-      - buyer
-      - sso-profile
-      - exred
-      - soo
-      - international
-    ports:
-      - '80:80'
-    volumes:
-      - './docker/local-proxy/docker_proxy.conf:/etc/nginx/conf.d/default.conf'
+      - './docker/proxy/default.conf:/etc/nginx/conf.d/default.conf'
 
   db:
     image: postgres:9.5

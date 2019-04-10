@@ -32,11 +32,12 @@
     127.0.0.1     cms.trade.great
     127.0.0.1     forms.trade.great
     127.0.0.1     international.trade.great
-    127.0.0.1     host-proxy.trade.great
-    127.0.0.1     docker-proxy.trade.great
-    127.0.0.1     db.trade.great
-    127.0.0.1     redis.trade.great
-    127.0.0.1     es.trade.great
+    127.0.0.1     proxy.trade.great
+    # same as compose containers so it will work with
+    # one set of env vars both on host and docker
+    127.0.0.1     db
+    127.0.0.1     redis
+    127.0.0.1     es
     ```
 
 3. Clone repos defined in `repolist` file with `make clone` into `$WORKSPACE_DIR` which defaults to parent directory.
@@ -57,8 +58,8 @@ Testing services:
 
 Testing services via proxy:
 
-- `make run-host-proxy ultimate`
-- go to `local-proxy.trade.great` to test services as they are in prod environments through proxy container
+- `make run-proxy ultimate`
+- go to `proxy.trade.great` to test services as they are in prod environments through proxy container
 - `ctrl+c` from tab where services are running
 - `make kill-dbs` kills db containers
 
@@ -112,6 +113,6 @@ TODO
 ## TODO
 
 - create dockerfiles
-- cleanup env vars (services/.env.host-proxy and services/.env.docker-proxy and perhaps .env.test for testing)
-- update nginx config for host and docker proxy
+- cleanup env vars
+- update nginx config for proxy
 - create local services graph using docker-compose-viz

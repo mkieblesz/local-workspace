@@ -14,11 +14,11 @@ MAILER_FROM_ADDRESS: "develop@exportingisgreat.gov.uk"
 MAILER_NOREPLY_ADDRESS: 'noreply@exportingisgreat.gov.uk'
 
 # Redis
-REDIS_URL: redis://0.0.0.0:6379/20
+REDIS_URL: redis://redis:6379/20
 
 #use a different database for testing
 test:
-  REDIS_URL: redis://0.0.0.0:6379/27
+  REDIS_URL: redis://redis:6379/27
 
 COMPANIES_HOUSE_API_TOKEN: example_token
 COMPANIES_HOUSE_BASE_URL: www.example.com
@@ -56,7 +56,7 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY: '?[!@$%^%'
 ACTIVITY_STREAM_IP_WHITELIST: '0.0.0.0'
 
 # Elasticsearch
-elastic_search_url: 'http://0.0.0.0:9200'
+elastic_search_url: 'http://es:9200'
 AWS_ACCESS_KEY_ID: ''
 AWS_SECRET_ACCESS_KEY: ''
 AWS_REGION: ''
