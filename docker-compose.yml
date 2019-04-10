@@ -75,6 +75,8 @@ services:
       dockerfile: new_Dockerfile
     ports:
       - '8002:8002'
+    env_file:
+      - ../export-opportunities/.new_env
     depends_on:
       - db
       - redis

@@ -4,5 +4,4 @@ WORKDIR /usr/src/app
 COPY requirements_test.txt /usr/src/app/
 RUN pip install -r requirements_test.txt
 COPY . /usr/src/app
-EXPOSE 8000
 CMD ["make", "-f", "new_makefile", "run"]

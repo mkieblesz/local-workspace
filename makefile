@@ -41,35 +41,35 @@ drop-dbs:
 	docker-compose exec --user postgres db bash -c "$(DROP_DBS)"
 
 recreate-dbs: drop-dbs create-dbs
-	@./scripts/make.sh migrate
-	@./scripts/make.sh load-fixtures
+	@./scripts/make_host.sh migrate
+	@./scripts/make_host.sh load-fixtures
 
 run-dbs:
 	docker-compose up -d db redis es
 	sleep 10
 
 run-all:
-	@./scripts/parallel_make.sh run
+	@./scripts/make_parallel.sh run
 
 run-proxy:
 	docker-compose up -d proxy
 
 ultimate:
 	make kill-dbs
-	@./scripts/make.sh clean
+	@./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
 	# applying all migrations takes ~30min regardless if it's run in parallel or not
 	# when no new migrations takes ~1min
-	@./scripts/make.sh migrate
-	@./scripts/make.sh load-fixtures
-	@./scripts/make.sh collect-assets
+	@./scripts/make_host.sh migrate
+	@./scripts/make_host.sh load-fixtures
+	@./scripts/make_host.sh collect-assets
 	# starting all dev servers takes ~1min
 	make run-all
 
 ultimate-docker:
 	make kill-all
-	@./scripts/compose_make.sh clean
+	@./scripts/make_compose.sh clean
 	make build-all
 	make run-dbs
 	make create-dbs
