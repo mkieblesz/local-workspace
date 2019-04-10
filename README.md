@@ -1,5 +1,63 @@
 # local-workspace
 
+## Intro
+
+Directory structure for uktrade workspace assumed by this repo.
+
+```text
+    uktrade                         # workspace folder containing all repos from github.com/uktrade
+    │
+    └───local-workspace             # THIS REPO
+    │   │   docker-compose.yml      # used for managing all docker containers
+    │   │   makefile                # workspace task management
+    │   │
+    │   └───docker                  # extra containers not having it's own repo in uktrade
+    │   │   │
+    │   │   └───proxy
+    │   │   │   default.conf        # nginx config with proxy passing
+    │   │   │
+    │   │   └───redis
+    │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to 0.0.0.0
+    │   │   │   ...
+    │   │
+    │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
+    │   │   │
+    │   |   └───directory-api
+    │   │   │   makefile            # makefile is in each repo updated and simplified
+    │   │   │   .env                # env variables for local dev
+    │   │   │   .env.test           # extra env variables required for testing
+    │   │   │   ...
+    │   │   │
+    │   |   └───directory-cms
+    │   │   │
+    │   |   └───great-domestic-ui
+    │   |   |
+    │   |   |   ...
+    │   |
+    │   └───scripts
+    │   │   activate.sh             # used to activate working environment on host for repo
+    │   │   clone.sh                # clones all repos defined in `repolist` file
+    │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
+    │   │   eval.sh                 # passed command will be executed inside repository with activated environment
+    │   │   make_compose.sh         # executes make target in docker container for each repo if running
+    │   │   make_host.sh            # executes make target for each repo on host using eval.sh
+    │   │   make_parallel.sh        # used to run all webservers in one shell, executes make target for each repo on host in parallel
+    │   │   patch.sh                # copies fields which will have to be patched to each repo
+    │   │   update.sh               # pulls latest changes in each repo
+    │   |
+    │   └───tmp
+    │       |
+    │       └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
+
+    └───directory-api
+    │
+    └───directory-cms
+    │
+    └───great-domestic-ui
+    |
+    |   ...
+```
+
 ## Setup
 
 1. Ensure system requirements are met.
