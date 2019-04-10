@@ -101,7 +101,6 @@ TODO
 ## TODO
 
 - create dockerfiles
-- create services/.env.host-proxy with service linking for host-proxy
-- create services/.env.docker-proxy with service linking for docker-proxy
+- cleanup env vars (services/.env.host-proxy and services/.env.docker-proxy and perhaps .env.test for testing)
 - update nginx config for host and docker proxy
 - create local services graph using docker-compose-viz

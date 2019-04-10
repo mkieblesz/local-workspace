@@ -22,13 +22,13 @@ work () {
   }
   export REPO=$1
   export REPO_DIR=$WORKSPACE_DIR/$REPO
-  export REPO_PATCH=$WORKSPACE_REPO_DIR/services/$REPO
+
   if [ -d $REPO_DIR/.venv ]; then
     source $REPO_DIR/.venv/bin/activate
   fi
-  if [ -d $REPO_DIR/.venv ]; then
+  if [ -f $REPO_DIR/.new_env ]; then
     set -o allexport
-    source $REPO_PATCH/.env
+    source $REPO_DIR/.new_env
     set +o allexport
   fi
   cdrepo
@@ -36,12 +36,13 @@ work () {
 
 deactivate_repo () {
   # https://unix.stackexchange.com/a/508367
-  test -f $REPO_PATCH/.env && while read var; do unset $var; done < <(cat $REPO_PATCH/.env | sed 's/=.*//g')
+  if [ -f $REPO_DIR/.new_env ]; then
+    while read var; do unset $var; done < <(cat $REPO_DIR/.new_env | sed 's/=.*//g')
+  fi
   # deactivate if has venv
   if [ "$(type -t deactivate)" == "function" ]; then
     deactivate
   fi
-  unset REPO_PATCH
   unset REPO_DIR
   unset REPO
   unset -f cdrepo

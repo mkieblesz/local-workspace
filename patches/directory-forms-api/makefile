@@ -8,8 +8,8 @@ migrate:
 	python manage.py distributed_migrate --noinput
 
 load-fixtures:
-	python manage.py shell < $$REPO_PATCH/fixtures/users.py
-	python manage.py shell < $$REPO_PATCH/fixtures/sso_api_clients.py
+	python manage.py shell < fixtures/users.py
+	python manage.py shell < fixtures/api_clients.py
 
 collect-assets:
 	python manage.py collectstatic --noinput
