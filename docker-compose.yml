@@ -58,7 +58,7 @@ services:
     image: local-workspace/directory-api
     build:
       context: ../directory-api/
-      dockerfile: ../directory-api/new_Dockerfile
+      dockerfile: new_Dockerfile
     ports:
       - '8000:8000'
     env_file:
@@ -67,12 +67,13 @@ services:
       - db
       - redis
       - es
+    # command: /bin/bash -x -c 'while true; do sleep 60; done'
 
   buyer:
     image: local-workspace/directory-ui-buyer
     build:
       context: ../directory-ui-buyer/
-      dockerfile: ../directory-ui-buyer/new_Dockerfile
+      dockerfile: new_Dockerfile
     ports:
       - '8001:8001'
     env_file:
@@ -85,7 +86,7 @@ services:
     image: local-workspace/export-opportunities
     build:
       context: ../export-opportunities/
-      dockerfile: ../export-opportunities/new_Dockerfile
+      dockerfile: new_Dockerfile
     ports:
       - '8002:8002'
     depends_on:
@@ -97,7 +98,7 @@ services:
     image: local-workspace/directory-sso
     build:
       context: ../directory-sso/
-      dockerfile: ../directory-sso/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-sso/.new_env
     ports:
@@ -110,7 +111,7 @@ services:
     image: local-workspace/directory-sso-proxy
     build:
       context: ../directory-sso-proxy/
-      dockerfile: ../directory-sso-proxy/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-sso-proxy/.new_env
     ports:
@@ -122,7 +123,7 @@ services:
     image: local-workspace/directory-ui-supplier
     build:
       context: ../directory-ui-supplier/
-      dockerfile: ../directory-ui-supplier/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-ui-supplier/.new_env
     ports:
@@ -134,7 +135,7 @@ services:
     image: local-workspace/directory-sso-profile
     build:
       context: ../directory-sso-profile/
-      dockerfile: ../directory-sso-profile/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-sso-profile/.new_env
     ports:
@@ -146,7 +147,7 @@ services:
     image: local-workspace/great-domestic-ui
     build:
       context: ../great-domestic-ui/
-      dockerfile: ../great-domestic-ui/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../great-domestic-ui/.new_env
     ports:
@@ -163,7 +164,7 @@ services:
     image: local-workspace/navigator
     build:
       context: ../navigator/
-      dockerfile: ../navigator/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../navigator/.new_env
     ports:
@@ -176,7 +177,7 @@ services:
     image: local-workspace/directory-cms
     build:
       context: ../directory-cms/
-      dockerfile: ../directory-cms/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-cms/.new_env
     ports:
@@ -189,7 +190,7 @@ services:
     image: local-workspace/directory-forms-api
     build:
       context: ../directory-forms-api/
-      dockerfile: ../directory-forms-api/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../directory-forms-api/.new_env
     ports:
@@ -202,7 +203,7 @@ services:
     image: local-workspace/invest-ui
     build:
       context: ../invest-ui/
-      dockerfile: ../invest-ui/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../invest-ui/.new_env
     ports:
@@ -215,7 +216,7 @@ services:
     image: local-workspace/great-international-ui
     build:
       context: ../great-international-ui/
-      dockerfile: ../great-international-ui/new_Dockerfile
+      dockerfile: new_Dockerfile
     env_file:
       - ../great-international-ui/.new_env
     ports:

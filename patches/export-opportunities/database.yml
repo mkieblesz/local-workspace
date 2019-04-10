@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: localhost
+  host: 0.0.0.0
   username: debug
   password: debug
   pool: <%= [Figaro.env.db_pool.to_i, Figaro.env.threads.to_i, 64].max %>

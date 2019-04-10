@@ -22,6 +22,9 @@ clone:
 update:
 	@./scripts/update.sh
 
+patch:
+	@./scripts/patch.sh
+
 stop-dbs:
 	docker-compose stop db redis es
 
