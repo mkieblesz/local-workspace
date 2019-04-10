@@ -74,3 +74,7 @@ ultimate-docker:
 	make run-dbs
 	make create-dbs
 	make docker-compose up -d
+	# migrates after because container have to be started
+	@./scripts/make_compose.sh migrate
+	@./scripts/make_compose.sh load-fixtures
+	@./scripts/make_compose.sh collect-assets

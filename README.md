@@ -2,61 +2,71 @@
 
 ## Intro
 
-Directory structure for uktrade workspace assumed by this repo.
+1. Tested features (Ubuntu 18.04 only).
+    * clone all repos defined in `repolist` file with `make clone`
+    * databases in docker and services on host with `make ultimate`
+    * check out [usage workflows](#usage)
 
-```text
-    uktrade                         # workspace folder containing all repos from github.com/uktrade
-    │
-    └───local-workspace             # THIS REPO
-    │   │   docker-compose.yml      # used for managing all docker containers
-    │   │   makefile                # workspace task management
-    │   │
-    │   └───docker                  # extra containers not having it's own repo in uktrade
-    │   │   │
-    │   │   └───proxy
-    │   │   │   default.conf        # nginx config with proxy passing
-    │   │   │
-    │   │   └───redis
-    │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to 0.0.0.0
-    │   │   │   ...
-    │   │
-    │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
-    │   │   │
-    │   |   └───directory-api
-    │   │   │   makefile            # makefile is in each repo updated and simplified
-    │   │   │   .env                # env variables for local dev
-    │   │   │   .env.test           # extra env variables required for testing
-    │   │   │   ...
-    │   │   │
-    │   |   └───directory-cms
-    │   │   │
-    │   |   └───great-domestic-ui
-    │   |   |
-    │   |   |   ...
-    │   |
-    │   └───scripts
-    │   │   activate.sh             # used to activate working environment on host for repo
-    │   │   clone.sh                # clones all repos defined in `repolist` file
-    │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
-    │   │   eval.sh                 # passed command will be executed inside repository with activated environment
-    │   │   make_compose.sh         # executes make target in docker container for each repo if running
-    │   │   make_host.sh            # executes make target for each repo on host using eval.sh
-    │   │   make_parallel.sh        # used to run all webservers in one shell, executes make target for each repo on host in parallel
-    │   │   patch.sh                # copies fields which will have to be patched to each repo
-    │   │   update.sh               # pulls latest changes in each repo
-    │   |
-    │   └───tmp
-    │       |
-    │       └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
+2. Upcomming features.
 
-    └───directory-api
-    │
-    └───directory-cms
-    │
-    └───great-domestic-ui
-    |
-    |   ...
-```
+    * everything in docker with `make ultimate-docker`
+    * path based routing like in prod environments with `make run-proxy`
+
+3. Directory structure for uktrade workspace assumed by this repo.
+
+    ```text
+        uktrade                         # workspace folder containing all repos from github.com/uktrade
+        │
+        └───local-workspace             # THIS REPO
+        │   │   docker-compose.yml      # used for managing all docker containers
+        │   │   makefile                # workspace task management
+        │   │
+        │   └───docker                  # extra containers not having it's own repo in uktrade
+        │   │   │
+        │   │   └───proxy
+        │   │   │   default.conf        # nginx config with proxy passing
+        │   │   │
+        │   │   └───redis
+        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to 0.0.0.0
+        │   │   │   ...
+        │   │
+        │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
+        │   │   │
+        │   |   └───directory-api
+        │   │   │   makefile            # makefile is in each repo updated and simplified
+        │   │   │   .env                # env variables for local dev
+        │   │   │   .env.test           # extra env variables required for testing
+        │   │   │   ...
+        │   │   │
+        │   |   └───directory-cms
+        │   │   │
+        │   |   └───great-domestic-ui
+        │   |   |
+        │   |   |   ...
+        │   |
+        │   └───scripts
+        │   │   activate.sh             # used to activate working environment on host for repo
+        │   │   clone.sh                # clones all repos defined in `repolist` file
+        │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
+        │   │   eval.sh                 # passed command will be executed inside repository with activated environment
+        │   │   make_compose.sh         # executes make target in docker container for each repo if running
+        │   │   make_host.sh            # executes make target for each repo on host using eval.sh
+        │   │   make_parallel.sh        # used to run all webservers in one shell, executes make target for each repo on host in parallel
+        │   │   patch.sh                # copies fields which will have to be patched to each repo
+        │   │   update.sh               # pulls latest changes in each repo
+        │   |
+        │   └───tmp
+        │       |
+        │       └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
+
+        └───directory-api
+        │
+        └───directory-cms
+        │
+        └───great-domestic-ui
+        |
+        |   ...
+    ```
 
 ## Setup
 
@@ -119,7 +129,7 @@ Testing services via proxy:
 - `make run-proxy ultimate`
 - go to `proxy.trade.great` to test services as they are in prod environments through proxy container
 - `ctrl+c` from tab where services are running
-- `make kill-dbs` kills db containers
+- `make kill-all` kills db containers and proxy
 
 Working on individual repos:
 
@@ -178,7 +188,9 @@ TODO
 
 ## TODO
 
-- create dockerfiles
-- cleanup env vars
-- update nginx config for proxy
+- make proxy work for host and docker
+- add .env.test to each repo patch + test command to each makefile which will override .env with .env.test
+- add install command which will install venv with requirements and/or npm packages and/or gems
+- update compose services dependencies
+- consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate
 - create local services graph using docker-compose-viz
