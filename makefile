@@ -1,5 +1,5 @@
 INIT_DBS := \
-	psql -t -c '\du' | cut -d \| -f 1 | grep -qw lol || psql -c \"CREATE USER lol WITH PASSWORD 'lol' CREATEDB; ALTER USER lol WITH SUPERUSER;\"; \
+	psql -t -c '\du' | cut -d \| -f 1 | grep -qw debug || psql -c \"CREATE USER lol WITH PASSWORD 'lol' CREATEDB; ALTER USER lol WITH SUPERUSER;\"; \
 	psql -lqt | cut -d \| -f 1 | grep -qw directory_api_debug || createdb --owner=debug directory_api_debug; \
 	psql -lqt | cut -d \| -f 1 | grep -qw sso_debug || createdb --owner=debug sso_debug; \
 	psql -lqt | cut -d \| -f 1 | grep -qw navigator || createdb --owner=debug navigator; \
