@@ -112,10 +112,12 @@ TODO
 
 - debugging broken command scripts
 
-    When container has problems starting just add following command to service definition in `docker-compose.yml`.
+    When container has problems starting override default command in service definition in `docker-compose.yml` file.
+
     ```yml
     command: /bin/bash -x -c 'while true; do sleep 60; done'
     ```
+
 ## TODO
 
 - create dockerfiles

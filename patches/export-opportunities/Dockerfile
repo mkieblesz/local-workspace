@@ -1,4 +1,6 @@
 FROM ruby:2.5.1
+RUN wget --quiet -O - https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get update && apt-get install -y nodejs
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY Gemfile /usr/src/app/
