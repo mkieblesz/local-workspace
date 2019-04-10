@@ -53,8 +53,10 @@ ultimate:
 	@./scripts/make.sh clean
 	make run-dbs
 	make create-dbs
-	# first run takes 30 min regardless if it's run in parallel or not
+	# applying all migrations takes ~30min regardless if it's run in parallel or not
+	# when no new migrations takes ~1min
 	@./scripts/make.sh migrate
 	@./scripts/make.sh load-fixtures
 	@./scripts/make.sh collect-assets
+	# starting all dev servers takes ~1min
 	make run-all

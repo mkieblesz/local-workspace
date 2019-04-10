@@ -58,11 +58,11 @@ services:
     image: local-workspace/directory-api
     build:
       context: ../directory-api/
-      dockerfile: services/directory-api/Dockerfile
+      dockerfile: ../directory-api/new_Dockerfile
     ports:
       - '8000:8000'
     env_file:
-      - services/directory-api/.env
+      - ../directory-api/.new_env
     depends_on:
       - db
       - redis
@@ -72,11 +72,11 @@ services:
     image: local-workspace/directory-ui-buyer
     build:
       context: ../directory-ui-buyer/
-      dockerfile: services/directory-ui-buyer/Dockerfile
+      dockerfile: ../directory-ui-buyer/new_Dockerfile
     ports:
       - '8001:8001'
     env_file:
-      - services/directory-ui-buyer/.env
+      - ../directory-ui-buyer/.new_env
     depends_on:
       - sso-proxy
       - redis
@@ -85,7 +85,7 @@ services:
     image: local-workspace/export-opportunities
     build:
       context: ../export-opportunities/
-      dockerfile: services/export-opportunities/Dockerfile
+      dockerfile: ../export-opportunities/new_Dockerfile
     ports:
       - '8002:8002'
     depends_on:
@@ -97,9 +97,9 @@ services:
     image: local-workspace/directory-sso
     build:
       context: ../directory-sso/
-      dockerfile: services/directory-sso/Dockerfile
+      dockerfile: ../directory-sso/new_Dockerfile
     env_file:
-      - services/directory-sso/.env
+      - ../directory-sso/.new_env
     ports:
       - '8003:8003'
     depends_on:
@@ -110,9 +110,9 @@ services:
     image: local-workspace/directory-sso-proxy
     build:
       context: ../directory-sso-proxy/
-      dockerfile: services/directory-sso-proxy/Dockerfile
+      dockerfile: ../directory-sso-proxy/new_Dockerfile
     env_file:
-      - services/directory-sso-proxy/.env
+      - ../directory-sso-proxy/.new_env
     ports:
       - '8004:8004'
     depends_on:
@@ -122,9 +122,9 @@ services:
     image: local-workspace/directory-ui-supplier
     build:
       context: ../directory-ui-supplier/
-      dockerfile: services/directory-ui-supplier/Dockerfile
+      dockerfile: ../directory-ui-supplier/new_Dockerfile
     env_file:
-      - services/directory-ui-supplier/.env
+      - ../directory-ui-supplier/.new_env
     ports:
       - '8005:8005'
     depends_on:
@@ -134,9 +134,9 @@ services:
     image: local-workspace/directory-sso-profile
     build:
       context: ../directory-sso-profile/
-      dockerfile: services/directory-sso-profile/Dockerfile
+      dockerfile: ../directory-sso-profile/new_Dockerfile
     env_file:
-      - services/directory-sso-profile/.env
+      - ../directory-sso-profile/.new_env
     ports:
       - '8006:8006'
     depends_on:
@@ -146,9 +146,9 @@ services:
     image: local-workspace/great-domestic-ui
     build:
       context: ../great-domestic-ui/
-      dockerfile: services/great-domestic-ui/Dockerfile
+      dockerfile: ../great-domestic-ui/new_Dockerfile
     env_file:
-      - services/great-domestic-ui/.env
+      - ../great-domestic-ui/.new_env
     ports:
       - '8007:8007'
     depends_on:
@@ -163,9 +163,9 @@ services:
     image: local-workspace/navigator
     build:
       context: ../navigator/
-      dockerfile: services/navigator/Dockerfile
+      dockerfile: ../navigator/new_Dockerfile
     env_file:
-      - services/navigator/.env
+      - ../navigator/.new_env
     ports:
       - '8008:8008'
     depends_on:
@@ -176,9 +176,9 @@ services:
     image: local-workspace/directory-cms
     build:
       context: ../directory-cms/
-      dockerfile: services/directory-cms/Dockerfile
+      dockerfile: ../directory-cms/new_Dockerfile
     env_file:
-      - services/directory-cms/.env
+      - ../directory-cms/.new_env
     ports:
       - '8010:8010'
     depends_on:
@@ -189,9 +189,9 @@ services:
     image: local-workspace/directory-forms-api
     build:
       context: ../directory-forms-api/
-      dockerfile: services/directory-forms-api/Dockerfile
+      dockerfile: ../directory-forms-api/new_Dockerfile
     env_file:
-      - services/directory-forms-api/.env
+      - ../directory-forms-api/.new_env
     ports:
       - '8011:8011'
     depends_on:
@@ -202,9 +202,9 @@ services:
     image: local-workspace/invest-ui
     build:
       context: ../invest-ui/
-      dockerfile: services/invest-ui/Dockerfile
+      dockerfile: ../invest-ui/new_Dockerfile
     env_file:
-      - services/invest-ui/.env
+      - ../invest-ui/.new_env
     ports:
       - '8012:8012'
     depends_on:
@@ -215,9 +215,9 @@ services:
     image: local-workspace/great-international-ui
     build:
       context: ../great-international-ui/
-      dockerfile: services/great-international-ui/Dockerfile
+      dockerfile: ../great-international-ui/new_Dockerfile
     env_file:
-      - services/great-international-ui/.env
+      - ../great-international-ui/.new_env
     ports:
       - '8013:8013'
     depends_on:
