@@ -192,6 +192,7 @@ TODO
 
 * make proxy work for host and docker (common .env.links env file witch paths without port or similar)
 * allow for load-fixtures rerun in exopps (update seeds.rb)
+* consider using one Dockerfile for all repos (possible with exception for exopps)
 * add .env.test to each repo patch + test command to each makefile which will override .env with .env.test
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
