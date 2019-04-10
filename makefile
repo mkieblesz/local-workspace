@@ -46,7 +46,12 @@ recreate-dbs: drop-dbs create-dbs
 
 run-dbs:
 	docker-compose up -d db redis es
-	sleep 10
+	@until docker-compose exec --user postgres db pg_isready | \
+		grep -qm 1 "accepting connections"; do sleep 1; echo "Waiting for postgres" ; done
+	@echo "Postgres accepting connections"
+	@until curl -s -o /dev/null -w ''%{http_code}'' localhost:9200 | \
+		grep -qm 1 "200"; do sleep 1; echo "Waiting for elastic search" ; done
+	@echo "Elastic search accepting connections"
 
 run-all:
 	@./scripts/make_parallel.sh run

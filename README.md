@@ -29,7 +29,7 @@
         │   │   │   default.conf        # nginx config with proxy passing
         │   │   │
         │   │   └───redis
-        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to 0.0.0.0
+        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to `redis` host
         │   │   │   ...
         │   │
         │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
@@ -196,6 +196,7 @@ TODO
 * add .env.test to each repo patch + test command to each makefile which will override .env with .env.test
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
+* make it work on mac
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
 * create local services graph using docker-compose-viz
 * write benchmark tests which will time running all commands
