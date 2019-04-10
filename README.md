@@ -7,7 +7,7 @@
     These features where tested on Ubuntu 18.04 only.
 
     * from cloning this repo to browsing development version of all services defined in `repolist` with one command
-    * `docker + host` and `docker only` workflows
+    * `docker + host` and `docker only (still some issues)` workflows
     * check out for more in [usage workflows](#usage)
 
     Additionally some things got fixed like missing env variables required to run in local, fixes seeds.rb for ruby.
@@ -190,6 +190,9 @@ TODO
 
 ## TODO
 
+* fix ultimate-docker:
+    * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
+    * linking by domain from within containers (can add same hosts file)
 * add `exec` target to makefiles to exec into docker machine
 * make proxy work for host and docker (common .env.links env file witch paths without port or similar)
 * allow for load-fixtures rerun in exopps (update seeds.rb)

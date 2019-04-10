@@ -39,6 +39,7 @@ create-dbs:
 
 drop-dbs:
 	docker-compose exec --user postgres db bash -c "$(DROP_DBS)"
+	# sudo rm -r tmp
 
 recreate-dbs: drop-dbs create-dbs
 	@./scripts/make_host.sh migrate
@@ -78,7 +79,8 @@ ultimate-docker:
 	make build-all
 	make run-dbs
 	make create-dbs
-	make docker-compose up -d
+
+	docker-compose up -d
 	# migrates after because container have to be started
 	@./scripts/make_compose.sh migrate
 	@./scripts/make_compose.sh load-fixtures
