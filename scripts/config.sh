@@ -3,7 +3,7 @@ WORKSPACE_DIR=${WORKSPACE_DIR:-$(dirname $(pwd))}
 WORKSPACE_REPO_DIR=$(pwd)
 REPO_LIST=()
 declare -A VERSION_MAP
-declare -A ACRONYM_MAP=(
+declare -A REPO_ACRONYM_MAP=(
     [directory-api]=api
     [directory-ui-buyer]=buyer
     [export-opportunities]=exopps
@@ -35,22 +35,26 @@ for REPO_DEFINITION in `cat repolist`; do
     REPO_LIST+=($REPO)
 done
 
-# for i in "${!VERSION_MAP[@]}"
-# do
-#     echo "$i - ${VERSION_MAP[$i]}"
-# done
-
-get_acronym() {
-    REPO="invest-ui"
-    if [ ${ACRONYM_MAP[$REPO]} ] ; then
-        echo $REPO ${ACRONYM_MAP[$REPO]}
+get_repo_acronym() {
+    if [ ${REPO_ACRONYM_MAP[$1]} ]; then
+        echo ${REPO_ACRONYM_MAP[$1]}
     fi
 }
 
-# get_repo_dir() {
+# accepts repo full name or acronym and returns repo name
+get_repo_name() {
+    REPO_NAME=
+    for REPO_NAME_FOR_ACRONYM in "${!REPO_ACRONYM_MAP[@]}"
+    do
+        if [ ${REPO_ACRONYM_MAP[$REPO_NAME_FOR_ACRONYM]} == $1 ]; then
+            REPO_NAME=$REPO_NAME_FOR_ACRONYM
+            break
+        fi
+    done
 
-# }
-
-# get_repo_github_link() {
-
-# }
+    # if repo name wasn't set assume full name was passed
+    if [ -z $REPO_NAME ]; then
+        REPO_NAME=$1
+    fi
+    echo $REPO_NAME
+}

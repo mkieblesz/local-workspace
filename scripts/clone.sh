@@ -38,9 +38,7 @@ if [ ! -z $docker_installed ] && [ $docker_installed == "n" ]; then
     exit 0
 fi
 
-IFS=$'\n'
-
-for REPO in `cat repolist`; do
+for REPO in $REPO_LIST; do
     # if empty line move on
     if [ -z "$REPO" ]; then
         continue
@@ -54,7 +52,12 @@ for REPO in `cat repolist`; do
         echo
         (
             cd $WORKSPACE_DIR
-            git clone git@github.com:uktrade/$REPO.git
+            VERSION=${VERSION_MAP[$REPO]}
+            if [ ! -z $VERSION ]; then
+                git clone git@github.com:uktrade/$REPO.git@$VERSION
+            else
+                git clone git@github.com:uktrade/$REPO.git
+            fi
         )
         echo
 

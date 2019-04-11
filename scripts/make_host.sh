@@ -2,10 +2,7 @@
 
 source scripts/config.sh
 
-# tells for loop to list items by new line
-IFS=$'\n'
-
-for REPO in `ls "$WORKSPACE_DIR/"`; do
+for REPO in $REPO_LIST; do
     REPO_DIR=$WORKSPACE_DIR/$REPO
 
     # only for repos for which make target exists
