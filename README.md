@@ -191,19 +191,31 @@ TODO
 
 ## TODO
 
-* fix ultimate-docker:
-    * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
-    * linking by domain from within containers (can add same hosts file)
+### Tasks for this repo
+
+* directory-api settings change localhost:9200 to es:9200 so its accessible from docker
+* linking by domain from within containers (can add same hosts file)
+* make proxy work for host and docker
+
+    Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
 * add ability to specify version for repos in repolist and omit lines prepended with #
+* allow to reference repos by acronyms like in compose
 * add `exec` target to makefiles to exec into docker machine
-* copy other make targets from original makefiles
-* make proxy work for host and docker (common .env.links env file witch paths without port or similar)
+    This will require knowledge of docker-compose file from workspace repo from individual repos.
+* add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests
+* implement rest of make targets
 * allow for load-fixtures rerun in exopps (update seeds.rb)
-* change exred to domestic
-* add .env.test to each repo patch + test command to each makefile which will override .env with .env.test
+* change `exred` to `domestic`
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
 * make it work on mac
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
 * create local services graph using docker-compose-viz
 * write benchmark tests which will time running all commands and sanity check
+
+### Tasks for service repos
+
+* merge patches
+* update python settings
+    Always use `dotenv` to pull vars from `.env` file and when testing additionally pull from `.env.test` file
+* put somewhere `.env.links` and `.env.links.proxy`
