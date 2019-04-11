@@ -183,7 +183,7 @@ TODO
 
 * debugging broken command scripts
 
-    When container has problems starting override default command in service definition in `docker-compose.yml` file.
+    When container has problems starting override default command in service definition in `docker-compose.yml` file and exec into container to debug.
 
     ```yml
     command: /bin/bash -x -c 'while true; do sleep 60; done'
