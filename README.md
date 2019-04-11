@@ -113,9 +113,13 @@
     127.0.0.1     es
     ```
 
+3. Update list of repos in `repolist` file.
+
+    Each line should have following format `<repo-name>@<version>`. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
+
 ## Usage
 
-First run `make clone update patch` to clone, setup environment and patch with new files all repos defined in `repolist`.
+First run `make clone update patch` to clone, setup environment and patch with new files all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
 
 ### Services on host and dbs in docker
 
@@ -193,7 +197,6 @@ TODO
 
 ### Tasks for this repo
 
-* add ability to specify version for repos in repolist and omit lines prepended with #
 * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
 * linking by domain from within containers (can add same hosts file)
 * make proxy work for host and docker
@@ -206,10 +209,10 @@ TODO
 * allow for load-fixtures rerun in exopps (update seeds.rb)
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
-* make it work on mac
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
 * create local services graph using docker-compose-viz
 * write benchmark tests which will time running all commands and sanity check
+* make it work on mac
 
 ### Tasks for service repos
 
