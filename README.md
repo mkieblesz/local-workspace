@@ -193,12 +193,12 @@ TODO
 
 ### Tasks for this repo
 
+* add ability to specify version for repos in repolist and omit lines prepended with #
 * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
 * linking by domain from within containers (can add same hosts file)
 * make proxy work for host and docker
 
     Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
-* add ability to specify version for repos in repolist and omit lines prepended with #
 * allow to reference repos by acronyms like in compose
 * add `exec` target to makefiles to exec into docker machine
     This will require knowledge of docker-compose file from workspace repo from individual repos.
