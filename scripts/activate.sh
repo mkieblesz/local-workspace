@@ -20,7 +20,7 @@ work () {
     cdrepo () {
         cd $REPO_DIR
     }
-    export REPO=$1
+    export REPO=$(get_repo_name $1)
     export REPO_DIR=$WORKSPACE_DIR/$REPO
 
     if [ -d $REPO_DIR/.venv ]; then
@@ -52,5 +52,5 @@ deactivate_repo () {
 }
 
 if [ ! -z "$1" ]; then
-    work $1
+    work $(get_repo_name $1)
 fi

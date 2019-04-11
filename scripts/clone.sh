@@ -38,7 +38,7 @@ if [ ! -z $docker_installed ] && [ $docker_installed == "n" ]; then
     exit 0
 fi
 
-for REPO in $REPO_LIST; do
+for REPO in "${REPO_LIST[@]}"; do
     # if empty line move on
     if [ -z "$REPO" ]; then
         continue

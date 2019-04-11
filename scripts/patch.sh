@@ -2,7 +2,7 @@
 
 source scripts/config.sh
 
-for REPO in $REPO_LIST; do
+for REPO in "${REPO_LIST[@]}"; do
     REPOPATH=$WORKSPACE_DIR/$REPO
 
     # if this repo is in workspace folder omit

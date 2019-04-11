@@ -3,7 +3,7 @@
 source scripts/config.sh
 
 CMDS=()
-for REPO in $REPO_LIST; do
+for REPO in "${REPO_LIST[@]}"; do
     REPO_DIR=$WORKSPACE_DIR/$REPO
 
     # only for repos for which make target exists
