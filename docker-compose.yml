@@ -12,13 +12,13 @@ services:
     #   - buyer
     #   - exopps
     #   - sso
-    #   - sso-proxy
+    #   - ssoproxy
     #   - supplier
-    #   - sso-profile
-    #   - exred
+    #   - profile
+    #   - domestic
     #   - soo
     #   - cms
-    #   - forms-api
+    #   - formsapi
     #   - invest
     #   - international
     volumes:
@@ -81,7 +81,7 @@ services:
     env_file:
       - ../directory-ui-buyer/.new_env
     depends_on:
-      - sso-proxy
+      - ssoproxy
       - redis
 
   exopps:
@@ -111,7 +111,7 @@ services:
       - db
       - redis
 
-  sso-proxy:
+  ssoproxy:
     image: local-workspace/directory-sso-proxy
     build:
       context: ../directory-sso-proxy/
@@ -135,7 +135,7 @@ services:
     depends_on:
       - sso-proxy
 
-  sso-profile:
+  profile:
     image: local-workspace/directory-sso-profile
     build:
       context: ../directory-sso-profile/
@@ -147,7 +147,7 @@ services:
     depends_on:
       - sso-proxy
 
-  exred:
+  domestic:
     image: local-workspace/great-domestic-ui
     build:
       context: ../great-domestic-ui/
@@ -162,7 +162,7 @@ services:
       - api
       - sso-proxy
       - cms
-      - forms-api
+      - formsapi
 
   soo:
     image: local-workspace/navigator
@@ -189,7 +189,7 @@ services:
       - db
       - redis
 
-  forms-api:
+  formsapi:
     image: local-workspace/directory-forms-api
     build:
       context: ../directory-forms-api/
@@ -229,4 +229,4 @@ services:
       - redis
       - sso
       - cms
-      - forms-api
+      - formsapi

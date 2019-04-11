@@ -199,13 +199,11 @@ TODO
 * make proxy work for host and docker
 
     Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
-* allow to reference repos by acronyms like in compose
 * add `exec` target to makefiles to exec into docker machine
     This will require knowledge of docker-compose file from workspace repo from individual repos.
 * add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests
 * implement rest of make targets
 * allow for load-fixtures rerun in exopps (update seeds.rb)
-* change `exred` to `domestic`
 * add install command which will install venv with requirements and/or npm packages and/or gems
 * update compose services dependencies
 * make it work on mac

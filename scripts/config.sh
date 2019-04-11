@@ -8,13 +8,13 @@ declare -A REPO_ACRONYM_MAP=(
     [directory-ui-buyer]=buyer
     [export-opportunities]=exopps
     [directory-sso]=sso
-    [directory-sso-proxy]=sso-proxy
+    [directory-sso-proxy]=ssoproxy
     [directory-ui-supplier]=supplier
-    [directory-sso-profile]=sso-profile
-    [great-domestic-ui]=exred
+    [directory-sso-profile]=profile
+    [great-domestic-ui]=domestic
     [navigator]=soo
     [directory-cms]=cms
-    [directory-forms-api]=forms-api
+    [directory-forms-api]=formsapi
     [invest-ui]=invest
     [great-international-ui]=international
 )
