@@ -16,4 +16,4 @@ done
 
 # run all commands in parallel
 JOBS=${#CMDS[@]}
-parallel --jobs $JOBS ::: ${CMDS[@]}
+parallel -u --jobs $JOBS ::: ${CMDS[@]}

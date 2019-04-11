@@ -65,17 +65,18 @@ ultimate:
 	@./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
-	# applying all migrations takes ~30min regardless if it's run in parallel or not
-	# when no new migrations takes ~1min
+	# ~30min entire migration history, ~3min no new migrations
 	@./scripts/make_host.sh migrate
 	@./scripts/make_host.sh load-fixtures
+	# ~3 min
 	@./scripts/make_host.sh collect-assets
-	# starting all dev servers takes ~1min
+	# ~1min
 	make run-all
 
 ultimate-docker:
 	make kill-all
 	@./scripts/make_host.sh clean
+	# ~30 minutes initial build, ~10 minutes files changed, ~5 minutes when no files changed
 	make build-all
 	make run-dbs
 	make create-dbs

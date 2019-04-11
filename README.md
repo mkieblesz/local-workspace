@@ -15,6 +15,7 @@
 2. Upcomming features.
 
     * path based routing like in prod environments with the use of nginx proxy container
+    * check out for more in [todos](#todo)
 
 3. Directory structure for uktrade workspace assumed by this repo.
 
@@ -193,7 +194,9 @@ TODO
 * fix ultimate-docker:
     * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
     * linking by domain from within containers (can add same hosts file)
+* add ability to specify version for repos in repolist and omit lines prepended with #
 * add `exec` target to makefiles to exec into docker machine
+* copy other make targets from original makefiles
 * make proxy work for host and docker (common .env.links env file witch paths without port or similar)
 * allow for load-fixtures rerun in exopps (update seeds.rb)
 * change exred to domestic
@@ -203,4 +206,4 @@ TODO
 * make it work on mac
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
 * create local services graph using docker-compose-viz
-* write benchmark tests which will time running all commands
+* write benchmark tests which will time running all commands and sanity check

@@ -4,9 +4,6 @@ clean:
 build:
 	@echo "Building app images"
 
-load-fixtures:
-	python manage.py < fixtures/users.py
-
 collect-assets:
 	python manage.py collectstatic --noinput
 
