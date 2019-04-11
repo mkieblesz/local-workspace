@@ -142,7 +142,7 @@ Working on individual repos:
     source scripts/activate.sh
     work <repo>
     fuser -k $PORT/tcp
-    make run
+    make -f new_makefile run
     ```
 
 * `ctrl+c` stops `<repo>` webserver
@@ -155,7 +155,7 @@ Working on individual repos:
     source scripts/activate.sh
     work <another-repo>
     fuser -k $PORT/tcp
-    make run
+    make -f new_makefile run
     ```
 
 * `ctrl+c` stops `<another-repo>` webserver
