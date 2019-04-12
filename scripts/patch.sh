@@ -44,11 +44,6 @@ for REPO in "${REPO_LIST[@]}"; do
             if [ -f "$REPO_PATCH_DIR/.env.links" ]; then
                 cp $REPO_PATCH_DIR/.env.links .new_env.links
             fi
-
-            # extra setup for exopps
-            if [ "$REPO" == "export-opportunities" ] && [ ! -f $REPO_DIR/config/application.yml ]; then
-                cp $REPO_PATCH_DIR/application.yml $REPO_DIR/config/application.yml
-            fi
         )
     fi
 done

@@ -198,6 +198,7 @@ TODO
 
 ### Tasks for this repo
 
+* get better cms fixtures so landing pages will work like in dev
 * env.read_env() for navigator and directory-api in settings or consider removing it so more consistent with docker and production (this function is only used for local anyways)
 
     Read .new_env, .new_env.links, .new_env.links.proxy, .new_env.test
