@@ -1,3 +1,120 @@
+diff --git a/config/application.example.yml b/config/application.example.yml
+index 2bbf6555..dc550f1e 100644
+--- a/config/application.example.yml
++++ b/config/application.example.yml
+@@ -5,36 +5,41 @@
+ # HTTP_PASS: password
+ 
+ # Canonical URL
+-DOMAIN: "http://localhost:3000"
++DOMAIN: "http://opportunities.export.great:8002"
+ 
+ # Sending email
+-MAILER_HOST: "127.0.0.1"
++MAILER_HOST: "0.0.0.0"
+ MAILER_PORT: "1025"
+ MAILER_FROM_ADDRESS: "develop@exportingisgreat.gov.uk"
+ MAILER_NOREPLY_ADDRESS: 'noreply@exportingisgreat.gov.uk'
+ 
+ # Redis
+-REDIS_URL: redis://localhost:6379
++REDIS_URL: redis://redis:6379/20
+ 
+ #use a different database for testing
+ test:
+-  REDIS_URL: redis://localhost:6379/7
++  REDIS_URL: redis://redis:6379/27
+ 
+ COMPANIES_HOUSE_API_TOKEN: example_token
+-COMPANIES_HOUSE_BASE_URL:
++COMPANIES_HOUSE_BASE_URL: www.example.com
++TRADE_PROFILE_PAGE: www.example.com
+ 
+ # Google Tag Manager for analytics, comma-separated
+ GOOGLE_TAG_MANAGER_KEYS:
+ 
+ # Single Sign-on
+-SSO_CLIENT_ID: ''
+-SSO_CLIENT_SECRET: ''
+-SSO_ENDPOINT_BASE_URI: 'https://sso.example.org/'
++SSO_CLIENT_ID: 'efcy4CUD2bhChR3We8K1LunKLSmwVe8uW4qa2Ipv'
++SSO_CLIENT_SECRET: 'VbNAcpsal6bvqLoALsebAsC6gVj8XtoxiO58ukI7M8AyOcp7gowal0f0y6aN0KQrmDFfvBuhXZFwSAwmt4SHMnBXy1tDs0uttK8CQAiWGY1DRHPjXoCSyP6GLZUiLTeg'
++# EDITED
++# SSO_ENDPOINT_BASE_URI: 'https://sso.example.org/'
++SSO_ENDPOINT_BASE_URI: 'http://sso.trade.great:8004'
+ SUD_PROFILE_PAGE: ''
+ SUD_PROFILE_PAGE_EMAIL_ALERTS: ''
+ 
+ # Links to CMS domain
+-CMS_BASE_URI: 'https://export.great.gov.uk/'
++# EDITED
++# CMS_BASE_URI: 'https://export.great.gov.uk/'
++CMS_BASE_URI: 'http://cms.trade.great:8010'
+ 
+ # Enquiry feedback
+ FEEDBACK_ENCRYPTION_SECRET: 'secret'
+@@ -51,7 +56,7 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY: '?[!@$%^%'
+ ACTIVITY_STREAM_IP_WHITELIST: '0.0.0.0'
+ 
+ # Elasticsearch
+-elastic_search_url: 'http://localhost:9200'
++elastic_search_url: 'http://es:9200'
+ AWS_ACCESS_KEY_ID: ''
+ AWS_SECRET_ACCESS_KEY: ''
+ AWS_REGION: ''
+@@ -67,21 +72,29 @@ post_user_communication_s3_bucket: ''
+ 
+ # Links to "external services" or, websites
+ TRADE_GREAT_GOV_UK: 'https://trade.great.gov.uk'
+-OFFICE_FINDER_BASE_URL: 'https://www.contactus.trade.gov.uk/office-finder/'
+-TRADE_PROFILE_CREATE_WITHOUT_NUMBER: 'https://find-a-buyer.export.great.gov.uk'
+-TRADE_PROFILE_CREATE_WITH_NUMBER: 'https://find-a-buyer.export.great.gov.uk/register/company?company_number='
+-# Supress Announcement - we detect its presence or absence and only need it in CI environment
+-SUPPRESS_ANNOUNCEMENT: "true"
+-
+-GREAT_GOV_URL: 'https://great.gov.uk/export'
+-EXPORT_READINESS_URL: 'https://great.gov.uk/export'
+-SELLING_ONLINE_OVERSEAS_URL: 'https://selling-online-overseas.export.great.gov.uk'
+-FIND_A_BUYER_URL: 'https://find-a-buyer.export.great.gov.uk'
++# OFFICE_FINDER_BASE_URL: 'https://www.contactus.trade.gov.uk/office-finder/'
++# TRADE_PROFILE_CREATE_WITHOUT_NUMBER: 'https://find-a-buyer.export.great.gov.uk'
++# TRADE_PROFILE_CREATE_WITH_NUMBER: 'https://find-a-buyer.export.great.gov.uk/register/company?company_number='
++# SELLING_ONLINE_OVERSEAS_URL: 'https://selling-online-overseas.export.great.gov.uk'
++# FIND_A_BUYER_URL: 'https://find-a-buyer.export.great.gov.uk'
++# GREAT_GOV_URL: 'https://great.gov.uk/export'
++# EXPORT_READINESS_URL: 'https://great.gov.uk/export'
+ EVENTS_URL: 'https://events.trade.gov.uk'
+-
+ REPORT_TARGETS_URL: 'https://private-url-with-csv-formatted-file'
+ UNSUBSCRIBE_EMAILS_URL: 'https://private-url-with-csv-formatted-file'
+ 
++# EDITED
++OFFICE_FINDER_BASE_URL: 'http://contact.trade.great:8009'
++TRADE_PROFILE_CREATE_WITHOUT_NUMBER: 'http://buyer.trade.great:8001'
++TRADE_PROFILE_CREATE_WITH_NUMBER: 'http://buyer.trade.great:8001/register/company?company_number='
++SELLING_ONLINE_OVERSEAS_URL: 'http://soo.export.great:8008'
++FIND_A_BUYER_URL: 'http://buyer.trade.great:8001'
++GREAT_GOV_URL: 'http://exred.trade.great:8007'
++EXPORT_READINESS_URL: 'http://exred.trade.great:8007'
++
++# Supress Announcement - we detect its presence or absence and only need it in CI environment
++SUPPRESS_ANNOUNCEMENT: "true"
++
+ # production level settings for max result window size on subscription/opportunity
+ OPPORTUNITY_ES_MAX_RESULT_WINDOW_SIZE: '100000'
+ SUBSCRIPTION_ES_MAX_RESULT_WINDOW_SIZE: '50000'
+@@ -90,4 +103,8 @@ SUBSCRIPTION_ES_MAX_RESULT_WINDOW_SIZE: '50000'
+ IMPACT_EMAIL_CHANGE_FREQUENCY: '2018-07-30'
+ 
+ # if you want to have a single cookie across domains (used for cookie disclaimer notice)
+-"PRIVACY_COOKIE_DOMAIN": ".great.gov.uk"
+\ No newline at end of file
++"PRIVACY_COOKIE_DOMAIN": ".great.gov.uk"
++
++# manual feature switchers
++POST_FORM_DEPLOYMENT_DATE: "2018-02-03"
++SIGNOFF_LINES_DEPLOYMENT_DATE: "2018-02-03"
+\ No newline at end of file
 diff --git a/config/database.yml b/config/database.yml
 index 6e28de87..c6bd0839 100644
 --- a/config/database.yml

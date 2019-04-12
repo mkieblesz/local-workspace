@@ -3,17 +3,17 @@
 source scripts/config.sh
 
 for REPO in "${REPO_LIST[@]}"; do
-    REPOPATH=$WORKSPACE_DIR/$REPO
+    REPO_DIR=$WORKSPACE_DIR/$REPO
 
     # if this repo is in workspace folder omit
-    if [ $REPOPATH == $WORKSPACE_REPO_DIR ]; then
+    if [ $REPO_DIR == $WORKSPACE_REPO_DIR ]; then
         continue
     fi
 
-    if [ -d "$REPOPATH/.git" ]; then
+    if [ -d "$REPO_DIR/.git" ]; then
         echo "Updating $REPO"
         (
-            cd "$REPOPATH"
+            cd "$REPO_DIR"
             git status
             echo "Fetching"
             git fetch
@@ -21,9 +21,9 @@ for REPO in "${REPO_LIST[@]}"; do
             git pull
 
             # TODO: move to makefiles
-            if [ -f "$REPOPATH/requirements_test.txt" ]; then
-                if [ ! -d "$REPOPATH/.venv" ]; then
-                    echo "Initializing python virtual environment in $REPOPATH/.venv folder"
+            if [ -f "$REPO_DIR/requirements_test.txt" ]; then
+                if [ ! -d "$REPO_DIR/.venv" ]; then
+                    echo "Initializing python virtual environment in $REPO_DIR/.venv folder"
                     python3 -m venv .venv
                     .venv/bin/pip install --upgrade pip wheel
                 fi
@@ -31,18 +31,22 @@ for REPO in "${REPO_LIST[@]}"; do
                 .venv/bin/pip install -r requirements_test.txt
             fi
 
-            if [ -f "$REPOPATH/Gemfile" ]; then
+            if [ -f "$REPO_DIR/Gemfile" ]; then
                 (
-                    cd $REPOPATH
+                    cd $REPO_DIR
                     echo "Updating gems"
                     bundle _1.16.6_ install
+                    # extra for exopps
+                    if [ ! -f config/application.yml ]; then
+                        cp config/application.example.yml config/application.yml
+                    fi
                 )
             fi
 
-            # if [ -f "$REPOPATH/package.json" ]; then
+            # if [ -f "$REPO_DIR/package.json" ]; then
             #     echo "Updating npm packages"
             #     (
-            #         cd $REPOPATH
+            #         cd $REPO_DIR
             #         npm install
             #     )
             # fi
