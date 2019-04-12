@@ -133,7 +133,7 @@ services:
     ports:
       - '8005:8005'
     depends_on:
-      - sso-proxy
+      - ssoproxy
 
   profile:
     image: local-workspace/directory-sso-profile
@@ -145,7 +145,7 @@ services:
     ports:
       - '8006:8006'
     depends_on:
-      - sso-proxy
+      - ssoproxy
 
   domestic:
     image: local-workspace/great-domestic-ui
@@ -160,7 +160,7 @@ services:
       - db
       - redis
       - api
-      - sso-proxy
+      - ssoproxy
       - cms
       - formsapi
 

@@ -11,11 +11,11 @@ if [ ! -z $python_installed ] && [ $python_installed == "n" ]; then
     exit 0
 fi
 
-echo "Do you have Ruby 2.5.1 with bundler 1.16.6 gem installed? [Y/n]"
+echo "Do you have Ruby 2.5.5 with bundler 1.16.6 gem installed? [Y/n]"
 read ruby_installed
 if [ ! -z $ruby_installed ] && [ $ruby_installed == "n" ]; then
     echo
-    echo "Please install Ruby 2.5.1 with bundler 1.16.6 gem on your system"
+    echo "Please install Ruby 2.5.5 with bundler 1.16.6 gem on your system"
     echo
     exit 0
 fi

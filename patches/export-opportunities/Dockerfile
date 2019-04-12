@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.5.5
 RUN wget --quiet -O - https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 RUN mkdir -p /usr/src/app

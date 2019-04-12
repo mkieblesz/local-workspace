@@ -77,7 +77,7 @@
 
 1. Ensure system requirements are met.
     * `python==3.6`
-    * `ruby==2.5.1` with `bundler==1.16.6` gem
+    * `ruby==2.5.5` with `bundler==1.16.6` gem
     * `node==8.x`
     * `GNU parallel`
 
@@ -197,6 +197,8 @@ TODO
 
 ### Tasks for this repo
 
+* env.read_env() for navigator and directory-api in settings or consider removing it so more consistent with docker and production (this function is only used for local anyways)
+* replace env.read_env() to read .new_env, .new_env.links, .new_env.links.proxy, .new_env.test
 * directory-api settings change localhost:9200 to es:9200 so its accessible from docker
 * linking by domain from within containers (can add same hosts file)
 * make proxy work for host and docker
