@@ -105,6 +105,7 @@
     127.0.0.1     cms.trade.great
     127.0.0.1     forms.trade.great
     127.0.0.1     international.trade.great
+    127.0.0.1     invest.trade.great
     127.0.0.1     proxy.trade.great
     # same as compose containers so it will work with
     # one set of env vars both on host and docker
