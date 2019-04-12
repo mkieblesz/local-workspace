@@ -41,6 +41,7 @@
         │   │   │   makefile            # makefile is in each repo updated and simplified
         │   │   │   .env                # env variables for local dev
         │   │   │   .env.test           # extra env variables required for testing
+        │   │   │   git.patch           # git patch which will need to be made for the repo
         │   │   │   ...
         │   │   │
         │   |   └───directory-cms
