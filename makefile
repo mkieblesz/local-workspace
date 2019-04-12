@@ -29,7 +29,8 @@ kill-dbs:
 	docker-compose kill db redis es && docker-compose rm --force db redis es
 
 kill-all:
-	docker-compose kill && docker-compose rm --force
+	# docker-compose kill && docker-compose rm --force
+	docker-compose down
 
 build-all:
 	docker-compose build

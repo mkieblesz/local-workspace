@@ -26,6 +26,8 @@ services:
 
   db:
     image: postgres:9.5
+    networks:
+      uktrade-network:
     ports:
       - '5432:5432'
     volumes:
@@ -33,6 +35,8 @@ services:
 
   redis:
     image: redis:3.2.11
+    networks:
+      uktrade-network:
     ports:
       - '6379:6379'
     volumes:
@@ -42,6 +46,8 @@ services:
 
   es:
     image: elasticsearch:5.6.8
+    networks:
+      uktrade-network:
     ports:
       - '9200:9200'
     environment:
