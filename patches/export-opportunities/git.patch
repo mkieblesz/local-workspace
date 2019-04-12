@@ -1,0 +1,73 @@
+diff --git a/config/database.yml b/config/database.yml
+index 6e28de87..c6bd0839 100644
+--- a/config/database.yml
++++ b/config/database.yml
+@@ -1,7 +1,9 @@
+ default: &default
+   adapter: postgresql
+   encoding: unicode
+-  host: localhost
++  host: db
++  username: debug
++  password: debug
+   pool: <%= [Figaro.env.db_pool.to_i, Figaro.env.threads.to_i, 64].max %>
+ 
+ development:
+diff --git a/config/initializers/elastic_search.rb b/config/initializers/elastic_search.rb
+index ad28de98..597a5747 100644
+--- a/config/initializers/elastic_search.rb
++++ b/config/initializers/elastic_search.rb
+@@ -14,5 +14,5 @@ Elasticsearch::Model.client = if Rails.env.production?
+                                   f.adapter Faraday.default_adapter
+                                 end
+                                 else
+-                                  Elasticsearch::Client.new host: '127.0.0.1:9200'
++                                  Elasticsearch::Client.new host: 'es:9200'
+                                 end
+diff --git a/db/seeds.rb b/db/seeds.rb
+index 38ad2ca7..13fe55ba 100644
+--- a/db/seeds.rb
++++ b/db/seeds.rb
+@@ -209,11 +209,14 @@ Sector.find_by(slug: 'oil-gas').try(:update, featured: true, featured_order: 4)
+ Sector.find_by(slug: 'security').try(:update, featured: true, featured_order: 5)
+ Sector.find_by(slug: 'retail-and-luxury').try(:update, featured: true, featured_order: 6)
+ 
+-Type.create(slug: 'aid-funded-business', name: 'Aid Funded Business')
+-Type.create(slug: 'public-sector', name: 'Public Sector')
++# already in db
++Type.where(slug: 'aid-funded-business', name: 'Aid Funded Business').first
++Type.where(slug: 'public-sector', name: 'Public Sector').first
+ 
+-Value.create(slug: '10k', name: 'Less than £100k')
+-Value.create(slug: 'unknown', name: 'Value unknown')
++# for some reason it uses pk which is alread in use, it might be because it removed some rows before and
++# postgres pk interval stayed same
++Value.create(id: 10, slug: '10k', name: 'Less than £100k')
++Value.create(id: 11, slug: 'unknown', name: 'Value unknown')
+ 
+ ServiceProvider.create(name: 'Belgium Brussels')
+ ServiceProvider.create(name: 'Australia Sydney')
+@@ -431,12 +434,11 @@ FactoryBot.create(:editor,
+   confirmed_at: DateTime.current,
+   role: 1)
+ 
+-agriculture = Sector.create(slug: 'agriculture-horticulture-fisheries', name: 'Agriculture, Horticulture & Fisheries')
+-automotive = Sector.create(slug: 'automotive', name: 'Automotive')
+-
+-private_sector = Type.create(slug: 'private-sector', name: 'Private Sector')
+-
+-hundred_thousand = Value.create(slug: '100k', name: 'More than £100k')
++# for some reason some of these were/werent in db
++agriculture = Sector.where(slug: 'agriculture-horticulture-fisheries', name: 'Agriculture, Horticulture & Fisheries').first_or_create
++automotive = Sector.where(slug: 'automotive', name: 'Automotive').first_or_create
++private_sector = Type.where(slug: 'private-sector', name: 'Private Sector').first_or_create
++hundred_thousand = Value.where(id: 12, slug: '100k', name: 'More than £100k').first_or_create
+ 
+ future_expiry_date = 2.years.from_now
+ past_expiry_date   = 2.weeks.ago
+@@ -577,4 +579,4 @@ FactoryBot.create(:opportunity,
+   values: [Value.all.sample],
+   status: :pending)
+ 
+-FactoryBot.create(:supplier_preference)
++# FactoryBot.create(:supplier_preference)

@@ -3,38 +3,45 @@
 source scripts/config.sh
 
 for REPO in "${REPO_LIST[@]}"; do
-    REPOPATH=$WORKSPACE_DIR/$REPO
+    REPO_DIR=$WORKSPACE_DIR/$REPO
 
     # if this repo is in workspace folder omit
-    if [ $REPOPATH == $WORKSPACE_REPO_DIR ]; then
+    if [ $REPO_DIR == $WORKSPACE_REPO_DIR ]; then
         continue
     fi
 
-    if [ -d "$REPOPATH/.git" ]; then
+    if [ -d "$REPO_DIR/.git" ]; then
         (
-            REPOPATCH=$WORKSPACE_REPO_DIR/patches/$REPO
-            if [ -d "$REPOPATCH" ]; then
-                if [ -d "$REPOPATCH/fixtures" ]; then
-                    mkdir -p $REPOPATH/fixtures
-                    cp $REPOPATCH/fixtures/* $REPOPATH/fixtures
-                fi
-                if [ -f "$REPOPATCH/makefile" ]; then
-                    cp $REPOPATCH/makefile $REPOPATH/new_makefile
-                fi
-                if [ -f "$REPOPATCH/Dockerfile" ]; then
-                    cp $REPOPATCH/Dockerfile $REPOPATH/new_Dockerfile
-                fi
-                if [ -f "$REPOPATCH/.env" ]; then
-                    cp $REPOPATCH/.env $REPOPATH/.new_env
-                fi
-                if [ -f "$REPOPATCH/.env.test" ]; then
-                    cp $REPOPATCH/.env.test $REPOPATH/.new_env.test
-                fi
-                if [ "$REPO" == "export-opportunities" ]; then
-                        cp $REPOPATCH/application.yml $REPOPATH/config/application.yml
-                        cp $REPOPATCH/database.yml $REPOPATH/config/database.yml
-                        cp $REPOPATCH/seeds.rb $REPOPATH/db/seeds.rb
-                fi
+            cd $REPO_DIR
+            REPO_PATCH_DIR=$WORKSPACE_REPO_DIR/patches/$REPO
+            # apply git patch (remove after changes are merged)
+            if [ -d "$REPO_PATCH_DIR/git.patch" ]; then
+                git reset --hard
+                git apply $REPO_PATCH_DIR/git.patch
+            fi
+            if [ -d "$REPO_PATCH_DIR/fixtures" ]; then
+                mkdir -p fixtures
+                cp $REPO_PATCH_DIR/fixtures/* fixtures
+            fi
+            if [ -f "$REPO_PATCH_DIR/makefile" ]; then
+                cp $REPO_PATCH_DIR/makefile new_makefile
+            fi
+            if [ -f "$REPO_PATCH_DIR/Dockerfile" ]; then
+                cp $REPO_PATCH_DIR/Dockerfile new_Dockerfile
+            fi
+            if [ -f "$REPO_PATCH_DIR/.env" ]; then
+                cp $REPO_PATCH_DIR/.env .new_env
+            fi
+            if [ -f "$REPO_PATCH_DIR/.env.test" ]; then
+                cp $REPO_PATCH_DIR/.env.test .new_env.test
+            fi
+            if [ -f "$REPO_PATCH_DIR/.env.links" ]; then
+                cp $REPO_PATCH_DIR/.env.links .new_env.links
+            fi
+
+            # extra setup for exopps
+            if [ "$REPO" == "export-opportunities" ]; then
+                cp $REPO_PATCH_DIR/application.yml $REPO_DIR/config/application.yml
             fi
         )
     fi

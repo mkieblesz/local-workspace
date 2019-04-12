@@ -7,20 +7,20 @@ services:
     ports:
       - '80:80'
     # uncomment to vizualise
-    depends_on:
-      - api
-      - buyer
-      - exopps
-      - sso
-      - ssoproxy
-      - supplier
-      - profile
-      - domestic
-      - soo
-      - cms
-      - formsapi
-      - invest
-      - international
+    # depends_on:
+    #   - api
+    #   - buyer
+    #   - exopps
+    #   - sso
+    #   - ssoproxy
+    #   - supplier
+    #   - profile
+    #   - domestic
+    #   - soo
+    #   - cms
+    #   - formsapi
+    #   - invest
+    #   - international
     volumes:
       - './docker/proxy/default.conf:/etc/nginx/conf.d/default.conf'
 

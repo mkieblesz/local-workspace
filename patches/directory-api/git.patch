@@ -1,0 +1,13 @@
+diff --git a/conf/settings.py b/conf/settings.py
+index 080f0ec..8320540 100644
+--- a/conf/settings.py
++++ b/conf/settings.py
+@@ -519,7 +519,7 @@ elif ELASTICSEARCH_PROVIDER == 'aws':
+ elif ELASTICSEARCH_PROVIDER == 'localhost':
+     connections.create_connection(
+         alias='default',
+-        hosts=['localhost:9200'],
++        hosts=[env.str('ELASTICSEARCH_URL')],
+         use_ssl=False,
+         verify_certs=False,
+         connection_class=RequestsHttpConnection

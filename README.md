@@ -199,9 +199,8 @@ TODO
 ### Tasks for this repo
 
 * env.read_env() for navigator and directory-api in settings or consider removing it so more consistent with docker and production (this function is only used for local anyways)
-* replace env.read_env() to read .new_env, .new_env.links, .new_env.links.proxy, .new_env.test
-* directory-api settings change localhost:9200 to es:9200 so its accessible from docker
-* linking by domain from within containers (can add same hosts file)
+
+    Read .new_env, .new_env.links, .new_env.links.proxy, .new_env.test
 * make proxy work for host and docker
 
     Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
