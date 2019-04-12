@@ -2,6 +2,12 @@
 
 source scripts/config.sh
 
+echo "This will reset all your local changes in repo. Do you want to continue? [Y/n]"
+read should_continue
+if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
+    exit 0
+fi
+
 for REPO in "${REPO_LIST[@]}"; do
     REPO_DIR=$WORKSPACE_DIR/$REPO
 
@@ -40,7 +46,7 @@ for REPO in "${REPO_LIST[@]}"; do
             fi
 
             # extra setup for exopps
-            if [ "$REPO" == "export-opportunities" ]; then
+            if [ "$REPO" == "export-opportunities" ] && [ ! -f $REPO_DIR/config/application.yml ]; then
                 cp $REPO_PATCH_DIR/application.yml $REPO_DIR/config/application.yml
             fi
         )
