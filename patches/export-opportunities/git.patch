@@ -1,3 +1,10 @@
+diff --git a/.ruby-version b/.ruby-version
+index 73462a5a..0cadbc1e 100644
+--- a/.ruby-version
++++ b/.ruby-version
+@@ -1 +1 @@
+-2.5.1
++2.5.5
 diff --git a/config/application.example.yml b/config/application.example.yml
 index 2bbf6555..dc550f1e 100644
 --- a/config/application.example.yml
