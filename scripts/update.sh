@@ -35,7 +35,7 @@ for REPO in "${REPO_LIST[@]}"; do
                 (
                     cd $REPO_DIR
                     echo "Updating gems"
-                    bundle _1.16.6_ install
+                    bundle _1.16.6_ install --path vendor/bundle
                     # extra for exopps
                     if [ ! -f config/application.yml ]; then
                         cp config/application.example.yml config/application.yml
