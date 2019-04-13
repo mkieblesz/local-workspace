@@ -76,6 +76,8 @@ services:
       - '8000:8000'
     env_file:
       - ../directory-api/.new_env
+    volumes:
+      - '../directory-api:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -94,6 +96,8 @@ services:
       - '8001:8001'
     env_file:
       - ../directory-ui-buyer/.new_env
+    volumes:
+      - '../directory-ui-buyer:/usr/src/app'
     depends_on:
       - redis
       - ssoproxy
@@ -109,10 +113,13 @@ services:
           - opportunities.export.great
     ports:
       - '8002:8002'
-    env_file:
-      - ../export-opportunities/.new_env
     depends_on:
       - db
+    env_file:
+      - ../export-opportunities/.new_env
+    volumes:
+      - '../export-opportunities:/usr/src/app'
+    depends_on:
       - redis
       - es
       - ssoproxy
@@ -126,10 +133,12 @@ services:
       uktrade-network:
         aliases:
           - sso.trade.great
-    env_file:
-      - ../directory-sso/.new_env
     ports:
       - '8003:8003'
+    env_file:
+      - ../directory-sso/.new_env
+    volumes:
+      - '../directory-sso:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -143,10 +152,12 @@ services:
       uktrade-network:
         aliases:
           - sso-proxy.trade.great
-    env_file:
-      - ../directory-sso-proxy/.new_env
     ports:
       - '8004:8004'
+    env_file:
+      - ../directory-sso-proxy/.new_env
+    volumes:
+      - '../directory-sso-proxy:/usr/src/app'
     depends_on:
       - sso
 
@@ -159,10 +170,12 @@ services:
       uktrade-network:
         aliases:
           - supplier.trade.great
-    env_file:
-      - ../directory-ui-supplier/.new_env
     ports:
       - '8005:8005'
+    env_file:
+      - ../directory-ui-supplier/.new_env
+    volumes:
+      - '../directory-ui-supplier:/usr/src/app'
     depends_on:
       - cms
       - ssoproxy
@@ -176,10 +189,12 @@ services:
       uktrade-network:
         aliases:
           - profile.trade.great
-    env_file:
-      - ../directory-sso-profile/.new_env
     ports:
       - '8006:8006'
+    env_file:
+      - ../directory-sso-profile/.new_env
+    volumes:
+      - '../directory-sso-profile:/usr/src/app'
     depends_on:
       - cms
       - ssoproxy
@@ -193,10 +208,12 @@ services:
       uktrade-network:
         aliases:
           - exred.trade.great
-    env_file:
-      - ../great-domestic-ui/.new_env
     ports:
       - '8007:8007'
+    env_file:
+      - ../great-domestic-ui/.new_env
+    volumes:
+      - '../great-domestic-ui:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -214,10 +231,12 @@ services:
       uktrade-network:
         aliases:
           - soo.trade.great
-    env_file:
-      - ../navigator/.new_env
     ports:
       - '8008:8008'
+    env_file:
+      - ../navigator/.new_env
+    volumes:
+      - '../navigator:/usr/src/app'
     depends_on:
       - db
       - ssoproxy
@@ -231,10 +250,12 @@ services:
       uktrade-network:
         aliases:
           - cms.trade.great
-    env_file:
-      - ../directory-cms/.new_env
     ports:
       - '8010:8010'
+    env_file:
+      - ../directory-cms/.new_env
+    volumes:
+      - '../directory-cms:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -248,10 +269,12 @@ services:
       uktrade-network:
         aliases:
           - forms.trade.great
-    env_file:
-      - ../directory-forms-api/.new_env
     ports:
       - '8011:8011'
+    env_file:
+      - ../directory-forms-api/.new_env
+    volumes:
+      - '../directory-forms-api:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -265,10 +288,12 @@ services:
       uktrade-network:
         aliases:
           - invest.trade.great
-    env_file:
-      - ../invest-ui/.new_env
     ports:
       - '8012:8012'
+    env_file:
+      - ../invest-ui/.new_env
+    volumes:
+      - '../invest-ui:/usr/src/app'
     depends_on:
       - db
       - redis
@@ -284,10 +309,12 @@ services:
       uktrade-network:
         aliases:
           - international.trade.great
-    env_file:
-      - ../great-international-ui/.new_env
     ports:
       - '8013:8013'
+    env_file:
+      - ../great-international-ui/.new_env
+    volumes:
+      - '../great-international-ui:/usr/src/app'
     depends_on:
       - db
       - redis
