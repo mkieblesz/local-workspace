@@ -18,18 +18,12 @@ collect-assets:
 lint-python:
 	flake8 --config=new_setup.cfg
 
-lint-js:
-	@echo "Linting javascript"
-
-lint: lint-python lint-js
+lint: lint-python
 
 test-python: collect-assets
-	pytest -v --cov=app --capture=no
+	pytest -v --cov=. --capture=no
 
-test-js:
-	@echo "Testing javascript"
-
-test: test-python test-js
+test: test-python
 
 test-all: lint test
 

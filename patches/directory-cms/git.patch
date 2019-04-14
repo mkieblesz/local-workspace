@@ -1,0 +1,24 @@
+diff --git a/conf/settings.py b/conf/settings.py
+index e9572fe..6242955 100644
+--- a/conf/settings.py
++++ b/conf/settings.py
+@@ -13,13 +13,17 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
+ '''
+ 
+ import os
++import sys
+ 
+ import dj_database_url
+ import environ
+ 
+-
+ env = environ.Env()
+-env.read_env()
++env.read_env('.env')
++if 'PROXY_LINKS' in os.environ:
++    env.read_env('.new_env.links.proxy')
++if 'pytest' in sys.modules or 'test' in sys.argv:
++    env.read_env('.new_env.test')
+ 
+ # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
