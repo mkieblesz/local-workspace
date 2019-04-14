@@ -21,7 +21,7 @@ for REPO in "${REPO_LIST[@]}"; do
             cd $REPO_DIR
             REPO_PATCH_DIR=$WORKSPACE_REPO_DIR/patches/$REPO
             # apply git patch (remove after changes are merged)
-            if [ -d "$REPO_PATCH_DIR/git.patch" ]; then
+            if [ -f "$REPO_PATCH_DIR/git.patch" ]; then
                 git reset --hard
                 git apply $REPO_PATCH_DIR/git.patch
             fi
@@ -44,8 +44,8 @@ for REPO in "${REPO_LIST[@]}"; do
             if [ -f "$REPO_PATCH_DIR/.env.test" ]; then
                 cp $REPO_PATCH_DIR/.env.test .new_env.test
             fi
-            if [ -f "$REPO_PATCH_DIR/.env.links" ]; then
-                cp $REPO_PATCH_DIR/.env.links .new_env.links
+            if [ -f "$REPO_PATCH_DIR/.env.links.proxy" ]; then
+                cp $REPO_PATCH_DIR/.env.links.proxy .new_env.links.proxy
             fi
         )
     fi

@@ -1,13 +1,47 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index 080f0ec..8320540 100644
+index 080f0ec..eae9085 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -519,7 +519,7 @@ elif ELASTICSEARCH_PROVIDER == 'aws':
- elif ELASTICSEARCH_PROVIDER == 'localhost':
-     connections.create_connection(
-         alias='default',
--        hosts=['localhost:9200'],
-+        hosts=[env.str('ELASTICSEARCH_URL')],
-         use_ssl=False,
-         verify_certs=False,
-         connection_class=RequestsHttpConnection
+@@ -1,4 +1,5 @@
+ import os
++import sys
+ 
+ import dj_database_url
+ from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
+@@ -10,8 +11,13 @@ from requests_aws4auth import AWS4Auth
+ import healthcheck.backends
+ import directory_healthcheck.backends
+ 
+-
+ env = environ.Env()
++env.read_env('.env')
++if 'PROXY_LINKS' in os.environ:
++    print('PROXY_LINKS')
++    env.read_env('.new_env.links.proxy')
++if 'pytest' in sys.modules or 'test' in sys.argv:
++    env.read_env('.new_env.test')
+ 
+ # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+diff --git a/requirements_test.txt b/requirements_test.txt
+index 7f70861..e407387 100644
+--- a/requirements_test.txt
++++ b/requirements_test.txt
+@@ -46,7 +46,7 @@ elasticsearch==5.3.0
+ export-elements==0.23.0   # via directory-components
+ factory-boy==2.8.1
+ faker==1.0.0              # via factory-boy
+-flake8==3.0.4
++flake8==3.7.7
+ freezegun==0.3.8
+ gunicorn==19.5.0
+ idna==2.6                 # via cryptography, requests
+@@ -64,7 +64,7 @@ psycopg2==2.7.6.1
+ py==1.7.0                 # via pytest
+ pycodestyle==2.0.0        # via flake8
+ pycparser==2.18           # via cffi
+-pyflakes==1.2.3           # via flake8
++pyflakes==2.1.1           # via flake8
+ pyopenssl==17.5.0         # via requests
+ pytest-cov==2.3.1
+ pytest-django==3.4.4

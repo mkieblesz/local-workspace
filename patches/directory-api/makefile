@@ -1,5 +1,6 @@
 clean:
-	@echo "clean-stuff"
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -delete
 
 build:
 	@echo "Building app images"
@@ -14,5 +15,30 @@ load-fixtures:
 collect-assets:
 	python manage.py collectstatic --noinput
 
+lint-python:
+	flake8 --config=new_setup.cfg
+
+lint-js:
+	@echo "Linting javascript"
+
+lint: lint-python lint-js
+
+test-python: collect-assets
+	pytest -v --cov=app --capture=no
+
+test-js:
+	@echo "Testing javascript"
+
+test: test-python test-js
+
+test-all: lint test
+
+ci-test-all: test-all
+	@echo "Run pipeline test suite"
+	codecov --token=$$CODECOV_REPO_TOKEN
+
 run:
 	python manage.py runserver 0.0.0.0:$$PORT
+
+run-proxy-links:
+	PROXY_LINKS=true python manage.py runserver 0.0.0.0:$$PORT
