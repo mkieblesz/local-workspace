@@ -3,7 +3,8 @@ version: '3.7'
 services:
   proxy:
     image: nginx
-    network_mode: host
+    networks:
+      uktrade-network:
     ports:
       - '80:80'
     # uncomment to vizualise
