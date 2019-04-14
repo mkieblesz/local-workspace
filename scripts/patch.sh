@@ -32,6 +32,9 @@ for REPO in "${REPO_LIST[@]}"; do
             if [ -f "$REPO_PATCH_DIR/makefile" ]; then
                 cp $REPO_PATCH_DIR/makefile new_makefile
             fi
+            if [ -f "$REPO_PATCH_DIR/setup.cfg" ]; then
+                cp $REPO_PATCH_DIR/setup.cfg new_setup.cfg
+            fi
             if [ -f "$REPO_PATCH_DIR/Dockerfile" ]; then
                 cp $REPO_PATCH_DIR/Dockerfile new_Dockerfile
             fi
