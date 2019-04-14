@@ -2,7 +2,7 @@
 
 source scripts/config.sh
 
-echo "This will reset all your local changes in repo. Do you want to continue? [Y/n]"
+echo "Patching repos will reset all your local changes. Do you want to continue? [Y/n]"
 read should_continue
 if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
     exit 0

@@ -100,6 +100,7 @@ services:
       - '../directory-ui-buyer:/usr/src/app'
     depends_on:
       - redis
+      - api
       - ssoproxy
 
   exopps:
