@@ -54,6 +54,7 @@
         │   │   activate.sh             # used to activate working environment on host for repo
         │   │   clone.sh                # clones all repos defined in `repolist` file
         │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
+        │   │   eval_all.sh             # passed command will be executed inside all repositories
         │   │   eval.sh                 # passed command will be executed inside repository with activated environment
         │   │   make_compose.sh         # executes make target in docker container for each repo if running
         │   │   make_host.sh            # executes make target for each repo on host using eval.sh
@@ -121,7 +122,7 @@
 
 ## Usage
 
-First run `make clone update patch` to clone, setup environment and patch with new files all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
+First run `make clone update patch setup` to clone, setup environment and patch with new files all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
 
 ### Services on host and dbs in docker
 

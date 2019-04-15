@@ -22,6 +22,9 @@ clone:
 update:
 	@./scripts/update.sh
 
+setup:
+	@./scripts/eval_all.sh 'test ! -d .venv && test -f requirements_test.txt && python3 -m venv .venv && .venv/bin/pip install --upgrade pip wheel'
+
 patch:
 	@./scripts/patch.sh
 

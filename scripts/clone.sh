@@ -39,16 +39,10 @@ if [ ! -z $docker_installed ] && [ $docker_installed == "n" ]; then
 fi
 
 for REPO in "${REPO_LIST[@]}"; do
-    # if empty line move on
-    if [ -z "$REPO" ]; then
-        continue
-    fi
-
     REPOPATH=$WORKSPACE_DIR/$REPO
 
     if [ ! -d "$REPOPATH" ]; then
-        # clone repository
-        echo "Setting up $REPO"
+        echo "Cloning $REPO"
         echo
         (
             cd $WORKSPACE_DIR
