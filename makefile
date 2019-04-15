@@ -69,6 +69,7 @@ ultimate:
 	# ~30min entire migration history, ~3min no new migrations
 	@./scripts/make_host.sh migrate
 	@./scripts/make_host.sh load-fixtures
+	# @./scripts/make_host.sh compile-assets
 	# ~3 min
 	@./scripts/make_host.sh collect-assets
 	# ~1min
@@ -86,4 +87,5 @@ ultimate-docker:
 	# migrates after because container have to be started
 	@./scripts/make_compose.sh migrate
 	@./scripts/make_compose.sh load-fixtures
+	# @./scripts/make_compose.sh compile-assets
 	@./scripts/make_compose.sh collect-assets

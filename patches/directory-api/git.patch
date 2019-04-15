@@ -23,10 +23,10 @@ index 080f0ec..874dfcc 100644
  # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
  PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 diff --git a/requirements_test.txt b/requirements_test.txt
-index 7f70861..e407387 100644
+index 7f70861..00854cb 100644
 --- a/requirements_test.txt
 +++ b/requirements_test.txt
-@@ -46,7 +46,7 @@ elasticsearch==5.3.0
+@@ -46,13 +46,13 @@ elasticsearch==5.3.0
  export-elements==0.23.0   # via directory-components
  factory-boy==2.8.1
  faker==1.0.0              # via factory-boy
@@ -35,9 +35,19 @@ index 7f70861..e407387 100644
  freezegun==0.3.8
  gunicorn==19.5.0
  idna==2.6                 # via cryptography, requests
-@@ -64,7 +64,7 @@ psycopg2==2.7.6.1
+ jmespath==0.9.3           # via boto3, botocore
+ kombu==4.1.0
+-mccabe==0.5.3             # via flake8
++mccabe==0.6.1             # via flake8
+ mohawk==0.3.4             # via directory-components, sigauth
+ monotonic==1.4            # via directory-client-core
+ more-itertools==4.3.0     # via pytest
+@@ -62,9 +62,9 @@ pillow==4.2.1
+ pluggy==0.8.0             # via pytest
+ psycopg2==2.7.6.1
  py==1.7.0                 # via pytest
- pycodestyle==2.0.0        # via flake8
+-pycodestyle==2.0.0        # via flake8
++pycodestyle==2.5.0        # via flake8
  pycparser==2.18           # via cffi
 -pyflakes==1.2.3           # via flake8
 +pyflakes==2.1.1           # via flake8

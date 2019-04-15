@@ -1,12 +1,23 @@
 clean:
 	@echo "clean-stuff"
 
+install-python:
+	pip install -r requirements_test.txt
+
+install-js:
+	npm install
+
+install: install-python install-js
+
 migrate:
 	python app/manage.py migrate
 	python app/manage.py build_index
 
 load-fixtures:
 	python app/manage.py shell < fixtures/users.py
+
+compile-assets:
+	npm run build
 
 collect-assets:
 	python app/manage.py collectstatic --noinput

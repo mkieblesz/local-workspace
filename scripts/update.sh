@@ -27,29 +27,7 @@ for REPO in "${REPO_LIST[@]}"; do
                     python3 -m venv .venv
                     .venv/bin/pip install --upgrade pip wheel
                 fi
-                echo "Updating pip packages"
-                .venv/bin/pip install -r requirements_test.txt
             fi
-
-            if [ -f "$REPO_DIR/Gemfile" ]; then
-                (
-                    cd $REPO_DIR
-                    echo "Updating gems"
-                    bundle _1.16.6_ install --path vendor/bundle
-                    # extra for exopps
-                    if [ ! -f config/application.yml ]; then
-                        cp config/application.example.yml config/application.yml
-                    fi
-                )
-            fi
-
-            # if [ -f "$REPO_DIR/package.json" ]; then
-            #     echo "Updating npm packages"
-            #     (
-            #         cd $REPO_DIR
-            #         npm install
-            #     )
-            # fi
         )
     fi
 done

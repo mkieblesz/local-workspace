@@ -1,8 +1,16 @@
 clean:
-	@echo "clean-stuff"
+	find . -type d -name "__pycache__" -delete
 
 build:
 	@echo "Building app images"
+
+install-python:
+	pip install -r requirements_test.txt
+
+install-js:
+	npm install
+
+install: install-python install-js
 
 collect-assets:
 	python manage.py collectstatic --noinput
