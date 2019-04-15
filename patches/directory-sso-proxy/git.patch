@@ -1,0 +1,20 @@
+diff --git a/conf/settings.py b/conf/settings.py
+index 7619599..76561d2 100644
+--- a/conf/settings.py
++++ b/conf/settings.py
+@@ -1,9 +1,13 @@
+ import os
++import sys
+ import environ
+ 
+-
+ env = environ.Env()
+-env.read_env()
++env.read_env('.env')
++if 'PROXY_LINKS' in os.environ:
++    env.read_env('.new_env.links.proxy')
++if 'pytest' in sys.modules or 'test' in sys.argv:
++    env.read_env('.new_env.test')
+ 
+ # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))

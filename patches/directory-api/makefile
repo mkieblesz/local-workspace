@@ -32,7 +32,6 @@ test: test-python
 test-all: lint test
 
 ci-test-all: test-all
-	@echo "Run pipeline test suite"
 	codecov --token=$$CODECOV_REPO_TOKEN
 
 run:

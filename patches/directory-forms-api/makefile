@@ -25,14 +25,13 @@ lint-python:
 lint: lint-python
 
 test-python: collect-assets
-	pytest -v --ignore=venv --ignore=conf/celery.py --cov=. --reuse-db --capture=no
+	pytest . --cov=. --capture=no
 
 test: test-python
 
 test-all: lint test
 
 ci-test-all: test-all
-	@echo "Run pipeline test suite"
 	codecov --token=$$CODECOV_REPO_TOKEN
 
 run:
