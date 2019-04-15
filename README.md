@@ -204,7 +204,7 @@ TODO
 * consider removing compose service aliases in favour of network_mode: 'host'
 * env.read_env() for navigator and directory-api in settings or consider removing it so more consistent with docker and production (this function is only used for local anyways)
 
-    Read .new_env, .new_env.links, .new_env.links.proxy, .new_env.test
+    Read .new_env, .new_env.links.proxy, .new_env.test
 * make proxy work for host and docker
 
     Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
@@ -213,10 +213,7 @@ TODO
 * add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests
 * implement rest of make targets
 * allow for load-fixtures rerun in exopps (update seeds.rb)
-* add install command which will install venv with requirements and/or npm packages and/or gems
-* update compose services dependencies
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
-* create local services graph using docker-compose-viz
 * write benchmark tests which will time running all commands and sanity check
 * make it work on mac
 
