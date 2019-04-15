@@ -8,7 +8,14 @@ deactivate_env () {
     unset -f cdworkrepo
     unset -f work
     unset -f deactivate_env
+    # scripts/config.sh
+    unset -f get_repo_acronym
+    unset -f get_repo_name
+    unset REPO_ACRONYM_MAP
+    unset VERSION_MAP
+    unset REPO_LIST
     unset WORKSPACE_REPO_DIR
+    unset WORKSPACE_DIR
 }
 
 cdworkrepo () {
