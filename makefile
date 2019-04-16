@@ -79,13 +79,14 @@ ultimate:
 	# @./scripts/make_host.sh compile-assets
 	# ~3 min
 	@./scripts/make_host.sh collect-assets
-	# ~1min
+	# after clean ~2 min, second run ~20 sec
 	make run-all
 
 ultimate-docker:
 	make kill-all
 	@./scripts/make_host.sh clean
-	# ~30 minutes initial build, ~10 minutes files changed, ~5 minutes when no files changed
+	# ~30 min initial build, ~10 min files changed, ~5 min when no files changed
+	# 15 min just for exopps
 	make build-all
 	make run-dbs
 	make create-dbs
