@@ -195,6 +195,7 @@ TODO
 
 ### Tasks for this repo
 
+* fix directory-api no scheme error
 * get better cms fixtures so landing pages will work like in dev
 * add `exec` and `build` target to makefiles to exec into docker machine - this will use docker directly
 * add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests

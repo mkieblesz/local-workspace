@@ -1,8 +1,6 @@
 clean:
 	@echo "clean-stuff"
 
-build:
-	@echo "Building app images"
 
 install-ruby:
 	bundle _1.16.6_ install --path vendor/bundle

@@ -1,9 +1,6 @@
 clean:
 	find . -type d -name "__pycache__" -delete
 
-build:
-	@echo "Building app images"
-
 install-python:
 	pip install -r requirements_test.txt
 

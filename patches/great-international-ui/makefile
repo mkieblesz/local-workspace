@@ -1,9 +1,6 @@
 clean:
 	@echo "clean-stuff"
 
-build:
-	@echo "Building app images"
-
 install-python:
 	pip install -r requirements_test.txt
 
