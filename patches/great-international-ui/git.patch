@@ -1,16 +1,16 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index f5eec64..8909c47 100644
+index a46fb71..c540b07 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -1,4 +1,5 @@
+@@ -11,14 +11,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
+ """
+ 
  import os
 +import sys
  
- import dj_database_url
+ import environ
  
-@@ -6,9 +7,10 @@ import environ
- 
- from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
+ from directory_constants.constants import cms
  
 -
  env = environ.Env()
@@ -20,4 +20,4 @@ index f5eec64..8909c47 100644
 +    env.read_env('.new_env.test')
  
  # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
- PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+ 

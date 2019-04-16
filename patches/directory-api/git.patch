@@ -1,5 +1,5 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index 080f0ec..874dfcc 100644
+index 080f0ec..400f67d 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
 @@ -1,4 +1,5 @@
@@ -8,15 +8,13 @@ index 080f0ec..874dfcc 100644
  
  import dj_database_url
  from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
-@@ -10,8 +11,12 @@ from requests_aws4auth import AWS4Auth
+@@ -10,8 +11,10 @@ from requests_aws4auth import AWS4Auth
  import healthcheck.backends
  import directory_healthcheck.backends
  
 -
  env = environ.Env()
-+env.read_env('.env')
-+if 'PROXY_LINKS' in os.environ:
-+    env.read_env('.new_env.links.proxy')
++env.read_env('.new_env')
 +if 'pytest' in sys.modules or 'test' in sys.argv:
 +    env.read_env('.new_env.test')
  

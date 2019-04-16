@@ -6,10 +6,10 @@ index 73462a5a..0cadbc1e 100644
 -2.5.1
 +2.5.5
 diff --git a/config/application.example.yml b/config/application.example.yml
-index 2bbf6555..dc550f1e 100644
+index 2bbf6555..0dac2069 100644
 --- a/config/application.example.yml
 +++ b/config/application.example.yml
-@@ -5,36 +5,41 @@
+@@ -5,7 +5,7 @@
  # HTTP_PASS: password
  
  # Canonical URL
@@ -17,20 +17,18 @@ index 2bbf6555..dc550f1e 100644
 +DOMAIN: "http://opportunities.export.great:8002"
  
  # Sending email
--MAILER_HOST: "127.0.0.1"
-+MAILER_HOST: "0.0.0.0"
- MAILER_PORT: "1025"
- MAILER_FROM_ADDRESS: "develop@exportingisgreat.gov.uk"
+ MAILER_HOST: "127.0.0.1"
+@@ -14,27 +14,32 @@ MAILER_FROM_ADDRESS: "develop@exportingisgreat.gov.uk"
  MAILER_NOREPLY_ADDRESS: 'noreply@exportingisgreat.gov.uk'
  
  # Redis
 -REDIS_URL: redis://localhost:6379
-+REDIS_URL: redis://redis:6379/20
++REDIS_URL: redis://localhost:6379/20
  
  #use a different database for testing
  test:
 -  REDIS_URL: redis://localhost:6379/7
-+  REDIS_URL: redis://redis:6379/27
++  REDIS_URL: redis://localhost:6379/27
  
  COMPANIES_HOUSE_API_TOKEN: example_token
 -COMPANIES_HOUSE_BASE_URL:
@@ -60,15 +58,6 @@ index 2bbf6555..dc550f1e 100644
  
  # Enquiry feedback
  FEEDBACK_ENCRYPTION_SECRET: 'secret'
-@@ -51,7 +56,7 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY: '?[!@$%^%'
- ACTIVITY_STREAM_IP_WHITELIST: '0.0.0.0'
- 
- # Elasticsearch
--elastic_search_url: 'http://localhost:9200'
-+elastic_search_url: 'http://es:9200'
- AWS_ACCESS_KEY_ID: ''
- AWS_SECRET_ACCESS_KEY: ''
- AWS_REGION: ''
 @@ -67,21 +72,29 @@ post_user_communication_s3_bucket: ''
  
  # Links to "external services" or, websites
@@ -123,31 +112,18 @@ index 2bbf6555..dc550f1e 100644
 +SIGNOFF_LINES_DEPLOYMENT_DATE: "2018-02-03"
 \ No newline at end of file
 diff --git a/config/database.yml b/config/database.yml
-index 6e28de87..c6bd0839 100644
+index 6e28de87..45fd5353 100644
 --- a/config/database.yml
 +++ b/config/database.yml
-@@ -1,7 +1,9 @@
- default: &default
+@@ -2,6 +2,8 @@ default: &default
    adapter: postgresql
    encoding: unicode
--  host: localhost
-+  host: db
+   host: localhost
 +  username: debug
 +  password: debug
    pool: <%= [Figaro.env.db_pool.to_i, Figaro.env.threads.to_i, 64].max %>
  
  development:
-diff --git a/config/initializers/elastic_search.rb b/config/initializers/elastic_search.rb
-index ad28de98..597a5747 100644
---- a/config/initializers/elastic_search.rb
-+++ b/config/initializers/elastic_search.rb
-@@ -14,5 +14,5 @@ Elasticsearch::Model.client = if Rails.env.production?
-                                   f.adapter Faraday.default_adapter
-                                 end
-                                 else
--                                  Elasticsearch::Client.new host: '127.0.0.1:9200'
-+                                  Elasticsearch::Client.new host: 'es:9200'
-                                 end
 diff --git a/db/seeds.rb b/db/seeds.rb
 index 38ad2ca7..13fe55ba 100644
 --- a/db/seeds.rb

@@ -1,18 +1,17 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index f5eec64..8909c47 100644
+index 296d666d..293d963c 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -1,4 +1,5 @@
+@@ -13,13 +13,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
+ '''
+ 
  import os
 +import sys
  
- import dj_database_url
+ import environ
+ from directory_constants.constants import cms
+ import directory_healthcheck.backends
  
-@@ -6,9 +7,10 @@ import environ
- 
- from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
- 
--
  env = environ.Env()
 -env.read_env()
 +env.read_env('.new_env')

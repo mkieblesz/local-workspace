@@ -15,6 +15,7 @@ deactivate_env () {
     unset VERSION_MAP
     unset REPO_LIST
     unset WORKSPACE_REPO_DIR
+    unset WORKSPACE_NAME
     unset WORKSPACE_DIR
 }
 

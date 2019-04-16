@@ -3,8 +3,7 @@ version: '3.7'
 services:
   db:
     image: postgres:9.5
-    networks:
-      uktrade-network:
+    network_mode: host
     ports:
       - '5432:5432'
     volumes:
@@ -12,8 +11,7 @@ services:
 
   redis:
     image: redis:3.2.11
-    networks:
-      uktrade-network:
+    network_mode: host
     ports:
       - '6379:6379'
     volumes:
@@ -23,8 +21,7 @@ services:
 
   es:
     image: elasticsearch:5.6.8
-    networks:
-      uktrade-network:
+    network_mode: host
     ports:
       - '9200:9200'
     environment:
@@ -45,10 +42,7 @@ services:
     build:
       context: ../directory-api/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - api.trade.great
+    network_mode: host
     ports:
       - '8000:8000'
     env_file:
@@ -65,10 +59,7 @@ services:
     build:
       context: ../directory-ui-buyer/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - buyer.trade.great
+    network_mode: host
     ports:
       - '8001:8001'
     env_file:
@@ -85,19 +76,15 @@ services:
     build:
       context: ../export-opportunities/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - opportunities.export.great
+    network_mode: host
     ports:
       - '8002:8002'
-    depends_on:
-      - db
     env_file:
       - ../export-opportunities/.new_env
     volumes:
       - '../export-opportunities:/usr/src/app'
     depends_on:
+      - db
       - redis
       - es
       - ssoproxy
@@ -107,10 +94,7 @@ services:
     build:
       context: ../directory-sso/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - sso.trade.great
+    network_mode: host
     ports:
       - '8003:8003'
     env_file:
@@ -126,10 +110,7 @@ services:
     build:
       context: ../directory-sso-proxy/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - sso-proxy.trade.great
+    network_mode: host
     ports:
       - '8004:8004'
     env_file:
@@ -144,10 +125,7 @@ services:
     build:
       context: ../directory-ui-supplier/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - supplier.trade.great
+    network_mode: host
     ports:
       - '8005:8005'
     env_file:
@@ -163,10 +141,7 @@ services:
     build:
       context: ../directory-sso-profile/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - profile.trade.great
+    network_mode: host
     ports:
       - '8006:8006'
     env_file:
@@ -182,10 +157,7 @@ services:
     build:
       context: ../great-domestic-ui/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - exred.trade.great
+    network_mode: host
     ports:
       - '8007:8007'
     env_file:
@@ -205,10 +177,7 @@ services:
     build:
       context: ../navigator/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - soo.trade.great
+    network_mode: host
     ports:
       - '8008:8008'
     env_file:
@@ -224,10 +193,7 @@ services:
     build:
       context: ../directory-cms/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - cms.trade.great
+    network_mode: host
     ports:
       - '8010:8010'
     env_file:
@@ -243,10 +209,7 @@ services:
     build:
       context: ../directory-forms-api/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - forms.trade.great
+    network_mode: host
     ports:
       - '8011:8011'
     env_file:
@@ -262,10 +225,7 @@ services:
     build:
       context: ../invest-ui/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - invest.trade.great
+    network_mode: host
     ports:
       - '8012:8012'
     env_file:
@@ -283,10 +243,7 @@ services:
     build:
       context: ../great-international-ui/
       dockerfile: new_Dockerfile
-    networks:
-      uktrade-network:
-        aliases:
-          - international.trade.great
+    network_mode: host
     ports:
       - '8013:8013'
     env_file:
@@ -299,6 +256,3 @@ services:
       - cms
       - formsapi
       - ssoproxy
-
-networks:
-  uktrade-network:

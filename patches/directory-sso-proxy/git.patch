@@ -1,18 +1,16 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index 7619599..76561d2 100644
+index 7619599..878569f 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -1,9 +1,13 @@
+@@ -1,9 +1,11 @@
  import os
-+import sys
  import environ
- 
 -
++import sys
+ 
  env = environ.Env()
 -env.read_env()
-+env.read_env('.env')
-+if 'PROXY_LINKS' in os.environ:
-+    env.read_env('.new_env.links.proxy')
++env.read_env('.new_env')
 +if 'pytest' in sys.modules or 'test' in sys.argv:
 +    env.read_env('.new_env.test')
  

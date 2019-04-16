@@ -1,5 +1,5 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index 0695bf1..75ae40a 100644
+index 0695bf1..1e11f05 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
 @@ -1,4 +1,5 @@
@@ -8,16 +8,14 @@ index 0695bf1..75ae40a 100644
  
  from django.urls import reverse_lazy
  
-@@ -8,9 +9,12 @@ import rediscluster
+@@ -8,9 +9,10 @@ import rediscluster
  
  from core.helpers import is_valid_domain
  
 -
  env = environ.Env()
 -env.read_env()
-+env.read_env('.env')
-+if 'PROXY_LINKS' in os.environ:
-+    env.read_env('.new_env.links.proxy')
++env.read_env('.new_env')
 +if 'pytest' in sys.modules or 'test' in sys.argv:
 +    env.read_env('.new_env.test')
  

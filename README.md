@@ -109,11 +109,6 @@
     127.0.0.1     international.trade.great
     127.0.0.1     invest.trade.great
     127.0.0.1     proxy.trade.great
-    # same as compose containers so it will work with
-    # one set of env vars both on host and docker
-    127.0.0.1     db
-    127.0.0.1     redis
-    127.0.0.1     es
     ```
 
 3. Update list of repos in `repolist` file.
@@ -201,18 +196,9 @@ TODO
 ### Tasks for this repo
 
 * get better cms fixtures so landing pages will work like in dev
-* consider removing compose service aliases in favour of network_mode: 'host'
-* env.read_env() for navigator and directory-api in settings or consider removing it so more consistent with docker and production (this function is only used for local anyways)
-
-    Read .new_env, .new_env.links.proxy, .new_env.test
-* make proxy work for host and docker
-
-    Make .env files eval service url variables from environment which will always get prepopulated with common `.env.link` file. Thanks to this it will be easy to switch between proxied/non proxied service linking.
-* add `exec` target to makefiles to exec into docker machine
-    This will require knowledge of docker-compose file from workspace repo from individual repos.
+* add `exec` and `build` target to makefiles to exec into docker machine - this will use docker directly
 * add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests
 * implement rest of make targets
-* allow for load-fixtures rerun in exopps (update seeds.rb)
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
 * write benchmark tests which will time running all commands and sanity check
 * make it work on mac

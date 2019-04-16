@@ -1,8 +1,8 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index e9572fe..6242955 100644
+index e9572fe..b4e28aa 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -13,13 +13,17 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
+@@ -13,13 +13,15 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
  '''
  
  import os
@@ -14,9 +14,7 @@ index e9572fe..6242955 100644
 -
  env = environ.Env()
 -env.read_env()
-+env.read_env('.env')
-+if 'PROXY_LINKS' in os.environ:
-+    env.read_env('.new_env.links.proxy')
++env.read_env('.new_env')
 +if 'pytest' in sys.modules or 'test' in sys.argv:
 +    env.read_env('.new_env.test')
  

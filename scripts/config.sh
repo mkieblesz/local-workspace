@@ -1,5 +1,6 @@
 # variables used across scripts/*
 WORKSPACE_DIR=$(dirname $(pwd))
+WORKSPACE_NAME=$(basename $(dirname $(pwd)))
 WORKSPACE_REPO_DIR=$(pwd)
 REPO_LIST=()
 declare -A VERSION_MAP
