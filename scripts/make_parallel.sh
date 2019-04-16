@@ -12,6 +12,5 @@ for REPO in "${REPO_LIST[@]}"; do
     fi
 done
 
-# run all commands in parallel
 JOBS=${#CMDS[@]}
-parallel -u --jobs $JOBS ::: ${CMDS[@]}
+parallel --linebuffer --jobs $JOBS ::: ${CMDS[@]}
