@@ -39,6 +39,3 @@ ci-test-all: test-all
 
 run:
 	python manage.py runserver 0.0.0.0:$$PORT
-
-run-proxy-links:
-	PROXY_LINKS=true python manage.py runserver 0.0.0.0:$$PORT

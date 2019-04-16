@@ -220,6 +220,3 @@ TODO
 ### Tasks for service repos
 
 * merge patches
-* update python settings
-    Always use `dotenv` to pull vars from `.env` file and when testing additionally pull from `.env.test` file
-* put somewhere `.env.links` and `.env.links.proxy`
