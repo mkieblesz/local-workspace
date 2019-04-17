@@ -17,7 +17,7 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
         PREFIX="${CYAN}${BOLD}$REPO_NAME$ ${RESETALL}"
         PADDING='                                         '
         PREFIX=$(printf "%s %s" $PREFIX "${PADDING:${#PREFIX}}")
-        # |& pipes stdout and stderr
+        # |& pipes stdout and stderr, -u unbuffers/prints immediatelly
         eval "${@:2}" |& sed -u "s/^/$PREFIX/"
 
         # stdbuf prints immediatelly, equivalent of sed -u https://unix.stackexchange.com/a/248926
