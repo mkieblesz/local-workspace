@@ -13,6 +13,18 @@ migrate:
 load-fixtures:
 	python manage.py shell < fixtures/users.py
 
+load-dbdump:
+	@echo "Follow instructions manually"
+	# to load landing pages create dump in dev environment
+	# $ cf login
+	# $ cf ssh directory-cms-dev
+	# then on the machine run
+	# cf-host$ deps/0/bin/python3.6 app/manage.py dumpdata  --indent 4 > dump.json
+	# follow instructions to scp it back to fixtures/dump.json file and remove it from dev environment
+	# https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html#-app-ssh-access-without-cf-cli
+	# django's flush command doesn't work so database will have to be recreated manually
+	# $ python manage.py loaddata fixtures/dump.json
+
 collect-assets:
 	python manage.py collectstatic --noinput
 

@@ -24,6 +24,10 @@ for REPO in "${REPO_LIST[@]}"; do
             mkdir -p fixtures
             cp $REPO_PATCH_DIR/fixtures/* fixtures
         fi
+        if [ -d "$REPO_PATCH_DIR/scripts" ]; then
+            mkdir -p scripts
+            cp $REPO_PATCH_DIR/scripts/* scripts
+        fi
         if [ -f "$REPO_PATCH_DIR/makefile" ]; then
             cp $REPO_PATCH_DIR/makefile new_makefile
         fi

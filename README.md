@@ -10,8 +10,6 @@
     * `docker + host` and `docker only (still some issues)` workflows
     * check out for more in [usage workflows](#usage)
 
-    Additionally some things got fixed like missing env variables required to run in local, fixes seeds.rb for ruby.
-
 2. Upcomming features.
 
     * path based routing like in prod environments with the use of nginx proxy container
@@ -117,7 +115,7 @@
 
 ## Usage
 
-First run `make clone update patch setup` to clone, setup environment and patch with new files all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
+First run `make clone update patch setup` to clone, setup environment, patch with new files all repos defined in `repolist` and install requirements in repo's local environment. If you want to omit certain repos from your workflow you can comment them out with `#`.
 
 ### Services on host and dbs in docker
 
