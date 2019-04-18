@@ -27,7 +27,7 @@ LAST_MIGRATION_NAME=$(cf ssh directory-cms-dev -c "deps/0/bin/python3.6 app/mana
 # run migration up to LAST_MIGRATION_NAME, if not set it will run all
 make -f new_makefile migrate
 
-# truncate all tables
+# truncate all tables which were populated by migrations
 # update sqlflush sql to truncate in cascade mode
 SQLFLUSH=$(python manage.py sqlflush | sed -e '2 s/;/ CASCADE;/g')
 read -r -d '' FLUSH_SCRIPT << EOM
