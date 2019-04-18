@@ -43,7 +43,7 @@ test-all: lint test
 
 ci-test-all: test-all
 	@echo "Run pipeline test suite"
-	codecov --token=$$CODECOV_REPO_TOKEN
+	codecov --token=$(CODECOV_REPO_TOKEN)
 
 run:
-	python app/manage.py runserver 0.0.0.0:$$PORT
+	python app/manage.py runserver 0.0.0.0:$(PORT)

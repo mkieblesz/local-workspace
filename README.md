@@ -113,6 +113,20 @@
 
     Each line should have following format `<repo-name>@<version>`. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
 
+4. Pull cms fixtures.
+
+    This step is necessary to run some services, mainly to serve landing pages which are stored in cms.
+
+    To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry directory-cms-dev app in directory-dev space to create dump.
+
+    ```bash
+    export $CF_USERNAME=<your-username>
+    export $CF_PASSWORD="<your-password>"
+    ./scripts/eval.sh cms ./scripts/pull_fixtures.sh
+    ```
+
+    Once fixtures are present running won't make an effect.
+
 ## Usage
 
 First run `make clone update patch setup` to clone, setup environment, patch with new files all repos defined in `repolist` and install requirements in repo's local environment. If you want to omit certain repos from your workflow you can comment them out with `#`.

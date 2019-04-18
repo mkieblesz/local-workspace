@@ -19,7 +19,7 @@ test: test-python
 test-all: lint test
 
 ci-test-all: test-all
-	codecov --token=$$CODECOV_REPO_TOKEN
+	codecov --token=$(CODECOV_REPO_TOKEN)
 
 run:
-	python manage.py runserver 0.0.0.0:$$PORT
+	python manage.py runserver 0.0.0.0:$(PORT)

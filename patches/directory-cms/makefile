@@ -1,3 +1,5 @@
+LAST_MIGRATION_NAME=$(shell test -f fixtures/dump_last_migration && cat fixtures/dump_last_migration)
+
 clean:
 	find . -type d -name "__pycache__" -delete
 
@@ -7,17 +9,13 @@ install-python:
 install: install-python
 
 migrate:
-	# run migration up to LAST_MIGRATION_NAME, if not set it will run all
-	# used to load fixtures
-	python manage.py distributed_migrate --noinput $$LAST_MIGRATION_NAME
-	python manage.py migrate_translation --noinput $$LAST_MIGRATION_NAME
+	# run migration up to LAST_MIGRATION_NAME or all
+	python manage.py distributed_migrate --noinput $(LAST_MIGRATION_NAME)
+	python manage.py migrate_translation --noinput $(LAST_MIGRATION_NAME)
 
 load-fixtures:
+	./scripts/load_fixtures.sh
 	python manage.py shell < fixtures/users.py
-
-load-dbdump:
-	@echo "Follow instructions in 'scripts/db_dump.sh' script"
-
 
 collect-assets:
 	python manage.py collectstatic --noinput
@@ -36,7 +34,10 @@ test: test-python
 test-all: lint test
 
 ci-test-all: test-all
-	codecov --token=$$CODECOV_REPO_TOKEN
+	codecov --token=$(CODECOV_REPO_TOKEN)
 
 run:
-	python manage.py runserver 0.0.0.0:$$PORT
+	python manage.py runserver 0.0.0.0:$(PORT)
+
+run-celery:
+	celery -A conf worker -l info

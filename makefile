@@ -73,6 +73,7 @@ ultimate:
 	@./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
+
 	# ~30min entire migration history, ~3min no new migrations
 	@./scripts/make_host.sh migrate
 	@./scripts/make_host.sh load-fixtures
