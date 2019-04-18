@@ -4,6 +4,7 @@ cf ssh directory-cms-dev -c "deps/0/bin/python3.6 app/manage.py dumpdata  --inde
 
 # scp dump back fixtures/dump.json to local by following instructions from link below
 # https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html#-app-ssh-access-without-cf-cli
+
 # get single use access code and copy it to the clipboard
 cf ssh-code
 GUID=$(cf app directory-cms-dev --guid)
@@ -30,14 +31,40 @@ make -f new_makefile migrate
 # update sqlflush sql to truncate in cascade mode
 SQLFLUSH=$(python manage.py sqlflush | sed -e '2 s/;/ CASCADE;/g')
 read -r -d '' FLUSH_SCRIPT << EOM
-from django.db import connection
-cursor = connection.cursor()
-cursor.execute('''$SQLFLUSH''')
+from django.db import connection, transaction
+with transaction.atomic(savepoint=connection.features.can_rollback_ddl):
+    with connection.cursor() as cursor:
+        cursor.execute('''$SQLFLUSH''')
 EOM
 python manage.py shell < <(echo "$FLUSH_SCRIPT")
 
 # finally load data
-python manage.py loaddata fixtures/dump.json
+# load data with monkey patched signals
+read -r -d '' LOAD_DATA_SCRIPT << EOM
+from unittest import mock
+from django.core.management.commands.loaddata import Command as LoadDataCommand
+from django.db import DEFAULT_DB_ALIAS
+cmd = LoadDataCommand()
+opts = {
+    'ignore': False,
+    'database': DEFAULT_DB_ALIAS,
+    'app_label': None,
+    'verbosity': 1,
+    'exclude': []
+}
+
+# monkey patch django signals
+from django.dispatch.dispatcher import Signal
+
+def send(*args, **kwargs):
+    pass
+def send_robust(*args, **kwargs):
+    pass
+Signal.send = send
+Signal.send_robust = send_robust
+cmd.handle('fixtures/dump.json', **opts)
+EOM
+python manage.py shell < <(echo "$LOAD_DATA_SCRIPT")
 
 # run remaining migrations which were not present in cf dev environment
 unset LAST_MIGRATION_NAME
