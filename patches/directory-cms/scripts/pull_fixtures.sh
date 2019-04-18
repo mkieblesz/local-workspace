@@ -34,6 +34,6 @@ LAST_MIGRATION_NAME=$(cf ssh directory-cms-dev -c "deps/0/bin/python3.6 app/mana
 echo $LAST_MIGRATION_NAME > fixtures/dump_last_migration
 
 # logout from cloud foundry
-unset $CF_USERNAME
-unset $CF_USERNAME
+# unset CF_USERNAME
+# unset CF_USERNAME
 cf logout

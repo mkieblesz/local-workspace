@@ -1,7 +1,7 @@
 #!/bin/bash
 
 number_of_pages=$(python manage.py shell -c "from wagtail.core.models import Page; print(Page.objects.count())" | sed '$!d')
-if [ ! $number_of_pages -gt 10 ]; then
+if [ $number_of_pages -gt 10 ]; then
     echo "Loading fixture dump will erase all data from your cms database. Do you want to continue? [Y/n]"
     read should_continue
     if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
