@@ -22,7 +22,7 @@ GUID=$(cf app directory-cms-dev --guid)
 SSH_ENDPOINT=$(cf curl /v2/info | jq -r .app_ssh_endpoint | cut -f1 -d":")
 VERSION=$(cf curl /v2/info | jq -r .version)
 # get single use access code which will be passed to scp
-sshpass -v -p $(cf ssh-code) scp -P 2222 -o User=cf:$GUID/$VERSION $SSH_ENDPOINT:/home/vcap/dump.py fixtures/dump.json
+sshpass -v -p $(cf ssh-code) scp -P 2222 -o User=cf:$GUID/$VERSION $SSH_ENDPOINT:/home/vcap/dump.json fixtures/dump.json
 
 # get last migration
 read -r -d '' LAST_MIGRATION_SCRIPT << EOM
