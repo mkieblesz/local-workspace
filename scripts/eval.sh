@@ -7,16 +7,18 @@ REPO_NAME=$(get_repo_name $1)
 if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
     (
         echo
-        echo "Running '${@:2}' in $REPO_NAME repo"
         source scripts/activate.sh $REPO_NAME
 
         # pretty prefix of command output
         CYAN=$'\033[0;36m'
+        YELLOW=$'\033[0;33m'
         BOLD=$'\033[1m'
         RESETALL=$'\033[0m'
         PREFIX="${CYAN}${BOLD}$REPO_NAME$ ${RESETALL}"
         PADDING='                                         '
         PREFIX=$(printf "%s %s" $PREFIX "${PADDING:${#PREFIX}}")
+
+        echo "$PREFIX${YELLOW}${@:2}${RESETALL}"
         # |& pipes stdout and stderr, -u unbuffers/prints immediatelly
         eval "${@:2}" |& sed -u "s/^/$PREFIX/"
 
