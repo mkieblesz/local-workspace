@@ -7,8 +7,10 @@ install-python:
 install: install-python
 
 migrate:
-	python manage.py distributed_migrate --noinput
-	python manage.py migrate_translation --noinput
+	# run migration up to LAST_MIGRATION_NAME, if not set it will run all
+	# used to load fixtures
+	python manage.py distributed_migrate --noinput $$LAST_MIGRATION_NAME
+	python manage.py migrate_translation --noinput $$LAST_MIGRATION_NAME
 
 load-fixtures:
 	python manage.py shell < fixtures/users.py
