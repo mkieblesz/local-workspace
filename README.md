@@ -76,10 +76,14 @@
 ## Setup
 
 1. Ensure system requirements are met.
-    * `python==3.6`
+
+    Run `./scripts/check_requirements.sh` to ensure all requirements are met.
+
+    * `python>=3.6`
     * `ruby==2.5.5` with `bundler==1.16.6` gem
     * `node==8.x`
     * `GNU parallel`
+    * `jq`
 
     Add following when using docker:
     * `docker>=18.09.3`
@@ -208,6 +212,7 @@ TODO
 ### Tasks for this repo
 
 * test ultimate from start
+* write script which checks for requirements
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets
