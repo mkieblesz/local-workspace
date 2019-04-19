@@ -207,13 +207,13 @@ TODO
 
 ### Tasks for this repo
 
-* fix directory-api no scheme error
-* get better cms fixtures so landing pages will work like in dev
-* add `exec` and `build` target to makefiles to exec into docker machine - this will use docker directly
-* add `.env.test` to each repo patch + test command to each makefile which will override .env with .env.test by sourcing it before executing tests
-* implement rest of make targets
+* different colors for eval
+* implement celery targets and add them to ultimate targets in main makefile
+* implement test targets
+* implement rest of make targets if any left
+* consider adding `exec` and `build` target to makefiles to exec into docker machine - this will use docker directly
 * consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
-* write benchmark tests which will time running all commands and sanity check
+* write benchmark tests which will time running all commands and sanity check urls
 * make it work on mac
 
 ### Tasks for service repos

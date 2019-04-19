@@ -1,3 +1,5 @@
+mkdir -p tmp logs
+
 # variables used across scripts/*
 WORKSPACE_DIR=$(dirname $(pwd))
 WORKSPACE_NAME=$(basename $(dirname $(pwd)))

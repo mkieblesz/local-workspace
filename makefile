@@ -16,6 +16,9 @@ DROP_DBS := \
 	dropdb --if-exists export_opportunities_dev_zeus; \
 	dropuser --if-exists debug;
 
+clean:
+	rm -rf logs/*
+
 clone:
 	@./scripts/clone.sh
 
