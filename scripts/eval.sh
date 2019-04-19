@@ -26,7 +26,6 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
                     test ! -f $EXECUTION_ORDER_LOG && touch $EXECUTION_ORDER_LOG
                     # if last output was from another repo reprint stdin header
                     if [ "$(tail -n 1 $EXECUTION_ORDER_LOG)" != $REPO_NAME ]; then
-                        echo
                         echo "${BOLD}[...]${RESETALL} $STDIN_PREFIX ${@:2}"
                         echo $REPO_NAME >> $EXECUTION_ORDER_LOG
                     fi

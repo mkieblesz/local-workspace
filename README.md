@@ -207,13 +207,13 @@ TODO
 
 ### Tasks for this repo
 
-* different colors for eval
+* test ultimate from start
 * implement celery targets and add them to ultimate targets in main makefile
-* implement test targets
+* ensure cold cache is loaded in cms upon start (perhaps wait until it does)
+* implement rest of test targets
 * implement rest of make targets if any left
-* consider adding `exec` and `build` target to makefiles to exec into docker machine - this will use docker directly
-* consider `make ultimate-docker` to run migate, load-fixtures and collect-static in same order as ultimate (`eval_compose.sh` script which will do `docker-compose run exopps bash -c "<command>"`)
-* write benchmark tests which will time running all commands and sanity check urls
+* write benchmark tests which will time running all commands (timing can be logged to a logs/command_log from scripts/eval.sh script)
+* sanity check script of running application
 * make it work on mac
 
 ### Tasks for service repos
