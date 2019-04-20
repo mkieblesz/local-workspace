@@ -205,7 +205,7 @@ TODO
 
 * run all in docker with sanity check
 * run process kill commands for services in scripts/config.sh
-* timing script which will parse timing_log and print info about last commands run
+* parse duration log function which will display result
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets

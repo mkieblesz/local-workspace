@@ -3,7 +3,6 @@
 source scripts/config.sh
 
 REPO_NAME=$(get_repo_name $1)
-TIMING_LOG_FILE=$WORKSPACE_REPO_DIR/logs/timing_log
 EXECUTION_ORDER_LOG_FILE=$WORKSPACE_REPO_DIR/logs/$OUTPUT_ID.order_log
 # text formating
 CYAN=$'\033[0;36m'
@@ -14,17 +13,14 @@ RESETALL=$'\033[0m'
 if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
     (
         source scripts/activate.sh $REPO_NAME
-
         STDIN_HEADER="${YELLOW}$REPO_NAME\$${RESETALL} ${@:2}"
         STDIN_HEADER_REPRINT="${BOLD}[...]${RESETALL} $STDIN_HEADER"
-        START_TIME=$(date +%s)
-
         echo $STDIN_HEADER
 
         # for commands runned in parallel prepend each job output with header
         # in case previous output was from another job
         if [ ! -z $OUTPUT_ID ]; then
-            eval "${@:2}" |& \
+            logduration eval "${@:2}" |& \
                 while read LINE
                 do
                     # if last output was from another repo reprint header
@@ -35,13 +31,7 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
                     echo $LINE
                 done
         else
-            eval "${@:2}"
-        fi
-
-        # create timing log entry only if duration longer than 3 seconds
-        DURATION=$(($(date +%s) - $START_TIME))
-        if (($DURATION > 3)); then
-            echo "$DURATION:$REPO_NAME:${@:2}" >> $TIMING_LOG_FILE
+            logduration eval "${@:2}"
         fi
     )
 else

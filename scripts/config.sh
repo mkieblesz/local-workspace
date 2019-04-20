@@ -2,7 +2,7 @@ mkdir -p tmp logs
 
 # variables used across scripts/*
 WORKSPACE_DIR=$(dirname $(pwd))
-WORKSPACE_NAME=$(basename $(dirname $(pwd)))
+WORKSPACE_NAME=$(basename $WORKSPACE_DIR)
 WORKSPACE_REPO_DIR=$(pwd)
 REPO_LIST=()
 declare -A VERSION_MAP
@@ -60,4 +60,36 @@ get_repo_name() {
         REPO_NAME=$1
     fi
     echo $REPO_NAME
+}
+
+logduration() {
+    DURATION_LOG_NAME=${DURATION_LOG_NAME:-"common"}
+    DURATION_LOG_FILE=$WORKSPACE_REPO_DIR/logs/$DURATION_LOG_NAME.duration_log
+    START_TIME=$(date +%s)
+    LOG_ENTRY_NAME=$(basename $(pwd))
+    ${@:1}
+    # create timing log entry only if duration longer than 3 seconds
+    DURATION=$(($(date +%s) - $START_TIME))
+    if (($DURATION > 1)); then
+        echo "$DURATION:$LOG_ENTRY_NAME:${@:1}" >> $DURATION_LOG_FILE
+    fi
+}
+
+displaytime() {
+    local T=$1
+    local H=$((T/60/60))
+    local M=$((T/60%60))
+    local S=$((T%60))
+    (( $H > 0 )) && printf '%d hours ' $H
+    (( $M > 0 )) && printf '%d minutes ' $M
+    (( $S > 0 )) && printf '%d seconds' $S
+}
+
+parse_duration_log() {
+    DURATION_LOG_NAME=${DURATION_LOG_NAME:-"common"}
+    DURATION_LOG_FILE=$WORKSPACE_REPO_DIR/logs/$DURATION_LOG_NAME.duration_log
+    IFS=$'\n'  # split into array by new line character
+    for LOG_ENTRY in `cat $DURATION_LOG_FILE`; do
+        echo $LOG_ENTRY
+    done
 }
