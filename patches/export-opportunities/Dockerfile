@@ -5,9 +5,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 RUN gem install bundler -v 1.16.6
 # copy files first to optimize build
-COPY Gemfile* /usr/src/app/
-RUN mkdir -p vendor
-COPY vendor/cache /usr/src/app/vendor/
+COPY Gemfile /usr/src/app/
+RUN mkdir -p vendor/cache
+COPY vendor/cache/* /usr/src/app/vendor/cache/
 RUN mkdir -p config
 COPY config/application.example.yml /usr/src/app/config/
 COPY new_makefile /usr/src/app/

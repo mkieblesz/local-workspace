@@ -2,7 +2,7 @@ clean:
 	@echo "clean-stuff"
 
 install-ruby:
-	bundle _1.16.6_ install --jobs 4 --path vendor/bundle
+	bundle _1.16.6_ install --local --jobs 4 --path vendor/bundle
 	test ! -f config/application.yml && cp config/application.example.yml config/application.yml
 
 install: install-ruby
