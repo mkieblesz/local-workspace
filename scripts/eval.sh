@@ -38,7 +38,7 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
             eval "${@:2}"
         fi
 
-        # create timing log entry only if duration logner than 3 seconds
+        # create timing log entry only if duration longer than 3 seconds
         DURATION=$(($(date +%s) - $START_TIME))
         if (($DURATION > 3)); then
             echo "$DURATION:$REPO_NAME:${@:2}" >> $TIMING_LOG_FILE

@@ -4,7 +4,10 @@ clean:
 install-python:
 	pip install -r requirements_test.txt
 
-install: install-python
+install-js:
+	npm install
+
+install: install-python install-js
 
 collect-assets:
 	python manage.py collectstatic --noinput

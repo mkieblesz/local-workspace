@@ -134,14 +134,14 @@ First run `make clone patch create-venvs` to clone, patch and create virtuale en
 
 Testing services:
 
-* `make ultimate` setups everything up
-* go to `<service-domain>:<port>` to test services directly, for example `soo.trade.great:8008`
+* `make ultimate` starts everything up
+* browse services
 * `ctrl+c` from tab where services are running
-* `make kill-dbs` kills db containers
+* `docker-compose down` shuts down db containers
 
 Working on individual repos:
 
-* `make ultimate` setups everything up
+* `make ultimate` starts everything up
 * open new terminal tab
 
     ```bash
@@ -166,7 +166,7 @@ Working on individual repos:
 
 * `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
-* `make kill-dbs` kills db containers
+* `docker-compose down` shuts down db containers
 
 ### All in docker
 
@@ -174,6 +174,10 @@ Working on individual repos:
 * TODO
 
 ### All on host
+
+TODO
+
+## Adding new service
 
 TODO
 
