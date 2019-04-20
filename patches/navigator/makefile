@@ -1,5 +1,5 @@
 clean:
-	@echo "clean-stuff"
+	find . -type d -name __pycache__ | xargs rm -rf
 
 install-python:
 	pip install -r requirements_test.txt

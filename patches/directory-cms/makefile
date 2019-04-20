@@ -1,7 +1,7 @@
 LAST_MIGRATION_NAME=$(shell test -f fixtures/dump_last_migration && cat fixtures/dump_last_migration)
 
 clean:
-	find . -type d -name "__pycache__" -delete
+	find . -type d -name __pycache__ | xargs rm -rf
 
 install-python:
 	pip install -r requirements_test.txt
