@@ -78,3 +78,15 @@ ultimate-docker:
 	@./scripts/make_compose.sh load-fixtures
 	# @./scripts/make_compose.sh compile-assets
 	@./scripts/make_compose.sh collect-assets
+
+ultimate-host:
+	@./scripts/make_host.sh clean
+	# assuming dbs are already running
+	# make run-dbs
+	$(INIT_DBS)
+
+	@./scripts/make_host.sh migrate
+	@./scripts/make_host.sh load-fixtures
+	# @./scripts/make_host.sh compile-assets
+	@./scripts/make_host.sh collect-assets
+	make run-all
