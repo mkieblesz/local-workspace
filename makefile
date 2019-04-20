@@ -25,7 +25,7 @@ clone:
 update:
 	@./scripts/update.sh
 
-setup:
+create-venvs:
 	@./scripts/eval_all.sh 'test ! -d .venv && test -f requirements_test.txt && python3.6 -m venv .venv && .venv/bin/pip install --upgrade pip wheel'
 
 patch:
@@ -93,4 +93,5 @@ ultimate-docker:
 	docker-compose up -d
 	@./scripts/make_compose.sh migrate
 	@./scripts/make_compose.sh load-fixtures
+	# @./scripts/make_compose.sh compile-assets
 	@./scripts/make_compose.sh collect-assets

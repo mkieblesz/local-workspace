@@ -133,7 +133,7 @@
 
 ## Usage
 
-First run `make clone update patch setup` to clone, setup environment, patch with new files all repos defined in `repolist` and install requirements in repo's local environment. If you want to omit certain repos from your workflow you can comment them out with `#`.
+First run `make clone patch create-venvs` to clone, patch and create virtuale environments for all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
 
 ### Services on host and dbs in docker
 

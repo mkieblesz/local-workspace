@@ -25,9 +25,9 @@ declare -A REPO_ACRONYM_MAP=(
 # populate REPO_LIST and VERSION_MAP from repolist file
 IFS=$'\n'  # split into array by new line character
 for REPO_DEFINITION in `cat repolist`; do
-    # omit if line empty or
-    # starts with hash/comment character https://serverfault.com/a/252406
-    if [ -z $REPO_DEFINITION ] || [ "${REPO_DEFINITION#\#}"x != "${REPO_DEFINITION}x" ]; then
+    FIRST_CHAR=$(echo $REPO_DEFINITION | head -c 1)
+    # omit if line empty or starts with hash
+    if [ -z $FIRST_CHAR ] || [ $FIRST_CHAR = "#" ]; then
         continue
     fi
     # split by @
