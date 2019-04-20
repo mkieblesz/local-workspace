@@ -31,7 +31,7 @@ create-venvs:
 patch:
 	@./scripts/patch.sh
 
-kill-compose:
+kill-docker:
 	docker-compose kill && docker-compose rm --force
 	docker-compose down
 

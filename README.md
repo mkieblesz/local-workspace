@@ -137,7 +137,7 @@ Testing services:
 * `make ultimate` starts everything up
 * browse services
 * `ctrl+c` from tab where services are running
-* `make kill-compose` shuts down db containers
+* `make kill-docker` shuts down db containers
 
 Working on individual repos:
 
@@ -166,7 +166,7 @@ Working on individual repos:
 
 * `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
-* `make kill-compose` shuts down db containers
+* `make kill-docker` shuts down db containers
 
 ### All in docker
 
