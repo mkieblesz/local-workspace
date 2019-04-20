@@ -21,7 +21,8 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
 
         echo $STDIN_HEADER
 
-        # for commands runned in parallel prepend each job output with header in case of switch
+        # for commands runned in parallel prepend each job output with header
+        # in case previous output was from another job
         if [ ! -z $OUTPUT_ID ]; then
             eval "${@:2}" |& \
                 while read LINE
@@ -34,7 +35,6 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
                     echo $LINE
                 done
         else
-            # |& pipes stdout and stderr
             eval "${@:2}"
         fi
 
