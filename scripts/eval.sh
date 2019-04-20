@@ -45,5 +45,5 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
         fi
     )
 else
-    echo "Repo not found"
+    echo "$REPO_NAME repo is not present in $WORKSPACE_DIR"
 fi

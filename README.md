@@ -77,7 +77,7 @@
 
 1. Ensure system requirements are met.
 
-    Run `./scripts/check_requirements.sh` to ensure all requirements are met.
+    Run `./tests/check_requirements.sh` to ensure all requirements are met.
 
     * `python>=3.6`
     * `ruby==2.5.5` with `bundler==1.16.6` gem
@@ -211,13 +211,17 @@ TODO
 
 ### Tasks for this repo
 
-* test ultimate from start
+* run dbs in docker and all else on host with sanity check
+* run dbs in docker and all else on host in proxy mode with sanity check
+* run all in docker with sanity check
+* run all in docker in proxy mode with sanity check
+* run process kill commands for services in scripts/config.sh
+* timing script which will parse timing_log and print info about last commands run
+* sanity check script of running application
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets
 * implement rest of make targets if any left
-* write benchmark tests which will time running all commands
-* sanity check script of running application
 * make it work on mac
 
 ### Tasks for service repos
