@@ -76,7 +76,7 @@
     Run `./tests/check_requirements.sh` to ensure all requirements are met.
 
     * `python>=3.6`
-    * `ruby==2.5.5` with `bundler==1.16.6` gem
+    * `ruby==2.5.5` with `bundler` gem
     * `node==8.x`
     * `GNU parallel` used for running commands in parallel
     * `jq` used for extracting json keys from command line
@@ -137,7 +137,7 @@ Testing services:
 * `make ultimate` starts everything up
 * browse services
 * `ctrl+c` from tab where services are running
-* `docker-compose down` shuts down db containers
+* `make kill-compose` shuts down db containers
 
 Working on individual repos:
 
@@ -166,7 +166,7 @@ Working on individual repos:
 
 * `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
-* `docker-compose down` shuts down db containers
+* `make kill-compose` shuts down db containers
 
 ### All in docker
 
@@ -203,6 +203,7 @@ TODO
 
 ### Tasks for this repo
 
+* add build and exec to repos makefiles
 * run all in docker with sanity check
 * run process kill commands for services in scripts/config.sh
 * parse duration log function which will display result

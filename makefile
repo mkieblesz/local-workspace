@@ -31,6 +31,13 @@ create-venvs:
 patch:
 	@./scripts/patch.sh
 
+kill-compose:
+	docker-compose kill && docker-compose rm --force
+	docker-compose down
+
+fix-permissions:
+	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
+
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
 
@@ -55,7 +62,7 @@ run-all:
 	@./scripts/make_parallel.sh run
 
 ultimate:
-	docker-compose down
+	make kill-compose
 	@./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
@@ -67,7 +74,7 @@ ultimate:
 	make run-all
 
 ultimate-docker:
-	docker-compose down
+	make kill-compose
 	@./scripts/make_host.sh clean
 	docker-compose build
 	make run-dbs

@@ -36,6 +36,7 @@ check_version_equal() {
 
 check_version_minimal "python3.6" 3.6 $(python3.6 -V | sed -e 's/^Python//')
 check_version_equal "ruby" 2.5.5 $(ruby -v | sed -e 's/.*ruby \(.*\)p.*/\1/')
+check_version_equal "bundler" 1.16.6 $(bundler _1.16.6_ -v | sed -e 's/.*Bundler version \(.*\).*/\1/')
 check_version_minimal "docker" 18.09 $(docker -v | sed -e 's/.*version \(.*\),.*/\1/')
 check_version_minimal "docker-compose" 1.22 $(docker-compose -v | sed -e 's/.*version \(.*\),.*/\1/')
 check_version_minimal "node" 8 $(node -v | tr -d v)
