@@ -133,7 +133,7 @@
 
 ## Usage
 
-First run `make clone patch create-venvs` to clone, patch and create virtuale environments for all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`.
+First run `make clone patch create-venvs` to clone, patch and create virtuale environments for all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
 
 ### Services on host and dbs in docker
 
@@ -217,7 +217,6 @@ TODO
 * run all in docker in proxy mode with sanity check
 * run process kill commands for services in scripts/config.sh
 * timing script which will parse timing_log and print info about last commands run
-* sanity check script of running application
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets
