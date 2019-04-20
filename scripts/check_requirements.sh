@@ -1,23 +1,11 @@
 #!/bin/bash
 
-PYTHON_VERSION=$(python3.6 -V | sed -e 's/^Python//')
-RUBY_VERSION=$(ruby -v | sed -e 's/.*ruby \(.*\)p.*/\1/')
-DOCKER_VERSION=$(docker -v | sed -e 's/.*version \(.*\),.*/\1/')
-DOCKER_COMPOSE_VERSION=$(docker-compose -v | sed -e 's/.*version \(.*\),.*/\1/')
-NODE_VERSION=$(node -v | tr -d v)
-
-# echo $PYTHON_VERSION
-# echo $RUBY_VERSION
-# echo $DOCKER_VERSION
-# echo $DOCKER_COMPOSE_VERSION
-# echo $NODE_VERSION
-
 check_command_exists() {
     COMMAND=$1
     if [ -z $(command -v $COMMAND) ]; then
-        echo "[ERROR] $COMMAND command not available"
+        echo "[ERROR] $COMMAND: command not available"
     else
-        echo "[OK] $COMMAND command exists"
+        echo "[OK] $COMMAND: command exists"
     fi
 }
 
@@ -46,11 +34,11 @@ check_version_equal() {
     fi
 }
 
-check_version_minimal "python3.6" 3.6 $PYTHON_VERSION
-check_version_equal "ruby" 2.5.5 $RUBY_VERSION
-check_version_minimal "node" 8 $NODE_VERSION
-check_version_minimal "docker" 18.09 $DOCKER_VERSION
-check_version_minimal "docker-compose" 1.22 $DOCKER_COMPOSE_VERSION
+check_version_minimal "python3.6" 3.6 $(python3.6 -V | sed -e 's/^Python//')
+check_version_equal "ruby" 2.5.5 $(ruby -v | sed -e 's/.*ruby \(.*\)p.*/\1/')
+check_version_minimal "docker" 18.09 $(docker -v | sed -e 's/.*version \(.*\),.*/\1/')
+check_version_minimal "docker-compose" 1.22 $(docker-compose -v | sed -e 's/.*version \(.*\),.*/\1/')
+check_version_minimal "node" 8 $(node -v | tr -d v)
 check_command_exists "parallel"
 check_command_exists "jq"
 check_command_exists "cf"

@@ -211,9 +211,7 @@ TODO
 
 ### Tasks for this repo
 
-* log timing from eval.sh script
 * test ultimate from start
-* write script which checks for requirements
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets

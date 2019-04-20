@@ -77,27 +77,20 @@ ultimate:
 	make run-dbs
 	make create-dbs
 
-	# ~30min entire migration history, ~3min no new migrations
 	@./scripts/make_host.sh migrate
 	@./scripts/make_host.sh load-fixtures
 	# @./scripts/make_host.sh compile-assets
-	# ~3 min
 	@./scripts/make_host.sh collect-assets
-	# after clean ~2 min, second run ~20 sec
 	make run-all
 
 ultimate-docker:
 	make kill-all
 	@./scripts/make_host.sh clean
-	# ~30 min initial build, ~10 min files changed, ~5 min when no files changed
-	# 15 min just for exopps
 	make build-all
 	make run-dbs
 	make create-dbs
 
 	docker-compose up -d
-	# migrates after because container have to be started
 	@./scripts/make_compose.sh migrate
 	@./scripts/make_compose.sh load-fixtures
-	# @./scripts/make_compose.sh compile-assets
 	@./scripts/make_compose.sh collect-assets
