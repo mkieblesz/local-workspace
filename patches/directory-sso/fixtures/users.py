@@ -3,7 +3,7 @@ from sso.user.models import UserProfile
 
 User = get_user_model()
 
-if User.objects.filter(username="admin").count() == 0:
+if User.objects.filter(email='admin@example.com').count() == 0:
     user_data = {
         'email': 'admin@example.com',
         'password': 'admin',
