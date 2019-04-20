@@ -31,10 +31,6 @@ create-venvs:
 patch:
 	@./scripts/patch.sh
 
-patch-proxy: patch
-	# simply replace link environment variables for proxy links
-	@./scripts/eval_all.sh 'test -f .new_env && sed -i "s,http://\(.*\).\(trade\|export\).great:\([0-9]\{4\}\),http://proxy.great.trade,g" .new_env'
-
 kill-dbs:
 	docker-compose kill db redis es && docker-compose rm --force db redis es
 
@@ -67,9 +63,6 @@ run-dbs:
 
 run-all:
 	@./scripts/make_parallel.sh run
-
-run-proxy:
-	docker-compose -f docker-compose.proxy.yml up -d
 
 ultimate:
 	make kill-dbs

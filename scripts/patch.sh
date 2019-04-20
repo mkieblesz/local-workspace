@@ -44,8 +44,5 @@ for REPO in "${REPO_LIST[@]}"; do
         if [ -f "$REPO_PATCH_DIR/.env.test" ]; then
             cp $REPO_PATCH_DIR/.env.test .new_env.test
         fi
-        if [ -f "$REPO_PATCH_DIR/.env.links.proxy" ]; then
-            cp $REPO_PATCH_DIR/.env.links.proxy .new_env.links.proxy
-        fi
     )
 done

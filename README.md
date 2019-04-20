@@ -12,7 +12,6 @@
 
 2. Upcomming features.
 
-    * path based routing like in prod environments with the use of nginx proxy container
     * check out for more in [todos](#todo)
 
 3. Directory structure for uktrade workspace assumed by this repo.
@@ -25,9 +24,6 @@
         │   │   makefile                # workspace task management
         │   │
         │   └───docker                  # extra containers not having it's own repo in uktrade
-        │   │   │
-        │   │   └───proxy
-        │   │   │   default.conf        # nginx config with proxy passing
         │   │   │
         │   │   └───redis
         │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to `redis` host
@@ -110,7 +106,6 @@
     127.0.0.1     forms.trade.great
     127.0.0.1     international.trade.great
     127.0.0.1     invest.trade.great
-    127.0.0.1     proxy.trade.great
     ```
 
 3. Update list of repos in `repolist` file to fit your needs.
@@ -143,13 +138,6 @@ Testing services:
 * go to `<service-domain>:<port>` to test services directly, for example `soo.trade.great:8008`
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` kills db containers
-
-Testing services via proxy:
-
-* `make run-proxy ultimate`
-* go to `proxy.trade.great` to test services as they are in prod environments through proxy container
-* `ctrl+c` from tab where services are running
-* `make kill-all` kills db containers and proxy
 
 Working on individual repos:
 
@@ -211,10 +199,7 @@ TODO
 
 ### Tasks for this repo
 
-* run dbs in docker and all else on host with sanity check
-* run dbs in docker and all else on host in proxy mode with sanity check
 * run all in docker with sanity check
-* run all in docker in proxy mode with sanity check
 * run process kill commands for services in scripts/config.sh
 * timing script which will parse timing_log and print info about last commands run
 * implement celery targets and add them to ultimate targets in main makefile
