@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -f fixtures/dump.json ]; then
+    echo "Fixtures are not present on your local. Please run 'script/pull_fixtures.sh' script."
+    echo
+    exit 0
+fi
+
 number_of_pages=$(python manage.py shell -c "from wagtail.core.models import Page; print(Page.objects.count())" | sed '$!d')
 if [ $number_of_pages -gt 10 ]; then
     echo "Loading fixture dump will erase all data from your cms database."

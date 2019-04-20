@@ -3,7 +3,8 @@
 source scripts/config.sh
 
 REPO_NAME=$(get_repo_name $1)
-
+TIMING_LOG_FILE=$WORKSPACE_REPO_DIR/logs/timing_log
+EXECUTION_ORDER_LOG_FILE=$WORKSPACE_REPO_DIR/logs/$OUTPUT_ID.order_log
 # text formating
 CYAN=$'\033[0;36m'
 YELLOW=$'\033[0;33m'
@@ -14,30 +15,34 @@ if [ -d "$WORKSPACE_DIR/$REPO_NAME" ]; then
     (
         source scripts/activate.sh $REPO_NAME
 
-        STDIN_PREFIX="${YELLOW}$REPO_NAME\$${RESETALL}"
-        echo "$STDIN_PREFIX ${@:2}"
+        STDIN_HEADER="${YELLOW}$REPO_NAME\$${RESETALL} ${@:2}"
+        STDIN_HEADER_REPRINT="${BOLD}[...]${RESETALL} $STDIN_HEADER"
+        START_TIME=$(date +%s)
 
-        # for commands runned in parallel prepend each job continous output with header
+        echo $STDIN_HEADER
+
+        # for commands runned in parallel prepend each job output with header in case of switch
         if [ ! -z $OUTPUT_ID ]; then
-            EXECUTION_ORDER_LOG=$WORKSPACE_REPO_DIR/logs/$OUTPUT_ID.order_log
             eval "${@:2}" |& \
                 while read LINE
                 do
-                    test ! -f $EXECUTION_ORDER_LOG && touch $EXECUTION_ORDER_LOG
-                    # if last output was from another repo reprint stdin header
-                    if [ "$(tail -n 1 $EXECUTION_ORDER_LOG)" != $REPO_NAME ]; then
-                        echo "${BOLD}[...]${RESETALL} $STDIN_PREFIX ${@:2}"
-                        echo $REPO_NAME >> $EXECUTION_ORDER_LOG
+                    # if last output was from another repo reprint header
+                    if [ "$(tail -n 1 $EXECUTION_ORDER_LOG_FILE 2> /dev/null)" != $REPO_NAME ]; then
+                        echo $REPO_NAME >> $EXECUTION_ORDER_LOG_FILE
+                        echo $STDIN_HEADER_REPRINT
                     fi
-                    echo "$LINE"
+                    echo $LINE
                 done
         else
             # |& pipes stdout and stderr
             eval "${@:2}"
         fi
 
-        # stdbuf prints immediatelly, equivalent of sed -u https://unix.stackexchange.com/a/248926
-        # eval "${@:2}" |& stdbuf -oL awk -v p=$PREFIX '{print p,$0}'
+        # create timing log entry only if duration logner than 3 seconds
+        DURATION=$(($(date +%s) - $START_TIME))
+        if (($DURATION > 3)); then
+            echo "$DURATION:$REPO_NAME:${@:2}" >> $TIMING_LOG_FILE
+        fi
     )
 else
     echo "Repo not found"

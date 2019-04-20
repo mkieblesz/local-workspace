@@ -54,11 +54,11 @@
         │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
         │   │   eval_all.sh             # passed command will be executed inside all repositories
         │   │   eval.sh                 # passed command will be executed inside repository with activated environment
-        │   │   make_compose.sh         # executes make target in docker container for each repo if running
-        │   │   make_host.sh            # executes make target for each repo on host using eval.sh
-        │   │   make_parallel.sh        # used to run all webservers in one shell, executes make target for each repo on host in parallel
-        │   │   patch.sh                # copies fields which will have to be patched to each repo
-        │   │   update.sh               # pulls latest changes in each repo
+        │   │   make_compose.sh         # executes make target in docker container for each repo
+        │   │   make_host.sh            # executes make target for each repo on host
+        │   │   make_parallel.sh        # executes make target for each repo on host in parallel
+        │   │   patch.sh                # copies files and applies git patch to repos listed in patches/ directory
+        │   │   update.sh               # pulls latest changes for each repo
         │   |
         │   └───tmp
         │       |
@@ -82,8 +82,8 @@
     * `python>=3.6`
     * `ruby==2.5.5` with `bundler==1.16.6` gem
     * `node==8.x`
-    * `GNU parallel`
-    * `jq`
+    * `GNU parallel` used for running commands in parallel
+    * `jq` used for extracting json keys from command line
 
     Add following when using docker:
     * `docker>=18.09.3`
@@ -113,7 +113,7 @@
     127.0.0.1     proxy.trade.great
     ```
 
-3. Update list of repos in `repolist` file.
+3. Update list of repos in `repolist` file to fit your needs.
 
     Each line should have following format `<repo-name>@<version>`. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
 
@@ -211,13 +211,14 @@ TODO
 
 ### Tasks for this repo
 
+* log timing from eval.sh script
 * test ultimate from start
 * write script which checks for requirements
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets
 * implement rest of make targets if any left
-* write benchmark tests which will time running all commands (timing can be logged to a logs/command_log from scripts/eval.sh script)
+* write benchmark tests which will time running all commands
 * sanity check script of running application
 * make it work on mac
 
