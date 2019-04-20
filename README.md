@@ -203,9 +203,7 @@ TODO
 
 ### Tasks for this repo
 
-* add build and exec to repos makefiles
-* run all in docker with sanity check
-* run process kill commands for services in scripts/config.sh
+* make run all in docker with sanity check work (exoops, directory-sso-profile)
 * parse duration log function which will display result
 * implement celery targets and add them to ultimate targets in main makefile
 * ensure cold cache is loaded in cms upon start (perhaps wait until it does)
