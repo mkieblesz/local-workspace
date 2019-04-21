@@ -28,7 +28,8 @@ work () {
     cdrepo () {
         cd $REPO_DIR
     }
-    export REPO=$(get_repo_name $1)
+    export REPO_NAME=$(get_repo_name $1)
+    export REPO_ACRONYM=$(get_repo_acronym $REPO_NAME)
     export REPO_DIR=$WORKSPACE_DIR/$REPO
 
     if [ -d $REPO_DIR/.venv ]; then
@@ -52,7 +53,8 @@ deactivate_repo () {
         deactivate
     fi
     unset REPO_DIR
-    unset REPO
+    unset REPO_ACRONYM
+    unset REPO_NAME
     unset -f cdrepo
     if [ ! "$1" = "nondestructive" ] ; then
         unset -f deactivate_repo

@@ -31,11 +31,11 @@ for REPO_DEFINITION in `cat repolist`; do
         continue
     fi
     # split by @
-    IFS=@ read -r REPO VERSION <<< "$REPO_DEFINITION"
+    IFS=@ read -r REPO_NAME VERSION <<< "$REPO_DEFINITION"
     if [ ! -z $VERSION ]; then
-        VERSION_MAP[$REPO]=$VERSION
+        VERSION_MAP[$REPO_NAME]=$VERSION
     fi
-    REPO_LIST+=($REPO)
+    REPO_LIST+=($REPO_NAME)
 done
 
 get_repo_acronym() {

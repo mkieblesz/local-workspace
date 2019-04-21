@@ -214,3 +214,4 @@ TODO
 ### Tasks for service repos
 
 * merge patches
+* remove compiled assets from repos and put it to build artifacts

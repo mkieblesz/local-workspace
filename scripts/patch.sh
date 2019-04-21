@@ -9,13 +9,13 @@ if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
     exit 0
 fi
 
-for REPO in "${REPO_LIST[@]}"; do
-    REPO_DIR=$WORKSPACE_DIR/$REPO
+for REPO_NAME in "${REPO_LIST[@]}"; do
+    REPO_DIR=$WORKSPACE_DIR/$REPO_NAME
 
-    echo "Patching $REPO"
+    echo "Patching $REPO_NAME"
     (
         cd $REPO_DIR
-        REPO_PATCH_DIR=$WORKSPACE_REPO_DIR/patches/$REPO
+        REPO_PATCH_DIR=$WORKSPACE_REPO_DIR/patches/$REPO_NAME
         # apply git patch (remove after changes are merged)
         if [ -f "$REPO_PATCH_DIR/git.patch" ]; then
             git reset --hard
