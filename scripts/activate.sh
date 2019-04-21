@@ -30,7 +30,8 @@ work () {
     }
     export REPO_NAME=$(get_repo_name $1)
     export REPO_ACRONYM=$(get_repo_acronym $REPO_NAME)
-    export REPO_DIR=$WORKSPACE_DIR/$REPO
+    export REPO_IMAGE=$WORKSPACE_NAME/$REPO_NAME
+    export REPO_DIR=$WORKSPACE_DIR/$REPO_NAME
 
     if [ -d $REPO_DIR/.venv ]; then
         source $REPO_DIR/.venv/bin/activate
@@ -53,6 +54,7 @@ deactivate_repo () {
         deactivate
     fi
     unset REPO_DIR
+    unset REPO_IMAGE
     unset REPO_ACRONYM
     unset REPO_NAME
     unset -f cdrepo
