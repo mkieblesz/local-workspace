@@ -88,8 +88,36 @@ displaytime() {
 parse_duration_log() {
     DURATION_LOG_NAME=${DURATION_LOG_NAME:-"common"}
     DURATION_LOG_FILE=$WORKSPACE_REPO_DIR/logs/$DURATION_LOG_NAME.duration_log
-    IFS=$'\n'  # split into array by new line character
+
+    # parse log
+    declare -A DURATION_MAP
+    IFS=$'\n'
     for LOG_ENTRY in `cat $DURATION_LOG_FILE`; do
-        echo $LOG_ENTRY
+        DURATION=$(echo $LOG_ENTRY | cut -d':' -f1)
+        REPO_NAME=$(echo $LOG_ENTRY | cut -d':' -f2)
+        COMMAND=$(echo $LOG_ENTRY | cut -d':' -f3-)
+        DURATION_MAP[$REPO_NAME]="${DURATION_MAP[$REPO_NAME]}$DURATION:$COMMAND\n"
+    done
+
+    CYAN=$'\033[0;36m'
+    YELLOW=$'\033[0;33m'
+    BOLD=$'\033[1m'
+    RESETALL=$'\033[0m'
+    # print by repo
+    for REPO_NAME in "${!DURATION_MAP[@]}"
+    do
+        echo "${CYAN}${BOLD}$REPO_NAME${RESETALL}"
+
+        IFS=$'\n'
+        names=($(echo -e ${DURATION_MAP[$REPO_NAME]}))
+        for (( i=0; i<${#names[@]}; i++ ))
+        do
+            DURATION=$(echo ${names[$i]} | cut -d':' -f1)
+            COMMAND=$(echo ${names[$i]} | cut -d':' -f2-)
+            echo "    ${BOLD}($(displaytime $DURATION))${RESETALL} $COMMAND"
+        done
+        echo
     done
 }
+
+DURATION_LOG_NAME=ultimate parse_duration_log

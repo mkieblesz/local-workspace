@@ -1,33 +1,42 @@
 #!/bin/bash
 
-source scripts/config.sh
+# create copy of local workspace
+TEST_NAME="ultimate-docker"
+mkdir -p tmp/$TEST_NAME
+rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
 
-make clean
-make remove-installs
+(
+    cd tmp/$TEST_NAME-docker/local-workspace
+    source scripts/config.sh
+    export DURATION_LOG_NAME=$TEST_NAME
 
-export DURATION_LOG_NAME="ultimate-docker"
-make clean-docker
-./scripts/make_host.sh clean
-make run-dbs
-make create-dbs
+    logduration make clone
+    logduration ./scripts/patch.sh 1
+    ./scripts/eval.sh cms ./scripts/pull_fixtures.sh
 
-docker-compose build
-docker-compose up -d
-./scripts/make_compose.sh migrate
-./scripts/make_compose.sh load-fixtures
-# ./scripts/make_compose.sh compile-assets
-./scripts/make_compose.sh collect-assets
+    logduration ./scripts/make_host.sh clean
+    logduration make run-dbs
+    logduration make create-dbs
 
-# run sanity check to put tasks on cold cache queue
-./tests/sanity.sh
-# run celery to process cold cache queue for 10 seconds
-(docker-compose exec cms make -f new_makefile run-celery) &
-CELERY_PID=$(echo $!)
-sleep 10
-# sanity check should be successfull here
-./tests/sanity.sh
+    logduration docker-compose build
+    logduration docker-compose up -d
+    logduration ./scripts/make_compose.sh migrate
+    logduration ./scripts/make_compose.sh load-fixtures
+    # logduration  ./scripts/make_compose.sh compile-assets
+    logduration ./scripts/make_compose.sh collect-assets
 
-pkill -P $CELERY_PID
-make clean-docker
+    # run sanity check to put tasks on cold cache queue
+    logduration WAIT_UNTIL_OK=true ./tests/sanity.sh
+    # run celery to process cold cache queue for 10 seconds
+    nohup docker-compose exec cms bash -c "make -f new_makefile run-celery" &
 
-parse_duration_log $DURATION_LOG_NAME
+    # make sanity test for all endpoints until it succeeds
+    logduration ./tests/sanity.sh 100
+    parse_duration_log $DURATION_LOG_NAME
+
+    # cleanup
+    make clean-docker
+    kill $(jobs -p)
+)
+
+# sudo rm -rf tmp/$TEST_NAME

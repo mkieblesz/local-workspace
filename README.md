@@ -128,7 +128,7 @@
 
 ## Usage
 
-First run `make clone patch create-venvs` to clone, patch and create virtuale environments for all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
+First run `make clone patch` to clone and patch all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
 
 ### Services on host and dbs in docker
 
@@ -207,13 +207,25 @@ TODO
     docker rm -v $(docker ps -a | awk '{print $1}' | sed "1 d")
     ```
 
+## Test
+
+    To test host workflow please look at `tests/benchmark_host.sh` and `tests/benchmark_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
+
+    You can also pass CF_USERNAME and CF_PASSWORD to the script to test with pulling and loading cms fixtures.
+
+    ```bash
+    export CF_USERNAME=<cf-username>
+    export CF_PASSWOR="<cf-password>"
+    ./tests/benchmark_host.sh
+    ```
+
 ## TODO
 
 ### Tasks for this repo
 
+* consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * update readme to final version
 * make run all in docker with sanity check work (exoops, directory-sso-profile)
-* parse duration log function which will display result
 * implement celery targets and add them to ultimate targets in main makefile
 * implement rest of test targets
 * implement rest of make targets if any left

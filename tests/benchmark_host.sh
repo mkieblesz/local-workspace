@@ -1,37 +1,42 @@
 #!/bin/bash
 
-source scripts/config.sh
+# create copy of local workspace
+TEST_NAME="ultimate"
+mkdir -p tmp/$TEST_NAME
+rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
 
-make clean
-make remove-installs
+(
+    cd tmp/$TEST_NAME/local-workspace
+    source scripts/config.sh
+    export DURATION_LOG_NAME=$TEST_NAME
 
-export DURATION_LOG_NAME="ultimate"
-make clean-docker
-./scripts/make_host.sh clean
-make run-dbs
-make create-dbs
+    logduration make clone
+    logduration ./scripts/patch.sh 1
+    ./scripts/eval.sh cms ./scripts/pull_fixtures.sh
 
-make create-venvs
-./scripts/make_host.sh install
-./scripts/make_host.sh migrate
-./scripts/make_host.sh load-fixtures
-# ./scripts/make_host.sh compile-assets
-./scripts/make_host.sh collect-assets
+    logduration ./scripts/make_host.sh clean
+    logduration make run-dbs
+    logduration make create-dbs
 
-make run-all &
-RUN_ALL_PID=$(echo $!)
-sleep 10
+    logduration make create-venvs
+    logduration ./scripts/make_host.sh install
+    logduration ./scripts/make_host.sh migrate
+    logduration ./scripts/make_host.sh load-fixtures
+    # logduration ./scripts/make_host.sh compile-assets
+    logduration ./scripts/make_host.sh collect-assets
 
-# run sanity check to put tasks on cold cache queue
-./tests/sanity.sh
-# run celery to process cold cache queue for 10 seconds
-(./scripts/eval.sh cms make -f new_makefile run-celery) &
-CELERY_PID=$(echo $!)
-sleep 10
+    # no point of logging duration of running processes
+    nohup make run-all &
+    # run celery to process cold cache queue for 10 seconds
+    (nohup ./scripts/eval.sh cms make -f new_makefile run-celery) &
 
-# sanity check should be successfull here
-./tests/sanity.sh
+    # make sanity test for all endpoints until it succeeds
+    logduration ./tests/sanity.sh 100
+    parse_duration_log $DURATION_LOG_NAME
 
-pkill -P $RUN_ALL_PID $CELERY_PID
+    # cleanup
+    kill $(jobs -p)
+    make clean-docker
+)
 
-parse_duration_log $DURATION_LOG_NAME
+# sudo rm -rf tmp/$TEST_NAME
