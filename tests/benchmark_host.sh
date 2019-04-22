@@ -39,4 +39,4 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     make clean-docker
 )
 
-# sudo rm -rf tmp/$TEST_NAME
+sudo rm -rf tmp/$TEST_NAME

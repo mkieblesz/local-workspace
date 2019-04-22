@@ -39,4 +39,4 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     kill $(jobs -p)
 )
 
-# sudo rm -rf tmp/$TEST_NAME
+sudo rm -rf tmp/$TEST_NAME
