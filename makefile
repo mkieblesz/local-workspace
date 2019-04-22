@@ -28,8 +28,15 @@ update:
 create-venvs:
 	@./scripts/eval_all.sh 'test ! -d .venv && test -f requirements_test.txt && python3.6 -m venv .venv && .venv/bin/pip install --upgrade pip wheel'
 
+remove-installs:
+	@./scripts/eval_all.sh 'rm -rf .venv vendor/bundle node_modules'
+
 patch:
 	@./scripts/patch.sh
+
+clean-docker:
+	make kill-docker
+	@sudo ./scripts/eval_all.sh chown -R $(USER):$(USER) .
 
 kill-docker:
 	docker-compose kill && docker-compose rm --force
@@ -59,39 +66,42 @@ run-all:
 	@./scripts/make_parallel.sh run
 
 ultimate:
-	make kill-compose
-	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
-	@./scripts/make_host.sh clean
+	make clean-docker
+	./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
 
-	@./scripts/make_host.sh migrate
-	@./scripts/make_host.sh load-fixtures
-	# @./scripts/make_host.sh compile-assets
-	@./scripts/make_host.sh collect-assets
+	make create-venvs
+	./scripts/make_host.sh install
+	./scripts/make_host.sh migrate
+	./scripts/make_host.sh load-fixtures
+	# ./scripts/make_host.sh compile-assets
+	./scripts/make_host.sh collect-assets
 	make run-all
 
 ultimate-docker:
-	make kill-compose
-	@./scripts/make_host.sh clean
-	docker-compose build
+	make clean-docker
+	./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
 
+	docker-compose build
 	docker-compose up -d
-	@./scripts/make_compose.sh migrate
-	@./scripts/make_compose.sh load-fixtures
-	# @./scripts/make_compose.sh compile-assets
-	@./scripts/make_compose.sh collect-assets
+	./scripts/make_compose.sh migrate
+	./scripts/make_compose.sh load-fixtures
+	# ./scripts/make_compose.sh compile-assets
+	./scripts/make_compose.sh collect-assets
 
 ultimate-host:
-	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
-	@./scripts/make_host.sh clean
+	make clean-docker
+	./scripts/make_host.sh clean
 	# assuming dbs are already running
 	$(INIT_DBS)
 
-	@./scripts/make_host.sh migrate
-	@./scripts/make_host.sh load-fixtures
-	# @./scripts/make_host.sh compile-assets
-	@./scripts/make_host.sh collect-assets
+	make create-venvs
+	./scripts/make_host.sh install
+	./scripts/make_host.sh migrate
+	./scripts/make_host.sh load-fixtures
+	# ./scripts/make_host.sh compile-assets
+	./scripts/make_host.sh collect-assets
 	make run-all

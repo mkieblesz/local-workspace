@@ -66,6 +66,7 @@ services:
       - ../directory-ui-buyer/.new_env
     volumes:
       - '../directory-ui-buyer:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - redis
       - api
@@ -101,6 +102,7 @@ services:
       - ../directory-sso/.new_env
     volumes:
       - '../directory-sso:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - db
       - redis
@@ -132,6 +134,7 @@ services:
       - ../directory-ui-supplier/.new_env
     volumes:
       - '../directory-ui-supplier:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - cms
       - ssoproxy
@@ -148,6 +151,7 @@ services:
       - ../directory-sso-profile/.new_env
     volumes:
       - '../directory-sso-profile:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - cms
       - ssoproxy
@@ -164,6 +168,7 @@ services:
       - ../great-domestic-ui/.new_env
     volumes:
       - '../great-domestic-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - db
       - redis
@@ -184,6 +189,7 @@ services:
       - ../navigator/.new_env
     volumes:
       - '../navigator:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - db
       - ssoproxy
@@ -232,6 +238,7 @@ services:
       - ../invest-ui/.new_env
     volumes:
       - '../invest-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - db
       - redis
@@ -250,6 +257,7 @@ services:
       - ../great-international-ui/.new_env
     volumes:
       - '../great-international-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
     depends_on:
       - db
       - redis
