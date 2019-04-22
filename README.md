@@ -211,10 +211,10 @@ TODO
 
 ### Tasks for this repo
 
+* update readme to final version
 * make run all in docker with sanity check work (exoops, directory-sso-profile)
 * parse duration log function which will display result
 * implement celery targets and add them to ultimate targets in main makefile
-* ensure cold cache is loaded in cms upon start (perhaps wait until it does)
 * implement rest of test targets
 * implement rest of make targets if any left
 * make it work on mac
