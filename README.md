@@ -199,6 +199,14 @@ TODO
     command: /bin/bash -x -c 'while true; do sleep 60; done'
     ```
 
+* removing all containers
+
+    Docker creates container from image for the first time you run it, after it reuses container unless specified differently. Sometimes it's usefull to just remove all containers.
+
+    ```bash
+    docker rm -v $(docker ps -a | awk '{print $1}' | sed "1 d")
+    ```
+
 ## TODO
 
 ### Tasks for this repo

@@ -1,5 +1,5 @@
 clean:
-	@echo "clean-stuff"
+	rm -rf tmp/*
 
 install-ruby:
 	bundle _1.16.6_ install --local --jobs 4 --path vendor/bundle

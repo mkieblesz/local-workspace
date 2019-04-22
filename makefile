@@ -35,9 +35,6 @@ kill-docker:
 	docker-compose kill && docker-compose rm --force
 	docker-compose down
 
-fix-permissions:
-	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
-
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
 
@@ -63,6 +60,7 @@ run-all:
 
 ultimate:
 	make kill-compose
+	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
 	@./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
@@ -87,9 +85,9 @@ ultimate-docker:
 	@./scripts/make_compose.sh collect-assets
 
 ultimate-host:
+	@./scripts/eval_all.sh chown -R $(USER):$(USER) .
 	@./scripts/make_host.sh clean
 	# assuming dbs are already running
-	# make run-dbs
 	$(INIT_DBS)
 
 	@./scripts/make_host.sh migrate
