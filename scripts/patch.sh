@@ -2,11 +2,13 @@
 
 source scripts/config.sh
 
-echo "Patching repos will reset all your local changes."
-echo "Do you want to continue? [Y/n]"
-read should_continue
-if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
-    exit 0
+if [ -z $1 ]; then
+    echo "Patching repos will reset all your local changes."
+    echo "Do you want to continue? [Y/n]"
+    read should_continue
+    if [ ! -z $should_continue ] && [ $should_continue == "n" ]; then
+        exit 0
+    fi
 fi
 
 for REPO_NAME in "${REPO_LIST[@]}"; do
