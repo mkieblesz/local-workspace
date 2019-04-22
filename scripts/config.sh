@@ -119,5 +119,3 @@ parse_duration_log() {
         echo
     done
 }
-
-DURATION_LOG_NAME=ultimate parse_duration_log
