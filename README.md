@@ -7,14 +7,10 @@
     These features where tested on Ubuntu 18.04 only.
 
     * from cloning this repo to browsing development version of all services defined in `repolist` with one command
-    * `docker + host` and `docker only (still some issues)` workflows
+    * `dbs in docker + services on host` and `docker only` workflows
     * check out for more in [usage workflows](#usage)
 
-2. Upcomming features.
-
-    * check out for more in [todos](#todo)
-
-3. Repo updates.
+2. Repo updates.
 
     * running management commands and tests from command line with no worry about environment variables
 
@@ -23,9 +19,9 @@
 
     * dockerfiles for all services only to be built and used locally
     * updated makefile structure, more or less following `https://github.com/getsentry/sentry/blob/master/Makefile`
-    * added fixtures necessary with initial user and landing pages in cms
+    * added fixtures necessary to explore services with authenticated user and cms pages
 
-4. Directory structure for uktrade workspace assumed by this repo.
+3. Directory structure for uktrade workspace assumed by this repo.
 
     ```text
         uktrade                         # workspace folder containing all repos from github.com/uktrade
