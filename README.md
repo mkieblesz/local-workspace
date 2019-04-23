@@ -57,9 +57,17 @@
         │   │   update.sh               # pulls latest changes for each repo
         │   |
         │   └───tmp
-        │       |
-        │       └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
-
+        │   │   |
+        │   │   └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
+        │   |   |
+        │   |   |   ...
+        │   |
+        │   └───tests
+        │   │   benchmark_docker.sh     # tests entire setup from ground up for all in docker
+        │   │   benchmark_host.sh       # tests entire setup from ground up for dbs in docker rest on host
+        │   │   requirements.sh         # checks if system requirements are met
+        │   │   healthcheck.sh               # healthchecks running services
+        │
         └───directory-api
         │
         └───directory-cms
@@ -224,7 +232,8 @@ TODO
 ### Tasks for this repo
 
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
-* update readme to final version
+* separate dbs to one dockerfile and apps to another, default is dbs
+* update readme to final version (recommended approach is dbs in docker and services on host)
 * make run all in docker with sanity check work (exoops, directory-sso-profile)
 * implement celery targets and add them to ultimate targets in main makefile
 * implement rest of test targets

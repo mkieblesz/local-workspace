@@ -30,8 +30,8 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     # run celery to process cold cache queue for 10 seconds
     (nohup ./scripts/eval.sh cms make -f new_makefile run-celery) &
 
-    # make sanity test for all endpoints until it succeeds
-    logduration ./tests/sanity.sh 100
+    # make healthcheck for all endpoints until it succeeds
+    logduration ./tests/healthcheck.sh 100
     parse_duration_log $DURATION_LOG_NAME
 
     # cleanup

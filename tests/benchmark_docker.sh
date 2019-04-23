@@ -6,7 +6,7 @@ mkdir -p tmp/$TEST_NAME
 rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
 
 (
-    cd tmp/$TEST_NAME-docker/local-workspace
+    cd tmp/$TEST_NAME/local-workspace
     source scripts/config.sh
     export DURATION_LOG_NAME=$TEST_NAME
 
@@ -25,13 +25,11 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     # logduration  ./scripts/make_compose.sh compile-assets
     logduration ./scripts/make_compose.sh collect-assets
 
-    # run sanity check to put tasks on cold cache queue
-    logduration WAIT_UNTIL_OK=true ./tests/sanity.sh
     # run celery to process cold cache queue for 10 seconds
     nohup docker-compose exec cms bash -c "make -f new_makefile run-celery" &
 
-    # make sanity test for all endpoints until it succeeds
-    logduration ./tests/sanity.sh 100
+    # make healthcheck test for all endpoints until it succeeds
+    logduration ./tests/healthcheck.sh 100
     parse_duration_log $DURATION_LOG_NAME
 
     # cleanup

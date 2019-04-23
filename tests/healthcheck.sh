@@ -14,12 +14,13 @@ check_url_response_status() {
         if [ $STATUS_CODE = $REQ_STATUS_CODE ]; then
             echo "[OK] $URL"
         else
-            echo "[ERROR] $URL $STATUS_CODE != $REQ_STATUS_CODE"
             if [ $MAX_RETRIES = "-1" ] || [ $RETRIES != $MAX_RETRIES ]; then
                 RETRIES=$((1 + $RETRIES))
                 sleep 1
+                echo "    Retrying..."
                 continue
             fi
+            echo "[ERROR] $URL $STATUS_CODE != $REQ_STATUS_CODE"
         fi
         break
     done

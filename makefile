@@ -79,6 +79,8 @@ ultimate:
 	./scripts/make_host.sh collect-assets
 	make run-all
 
+run: run-dbs run-all
+
 ultimate-docker:
 	make clean-docker
 	./scripts/make_host.sh clean
@@ -91,6 +93,9 @@ ultimate-docker:
 	./scripts/make_compose.sh load-fixtures
 	# ./scripts/make_compose.sh compile-assets
 	./scripts/make_compose.sh collect-assets
+
+run-docker:
+	docker-compose up -d
 
 ultimate-host:
 	make clean-docker
