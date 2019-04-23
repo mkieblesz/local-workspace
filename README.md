@@ -240,15 +240,15 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 
 ## Test
 
-    To test host workflow please look at `tests/benchmark_host.sh` and `tests/benchmark_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
+To test host workflow please look at `tests/benchmark_host.sh` and `tests/benchmark_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
 
-    You need to pass CF_USERNAME and CF_PASSWORD to the script to test with pulling and loading cms fixtures, otherwise healtcheck is going to fail.
+You need to pass CF_USERNAME and CF_PASSWORD to the script to test with pulling and loading cms fixtures, otherwise healtcheck is going to fail.
 
-    ```bash
-    export CF_USERNAME=<cf-username>
-    export CF_PASSWOR="<cf-password>"
-    ./tests/benchmark_host.sh
-    ```
+```bash
+export CF_USERNAME=<cf-username>
+export CF_PASSWOR="<cf-password>"
+./tests/benchmark_host.sh
+```
 
 ## TODO
 
@@ -265,5 +265,5 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 
 ### Tasks for service repos
 
-* merge patches
+* merge patches and new files; update `new_<filename>` references
 * remove compiled assets from repos and put it to build artifacts
