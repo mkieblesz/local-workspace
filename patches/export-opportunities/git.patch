@@ -14,7 +14,7 @@ index 2bbf6555..0dac2069 100644
  
  # Canonical URL
 -DOMAIN: "http://localhost:3000"
-+DOMAIN: "http://opportunities.export.great:8002"
++DOMAIN: "http://opportunities.trade.great:8002/export-opportunities"
  
  # Sending email
  MAILER_HOST: "127.0.0.1"

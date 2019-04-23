@@ -117,7 +117,7 @@
     ```Text
     127.0.0.1     api.trade.great
     127.0.0.1     buyer.trade.great
-    127.0.0.1     opportunities.export.great
+    127.0.0.1     opportunities.trade.great
     127.0.0.1     sso.trade.great
     127.0.0.1     sso-proxy.trade.great
     127.0.0.1     supplier.trade.great

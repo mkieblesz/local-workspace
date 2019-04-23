@@ -5,7 +5,7 @@ Application = get_application_model()
 if Application.objects.count() == 0:
     Application.objects.create(
         name='export-opportunities',
-        redirect_uris='http://opportunities.export.great:8002/users/auth/exporting_is_great/callback',
+        redirect_uris='http://opportunities.trade.great:8002/export-opportunities/users/auth/exporting_is_great/callback',
         skip_authorization=True,
         client_type=Application.CLIENT_CONFIDENTIAL,
         authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,

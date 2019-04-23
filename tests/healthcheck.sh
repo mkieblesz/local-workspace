@@ -32,7 +32,7 @@ check_url_response_status() {
 
 check_url_response_status "api.trade.great:8000/admin/login/?next=/admin/"
 check_url_response_status "buyer.trade.great:8001/find-a-buyer/"
-check_url_response_status "opportunities.export.great:8002"
+check_url_response_status "opportunities.trade.great:8002/export-opportunities"
 check_url_response_status "sso.trade.great:8003/admin/" 401
 check_url_response_status "sso-proxy.trade.great:8004/sso/admin/login/?next=/sso/admin/"
 check_url_response_status "supplier.trade.great:8005/trade/"

@@ -29,7 +29,6 @@ work () {
         cd $REPO_DIR
     }
     export REPO_NAME=$(get_repo_name $1)
-    export REPO_IMAGE=$WORKSPACE_NAME/$REPO_NAME
     export REPO_DIR=$WORKSPACE_DIR/$REPO_NAME
 
     if [ -d $REPO_DIR/.venv ]; then
@@ -53,7 +52,6 @@ deactivate_repo () {
         deactivate
     fi
     unset REPO_DIR
-    unset REPO_IMAGE
     unset REPO_NAME
     unset -f cdrepo
     if [ ! "$1" = "nondestructive" ] ; then
