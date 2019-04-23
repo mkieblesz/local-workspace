@@ -22,6 +22,7 @@
         └───local-workspace             # THIS REPO
         │   │   docker-compose.yml      # used for managing all docker containers
         │   │   makefile                # workspace task management
+        │   │   repolist                # list of repos currently included in the workflow
         │   │
         │   └───docker                  # extra containers not having it's own repo in uktrade
         │   │   │
@@ -55,6 +56,11 @@
         │   │   make_parallel.sh        # executes make target for each repo on host in parallel
         │   │   patch.sh                # copies files and applies git patch to repos listed in patches/ directory
         │   │   update.sh               # pulls latest changes for each repo
+        │   |
+        │   └───logs
+        │   │   <number>.order_log      # file used to record last repo output which then is used by gnu parallel to multiplex output
+        │   │   common.duration_log     # timing of run commands using eval.sh and make_compose.sh scripts
+        │   │   <custom>.duration_log   # same as the above but used by benchmark scripts only
         │   |
         │   └───tmp
         │   │   |
@@ -231,6 +237,7 @@ TODO
 
 ### Tasks for this repo
 
+* inclue reset of the repos (in total should be ~20)
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * separate dbs to one dockerfile and apps to another, default is dbs
 * update readme to final version (recommended approach is dbs in docker and services on host)
