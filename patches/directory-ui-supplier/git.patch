@@ -1,18 +1,18 @@
 diff --git a/conf/settings.py b/conf/settings.py
-index 9abfc96e..8051ce73 100644
+index 2621a24d..9d18482c 100644
 --- a/conf/settings.py
 +++ b/conf/settings.py
-@@ -11,14 +11,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
+@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
  '''
  
  import os
 +import sys
  
  import environ
- from directory_constants.constants import cms
- import directory_healthcheck.backends
+ from directory_constants import cms
+@@ -18,7 +19,9 @@ import directory_healthcheck.backends
  
--
+ 
  env = environ.Env()
 -env.read_env()
 +env.read_env('.new_env')
