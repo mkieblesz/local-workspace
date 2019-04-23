@@ -27,7 +27,8 @@
         uktrade                         # workspace folder containing all repos from github.com/uktrade
         │
         └───local-workspace             # THIS REPO
-        │   │   docker-compose.yml      # used for managing all docker containers
+        │   │   docker-compose.yml      # used for managing all database containers
+        │   │   docker-compose.services.yml  # used for managing all service containers
         │   │   makefile                # workspace task management
         │   │   repolist                # list of repos currently included in the workflow
         │   │
@@ -181,7 +182,7 @@ Working on individual repos:
 * `ctrl+c` stops `<repo>` webserver
 * go back to tab where all services are running
 * `ctrl+c` kills runing servers
-* `make run-services` reruns all services
+* `make run` reruns all services
 * open new terminal tab
 
     ```bash
@@ -262,7 +263,6 @@ export CF_PASSWOR="<cf-password>"
 * make it work on mac
 * inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
-* separate dbs to one dockerfile and apps to another, default is dbs
 * implement rest of test and celery targets
 * implement rest of make targets if any left
 

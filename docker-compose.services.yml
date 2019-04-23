@@ -1,0 +1,205 @@
+version: '3.7'
+
+services:
+  api:
+    image: local-workspace/directory-api
+    build:
+      context: ../directory-api/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8000:8000'
+    env_file:
+      - ../directory-api/.new_env
+    volumes:
+      - '../directory-api:/usr/src/app'
+
+  buyer:
+    image: local-workspace/directory-ui-buyer
+    build:
+      context: ../directory-ui-buyer/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8001:8001'
+    env_file:
+      - ../directory-ui-buyer/.new_env
+    volumes:
+      - '../directory-ui-buyer:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - ssoproxy
+
+  exopps:
+    image: local-workspace/export-opportunities
+    build:
+      context: ../export-opportunities/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8002:8002'
+    env_file:
+      - ../export-opportunities/.new_env
+    volumes:
+      - '../export-opportunities:/usr/src/app'
+    depends_on:
+      - ssoproxy
+
+  sso:
+    image: local-workspace/directory-sso
+    build:
+      context: ../directory-sso/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8003:8003'
+    env_file:
+      - ../directory-sso/.new_env
+    volumes:
+      - '../directory-sso:/usr/src/app'
+      - '/usr/src/app/node_modules'
+
+  ssoproxy:
+    image: local-workspace/directory-sso-proxy
+    build:
+      context: ../directory-sso-proxy/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8004:8004'
+    env_file:
+      - ../directory-sso-proxy/.new_env
+    volumes:
+      - '../directory-sso-proxy:/usr/src/app'
+    depends_on:
+      - sso
+
+  supplier:
+    image: local-workspace/directory-ui-supplier
+    build:
+      context: ../directory-ui-supplier/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8005:8005'
+    env_file:
+      - ../directory-ui-supplier/.new_env
+    volumes:
+      - '../directory-ui-supplier:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - cms
+      - ssoproxy
+
+  profile:
+    image: local-workspace/directory-sso-profile
+    build:
+      context: ../directory-sso-profile/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8006:8006'
+    env_file:
+      - ../directory-sso-profile/.new_env
+    volumes:
+      - '../directory-sso-profile:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - cms
+      - ssoproxy
+
+  domestic:
+    image: local-workspace/great-domestic-ui
+    build:
+      context: ../great-domestic-ui/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8007:8007'
+    env_file:
+      - ../great-domestic-ui/.new_env
+    volumes:
+      - '../great-domestic-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - api
+      - cms
+      - formsapi
+      - ssoproxy
+
+  soo:
+    image: local-workspace/navigator
+    build:
+      context: ../navigator/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8008:8008'
+    env_file:
+      - ../navigator/.new_env
+    volumes:
+      - '../navigator:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - ssoproxy
+
+  cms:
+    image: local-workspace/directory-cms
+    build:
+      context: ../directory-cms/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8010:8010'
+    env_file:
+      - ../directory-cms/.new_env
+    volumes:
+      - '../directory-cms:/usr/src/app'
+
+  formsapi:
+    image: local-workspace/directory-forms-api
+    build:
+      context: ../directory-forms-api/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8011:8011'
+    env_file:
+      - ../directory-forms-api/.new_env
+    volumes:
+      - '../directory-forms-api:/usr/src/app'
+
+  invest:
+    image: local-workspace/invest-ui
+    build:
+      context: ../invest-ui/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8012:8012'
+    env_file:
+      - ../invest-ui/.new_env
+    volumes:
+      - '../invest-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - cms
+      - ssoproxy
+
+  international:
+    image: local-workspace/great-international-ui
+    build:
+      context: ../great-international-ui/
+      dockerfile: new_Dockerfile
+    network_mode: host
+    ports:
+      - '8013:8013'
+    env_file:
+      - ../great-international-ui/.new_env
+    volumes:
+      - '../great-international-ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    depends_on:
+      - cms
+      - formsapi
+      - ssoproxy

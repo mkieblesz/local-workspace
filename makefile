@@ -38,8 +38,12 @@ clean-docker: kill-docker
 	@sudo ./scripts/eval_all.sh chown -R $(USER):$(USER) .
 
 kill-docker:
-	docker-compose kill && docker-compose rm --force
+	docker-compose kill
+	docker-compose rm --force
 	docker-compose down
+	docker-compose -f docker-compose.services.yml kill
+	docker-compose -f docker-compose.services.yml rm --force
+	docker-compose -f docker-compose.services.yml down
 
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
@@ -53,7 +57,7 @@ recreate-dbs: drop-dbs create-dbs
 	@./scripts/make_host.sh load-fixtures
 
 run-dbs:
-	docker-compose up -d db redis es
+	docker-compose up -d
 	@until docker-compose exec --user postgres db pg_isready | \
 		grep -qm 1 "accepting connections"; do sleep 1; echo "Waiting for postgres" ; done
 	@echo "Postgres accepting connections"
@@ -61,16 +65,13 @@ run-dbs:
 		grep -qm 1 "200"; do sleep 1; echo "Waiting for elastic search" ; done
 	@echo "Elastic search accepting connections"
 
-run-services:
+run: run-dbs
 	@./scripts/make_parallel.sh run
 
-run: run-dbs run-services
-
 run-docker: run-dbs
-	docker-compose up -d
+	docker-compose -f docker-compose.services.yml up -d
 
 ultimate:
-	make clean-docker
 	./scripts/make_host.sh clean
 	make run-dbs
 	make create-dbs
@@ -81,7 +82,7 @@ ultimate:
 	./scripts/make_host.sh load-fixtures
 	# ./scripts/make_host.sh compile-assets
 	./scripts/make_host.sh collect-assets
-	make run-services
+	make run
 
 ultimate-docker:
 	make kill-docker
@@ -90,14 +91,13 @@ ultimate-docker:
 
 	make run-dbs
 	make create-dbs
-	docker-compose up -d
+	make run-docker
 	./scripts/make_compose.sh migrate
 	./scripts/make_compose.sh load-fixtures
 	# ./scripts/make_compose.sh compile-assets
 	./scripts/make_compose.sh collect-assets
 
 ultimate-host:
-	make clean-docker
 	./scripts/make_host.sh clean
 	# assuming dbs are already running
 	$(INIT_DBS)
@@ -108,4 +108,4 @@ ultimate-host:
 	./scripts/make_host.sh load-fixtures
 	# ./scripts/make_host.sh compile-assets
 	./scripts/make_host.sh collect-assets
-	make run-services
+	make run

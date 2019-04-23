@@ -18,15 +18,15 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     logduration make run-dbs
     logduration make create-dbs
 
-    logduration docker-compose build
-    logduration docker-compose up -d
+    logduration docker-compose -f docker-compose.services.yml build
+    logduration make run-docker
     logduration ./scripts/make_compose.sh migrate
     logduration ./scripts/make_compose.sh load-fixtures
     # logduration  ./scripts/make_compose.sh compile-assets
     logduration ./scripts/make_compose.sh collect-assets
 
     # run celery to process cold cache queue for 10 seconds
-    nohup docker-compose exec cms bash -c "make -f new_makefile run-celery" &
+    nohup docker-compose -f docker-compose.services.yml exec cms bash -c "make -f new_makefile run-celery" &
 
     # make healthcheck test for all endpoints until it succeeds
     logduration ./tests/healthcheck.sh 100
