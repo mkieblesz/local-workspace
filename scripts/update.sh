@@ -11,7 +11,9 @@ for REPO_NAME in "${REPO_LIST[@]}"; do
         git status
         echo "Fetching"
         git fetch
+        git stash
         echo "Pulling"
         git pull
+        git stash apply
     )
 done

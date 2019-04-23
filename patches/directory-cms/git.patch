@@ -1,15 +1,14 @@
 diff --git a/.gitignore b/.gitignore
-index 91dcd98..a1db25b 100644
+index 91dcd98..fe0b4a4 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -106,3 +106,7 @@ package-lock.json
+@@ -106,3 +106,6 @@ package-lock.json
  # Docker
  .env
  media
 +
 +# Database dump
 +fixtures/dump.json
-+fixtures/dump_last_migration
 diff --git a/conf/settings.py b/conf/settings.py
 index cfb3b39..d0d6ea3 100644
 --- a/conf/settings.py
