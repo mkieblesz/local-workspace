@@ -26,7 +26,7 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     logduration ./scripts/make_host.sh collect-assets
 
     # no point of logging duration of running processes
-    nohup make run-all &
+    nohup make run-services &
     # run celery to process cold cache queue for 10 seconds
     (nohup ./scripts/eval.sh cms make -f new_makefile run-celery) &
 

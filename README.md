@@ -27,7 +27,7 @@
         │   └───docker                  # extra containers not having it's own repo in uktrade
         │   │   │
         │   │   └───redis
-        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases binds to `redis` host
+        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases
         │   │   │   ...
         │   │
         │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
@@ -48,7 +48,7 @@
         │   └───scripts
         │   │   activate.sh             # used to activate working environment on host for repo
         │   │   clone.sh                # clones all repos defined in `repolist` file
-        │   │   config.sh               # updates WORKSPACE_DIR and WORKSPACE_REPO_DIR env vars
+        │   │   config.sh               # updates environment with utility functions and env vars
         │   │   eval_all.sh             # passed command will be executed inside all repositories
         │   │   eval.sh                 # passed command will be executed inside repository with activated environment
         │   │   make_compose.sh         # executes make target in docker container for each repo
@@ -144,11 +144,14 @@
 
 First run `make clone patch` to clone and patch all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
 
-### Services on host and dbs in docker
+### Services on hosts and dbs in docker
+
+It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine.
 
 Testing services:
 
 * `make ultimate` starts everything up
+* `./tests/healthcheck.sh -1` will finish once all services are running
 * browse services
 * `ctrl+c` from tab where services are running
 * `make kill-docker` shuts down db containers
@@ -168,7 +171,7 @@ Working on individual repos:
 * `ctrl+c` stops `<repo>` webserver
 * go back to tab where all services are running
 * `ctrl+c` kills runing servers
-* `make run-all` reruns all services
+* `make run-services` reruns all services
 * open new terminal tab
 
     ```bash
@@ -185,25 +188,28 @@ Working on individual repos:
 ### All in docker
 
 * `make ultimate-docker` sets everything up in docker
-* TODO
+* `./tests/healthcheck.sh -1` will finish once all services are running
+* browse services
+* `make clean-docker` will shut
 
 ### All on host
 
-TODO
+First ensure dbs are running on host and redis config enables to run 200 databases.
+
+* `make ultimate-host` sets everything up in docker
+* `./tests/healthcheck.sh -1` will finish once all services are running
+* browse services
+* `ctrl+c` kills runing servers
 
 ## Adding new service
 
-TODO
+* add git repo slug to repolist
+* add `patch/<service-name>` directory with new files and git patch which will have to be applied to repo
+* ensure structure of makefile is same as in other services, same goes for other files
+* add acronym to ACRONYM_MAP in `scripts/config.sh` file
+* add corresponding service to `docker-compose.yml` file
 
 ## Tips
-
-* debugging site-packages in docker
-
-    TODO
-
-* debugging with vscode
-
-    TODO
 
 * debugging broken command scripts
 

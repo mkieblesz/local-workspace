@@ -34,8 +34,7 @@ remove-installs:
 patch:
 	@./scripts/patch.sh
 
-clean-docker:
-	make kill-docker
+clean-docker: kill-docker
 	@sudo ./scripts/eval_all.sh chown -R $(USER):$(USER) .
 
 kill-docker:
@@ -62,8 +61,13 @@ run-dbs:
 		grep -qm 1 "200"; do sleep 1; echo "Waiting for elastic search" ; done
 	@echo "Elastic search accepting connections"
 
-run-all:
+run-services:
 	@./scripts/make_parallel.sh run
+
+run: run-dbs run-services
+
+run-docker: run-dbs
+	docker-compose up -d
 
 ultimate:
 	make clean-docker
@@ -77,25 +81,20 @@ ultimate:
 	./scripts/make_host.sh load-fixtures
 	# ./scripts/make_host.sh compile-assets
 	./scripts/make_host.sh collect-assets
-	make run-all
-
-run: run-dbs run-all
+	make run-services
 
 ultimate-docker:
 	make clean-docker
 	./scripts/make_host.sh clean
+	docker-compose build
+
 	make run-dbs
 	make create-dbs
-
-	docker-compose build
 	docker-compose up -d
 	./scripts/make_compose.sh migrate
 	./scripts/make_compose.sh load-fixtures
 	# ./scripts/make_compose.sh compile-assets
 	./scripts/make_compose.sh collect-assets
-
-run-docker:
-	docker-compose up -d
 
 ultimate-host:
 	make clean-docker
@@ -109,4 +108,4 @@ ultimate-host:
 	./scripts/make_host.sh load-fixtures
 	# ./scripts/make_host.sh compile-assets
 	./scripts/make_host.sh collect-assets
-	make run-all
+	make run-services
