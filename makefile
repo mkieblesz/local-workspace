@@ -84,7 +84,7 @@ ultimate:
 	make run-services
 
 ultimate-docker:
-	make clean-docker
+	make kill-docker
 	./scripts/make_host.sh clean
 	docker-compose build
 
