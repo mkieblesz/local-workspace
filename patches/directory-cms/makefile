@@ -1,5 +1,3 @@
-LAST_MIGRATION_NAME=$(shell test -f fixtures/dump_last_migration && cat fixtures/dump_last_migration)
-
 clean:
 	find . -type d -name __pycache__ | xargs rm -rf
 
@@ -9,9 +7,8 @@ install-python:
 install: install-python
 
 migrate:
-	# run migration up to LAST_MIGRATION_NAME or all
-	python manage.py distributed_migrate --noinput $(LAST_MIGRATION_NAME)
-	python manage.py migrate_translation --noinput $(LAST_MIGRATION_NAME)
+	python manage.py distributed_migrate --noinput
+	python manage.py migrate_translation --noinput
 
 load-fixtures:
 	./scripts/load_fixtures.sh

@@ -24,15 +24,6 @@ VERSION=$(cf curl /v2/info | jq -r .version)
 # get single use access code which will be passed to scp
 sshpass -v -p $(cf ssh-code) scp -P 2222 -o User=cf:$GUID/$VERSION $SSH_ENDPOINT:/home/vcap/dump.json fixtures/dump.json
 
-# get last migration
-read -r -d '' LAST_MIGRATION_SCRIPT << EOM
-from django.db.migrations.recorder import MigrationRecorder
-last_migration = MigrationRecorder.Migration.objects.latest('id')
-print('{} {}'.format(last_migration.app, last_migration.name))
-EOM
-LAST_MIGRATION_NAME=$(cf ssh directory-cms-dev -c "deps/0/bin/python3.6 app/manage.py shell < <(echo \"$LAST_MIGRATION_SCRIPT\")" | sed '$!d')
-echo $LAST_MIGRATION_NAME > fixtures/dump_last_migration
-
 # logout from cloud foundry
 unset CF_USERNAME
 unset CF_PASSWORD

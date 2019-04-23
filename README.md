@@ -254,7 +254,7 @@ export CF_PASSWOR="<cf-password>"
 
 ### Tasks for this repo
 
-* inclue reset of the repos (in total should be ~20)
+* inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * separate dbs to one dockerfile and apps to another, default is dbs
 * update readme to final version (recommended approach is dbs in docker and services on host)
