@@ -158,7 +158,10 @@ It's recommended to run dbs in docker with the use of docker compose and service
 Testing services:
 
 * `make ultimate` starts everything up
-* `./tests/healthcheck.sh -1` will finish once all services are running
+* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
+* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/healthcheck.sh` should succeed
 * browse services
 * `ctrl+c` from tab where services are running
 * `make kill-docker` shuts down db containers
@@ -195,7 +198,10 @@ Working on individual repos:
 ### All in docker
 
 * `make ultimate-docker` sets everything up in docker
-* `./tests/healthcheck.sh -1` will finish once all services are running
+* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
+* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/healthcheck.sh` should succeed
 * browse services
 * `make clean-docker` will shut
 
@@ -204,7 +210,10 @@ Working on individual repos:
 First ensure dbs are running on host and redis config enables to run 200 databases.
 
 * `make ultimate-host` sets everything up in docker
-* `./tests/healthcheck.sh -1` will finish once all services are running
+* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
+* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/healthcheck.sh` should succeed
 * browse services
 * `ctrl+c` kills runing servers
 
