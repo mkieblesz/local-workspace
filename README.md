@@ -259,14 +259,12 @@ export CF_PASSWOR="<cf-password>"
 
 ### Tasks for this repo
 
+* make it work on mac
 * inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * separate dbs to one dockerfile and apps to another, default is dbs
-* update readme to final version (recommended approach is dbs in docker and services on host)
-* implement celery targets and add them to ultimate targets in main makefile
-* implement rest of test targets
+* implement rest of test and celery targets
 * implement rest of make targets if any left
-* make it work on mac
 
 ### Tasks for service repos
 
