@@ -65,8 +65,10 @@ run-dbs:
 		grep -qm 1 "200"; do sleep 1; echo "Waiting for elastic search" ; done
 	@echo "Elastic search accepting connections"
 
-run: run-dbs
+run-services:
 	@./scripts/make_parallel.sh run
+
+run: run-dbs run-services
 
 run-docker: run-dbs
 	docker-compose -f docker-compose.services.yml up -d
@@ -108,4 +110,4 @@ ultimate-host:
 	./scripts/make_host.sh load-fixtures
 	# ./scripts/make_host.sh compile-assets
 	./scripts/make_host.sh collect-assets
-	make run
+	make run-services
