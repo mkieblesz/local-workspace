@@ -14,7 +14,18 @@
 
     * check out for more in [todos](#todo)
 
-3. Directory structure for uktrade workspace assumed by this repo.
+3. Repo updates.
+
+    * running management commands and tests from command line with no worry about environment variables
+
+        * .env file is separated out of makefile, activated by activate command, all/most of them point to local services
+        * .env.test file is separated out of makefile and explicitly imported in settings so can run tests from command lin
+
+    * dockerfiles for all services only to be built and used locally
+    * updated makefile structure, more or less following `https://github.com/getsentry/sentry/blob/master/Makefile`
+    * added fixtures necessary with initial user and landing pages in cms
+
+4. Directory structure for uktrade workspace assumed by this repo.
 
     ```text
         uktrade                         # workspace folder containing all repos from github.com/uktrade
@@ -87,7 +98,7 @@
 
 1. Ensure system requirements are met.
 
-    Run `./tests/check_requirements.sh` to ensure all requirements are met.
+    Run `./tests/requirements.sh` to ensure all requirements are met.
 
     * `python>=3.6`
     * `ruby==2.5.5` with `bundler` gem
@@ -247,7 +258,6 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * separate dbs to one dockerfile and apps to another, default is dbs
 * update readme to final version (recommended approach is dbs in docker and services on host)
-* make run all in docker with sanity check work (exoops, directory-sso-profile)
 * implement celery targets and add them to ultimate targets in main makefile
 * implement rest of test targets
 * implement rest of make targets if any left
