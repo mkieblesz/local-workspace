@@ -7,8 +7,8 @@
     These features where tested on Ubuntu 18.04 only.
 
     * from cloning this repo to browsing development version of all services defined in `repolist` with one command
-    * `dbs in docker + services on host` and `docker only` workflows
-    * check out for more in [usage workflows](#usage)
+    * `dbs in docker + services on host`, `docker only` and `host only (not tested)` workflows
+    * check out for more in [first run](#first-run)
 
 2. Repo updates.
 
@@ -148,34 +148,32 @@
 
     Once fixtures are present running won't make an effect.
 
-## Usage
+## First run
 
-First run `make clone patch` to clone and patch all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
+`make clone patch` to clone and patch all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
 
-### Services on hosts and dbs in docker
+It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine, more resources available etc. On the other hand you will have to have all repo requirements satisfied on local.
 
-It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine.
-
-Testing services:
-
-* `make ultimate` starts everything up
+* `make ultimate` starts everything up; will take up to 1 hour, mainly because of cms migrations
 * `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
 * `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
 * `./tests/healthcheck.sh` should succeed
 * browse services
 * `ctrl+c` from tab where services are running
-* `make kill-docker` shuts down db containers
+* `make kill-dbs` shuts down db containers
 
-Working on individual repos:
+From now on when starting working task you just need to comment out irrelevant services to your work from `repolist` file. After that just run `make run` and it will start db containers and services on host.
 
-* `make ultimate` starts everything up
+Here is an example workflow:
+
+* `make run` starts everything up
 * open new terminal tab
 
     ```bash
     source scripts/activate.sh
     work <repo>
-    fuser -k $PORT/tcp
+    fuser -k $PORT/tcp  # stops running server so you can debug directly
     make -f new_makefile run
     ```
 
@@ -194,19 +192,21 @@ Working on individual repos:
 
 * `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
-* `make kill-docker` shuts down db containers
+* `make kill-dbs` shuts down db containers
 
-### All in docker
+## First run in docker
 
 * `make ultimate-docker` sets everything up in docker
 * `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
-* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
 * `./tests/healthcheck.sh` should succeed
 * browse services
-* `make clean-docker` will shut
+* `make clean-docker` will shut down service and db containers and chown with current user all repos defined in the list
 
-### All on host
+Accordingly to [first run](#first-run) when starting working on the task just run dbs and service containers for repos defined in `repolist` with `make run-docker`.
+
+## First run all on host
 
 First ensure dbs are running on host and redis config enables to run 200 databases.
 
@@ -218,13 +218,15 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 * browse services
 * `ctrl+c` kills runing servers
 
+Accordingly to [first run](#first-run) when starting working on the task just run services for repos defined in `repolist` with `make run-services`.
+
 ## Adding new service
 
 * add git repo slug to repolist
 * add `patch/<service-name>` directory with new files and git patch which will have to be applied to repo
 * ensure structure of makefile is same as in other services, same goes for other files
 * add acronym to ACRONYM_MAP in `scripts/config.sh` file
-* add corresponding service to `docker-compose.yml` file
+* add corresponding service to `docker-compose.services.yml` file
 
 ## Tips
 
