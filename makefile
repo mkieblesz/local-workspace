@@ -34,17 +34,6 @@ remove-installs:
 patch:
 	@./scripts/patch.sh
 
-clean-docker: kill-docker
-	@sudo ./scripts/eval_all.sh chown -R $(USER):$(USER) .
-
-kill-docker:
-	docker-compose kill
-	docker-compose rm --force
-	docker-compose down
-	docker-compose -f docker-compose.services.yml kill
-	docker-compose -f docker-compose.services.yml rm --force
-	docker-compose -f docker-compose.services.yml down
-
 create-dbs:
 	docker-compose exec --user postgres db bash -c "$(INIT_DBS)"
 
@@ -55,6 +44,19 @@ drop-dbs:
 recreate-dbs: drop-dbs create-dbs
 	@./scripts/make_host.sh migrate
 	@./scripts/make_host.sh load-fixtures
+
+kill-dbs:
+	docker-compose kill
+	docker-compose rm --force
+	docker-compose down
+
+kill-docker:
+	docker-compose -f docker-compose.services.yml kill
+	docker-compose -f docker-compose.services.yml rm --force
+	docker-compose -f docker-compose.services.yml down
+
+clean-docker: kill-dbs kill-docker
+	@sudo ./scripts/eval_all.sh chown -R $(USER):$(USER) .
 
 run-dbs:
 	docker-compose up -d
@@ -71,7 +73,7 @@ run-services:
 run: run-dbs run-services
 
 run-docker: run-dbs
-	docker-compose -f docker-compose.services.yml up -d
+	./scripts/run_docker.sh
 
 ultimate:
 	./scripts/make_host.sh clean
@@ -87,17 +89,17 @@ ultimate:
 	make run
 
 ultimate-docker:
-	make kill-docker
+	make kill-dbs
 	./scripts/make_host.sh clean
 	docker-compose build
 
 	make run-dbs
 	make create-dbs
 	make run-docker
-	./scripts/make_compose.sh migrate
-	./scripts/make_compose.sh load-fixtures
-	# ./scripts/make_compose.sh compile-assets
-	./scripts/make_compose.sh collect-assets
+	./scripts/make_docker.sh migrate
+	./scripts/make_docker.sh load-fixtures
+	# ./scripts/make_docker.sh compile-assets
+	./scripts/make_docker.sh collect-assets
 
 ultimate-host:
 	./scripts/make_host.sh clean

@@ -20,10 +20,10 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
 
     logduration docker-compose -f docker-compose.services.yml build
     logduration make run-docker
-    logduration ./scripts/make_compose.sh migrate
-    logduration ./scripts/make_compose.sh load-fixtures
-    # logduration  ./scripts/make_compose.sh compile-assets
-    logduration ./scripts/make_compose.sh collect-assets
+    logduration ./scripts/make_docker.sh migrate
+    logduration ./scripts/make_docker.sh load-fixtures
+    # logduration  ./scripts/make_docker.sh compile-assets
+    logduration ./scripts/make_docker.sh collect-assets
 
     # run celery to process cold cache queue for 10 seconds
     nohup docker-compose -f docker-compose.services.yml exec cms bash -c "make -f new_makefile run-celery" &

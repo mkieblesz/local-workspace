@@ -8,7 +8,7 @@ for REPO_NAME in "${REPO_LIST[@]}"; do
     # only for repos for which make target exists
     if [ -f "$REPO_DIR/new_makefile" ] && grep -Fq "$1:" $REPO_DIR/new_makefile; then
         logduration \
-            docker-compose -f $WORKSPACE_REPO_DIR/docker-compose.services.yml exec "$(get_repo_acronym $REPO_NAME)" \
+            docker-compose -f docker-compose.services.yml exec "$(get_repo_acronym $REPO_NAME)" \
             make -f new_makefile $1
     fi
 done

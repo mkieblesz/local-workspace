@@ -59,7 +59,7 @@
         │   │   config.sh               # updates environment with utility functions and env vars
         │   │   eval_all.sh             # passed command will be executed inside all repositories
         │   │   eval.sh                 # passed command will be executed inside repository with activated environment
-        │   │   make_compose.sh         # executes make target in docker container for each repo
+        │   │   make_docker.sh          # executes make target in docker container for each repo
         │   │   make_host.sh            # executes make target for each repo on host
         │   │   make_parallel.sh        # executes make target for each repo on host in parallel
         │   │   patch.sh                # copies files and applies git patch to repos listed in patches/ directory
@@ -67,7 +67,7 @@
         │   |
         │   └───logs
         │   │   <number>.order_log      # file used to record last repo output which then is used by gnu parallel to multiplex output
-        │   │   common.duration_log     # timing of run commands using eval.sh and make_compose.sh scripts
+        │   │   common.duration_log     # timing of run commands using eval.sh and make_docker.sh scripts
         │   │   <custom>.duration_log   # same as the above but used by benchmark scripts only
         │   |
         │   └───tmp
@@ -260,11 +260,12 @@ export CF_PASSWOR="<cf-password>"
 
 ### Tasks for this repo
 
+* implement rest of test and celery targets
+* implement rest of make targets if any left
 * make it work on mac
 * inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
-* implement rest of test and celery targets
-* implement rest of make targets if any left
+* consider removing docker stuff (just leave main compose for running dbs) from workflows (just leave ultimate and ultimate-host)
 
 ### Tasks for service repos
 

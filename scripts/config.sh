@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p tmp logs
 
 # variables used across scripts/*
