@@ -241,7 +241,7 @@ First ensure dbs are running on host and redis config enables to run 200 databas
     Docker creates container from image for the first time you run it, after it reuses container unless specified differently. Sometimes it's usefull to just remove all containers.
 
     ```bash
-    docker rm -v $(docker ps -a | awk '{print $1}' | sed "1 d")
+    docker rm -f -v $(docker ps -a | awk '{print $1}' | sed "1 d")
     ```
 
 ## Test
