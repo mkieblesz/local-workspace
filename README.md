@@ -101,7 +101,7 @@ When cloning repos version name is taken into account - each line of repolist fi
 
 This step is necessary to run some services, mainly to serve landing pages which are stored in cms database.
 
-To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry `directory-cms-dev` app in `directory-dev` space to create dump.
+To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry `directory-cms-dev` app in `directory-dev` space to create fixture dump and scp it to local.
 
 ```bash
 export $CF_USERNAME=<your-username>
