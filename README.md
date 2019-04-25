@@ -5,7 +5,7 @@ This repo aims making it easier setup and develop uktrade apps on your local wor
 1. [Design Goals](#design-goals)
 2. [Setup](#setup)
 3. [First run](#first-run)
-4. [Usage](#usage)
+4. [Next run](#next-run)
 5. [Contributing](#contributing)
 
 ## Design goals
@@ -14,21 +14,29 @@ This repo aims making it easier setup and develop uktrade apps on your local wor
 * erase everything and respawn with no issues
 * simple and clear setup process for new developers
 * different types of workflows
-    * dbs in docker and services on host
-    * all in docker
-    * all on host
-* local environment as close as possible to production
+    * [recommended](#recommended) - dbs in docker, services on host
+    * [host only](#host-only)
+    * [docker only](#docker-only)
+* local environment as close as possible to dev
 * ability to run predefined set of services on host and docker (currently 13 services)
 * transparent command execution, whatever is executed from this repo can be executed from service repo
 * ease of [integrating new repos](#integrating-new-service)
 * flat and simple [file stricture](#file-stricture)
 
-To allow all of the above happen some designe goals were set for each service repo.
+Also some designe goals were set for each service repo.
 
-* running all management commands from command line without worry about env vars
-* new makefile as local management interface, structure same for all repos regardless of language
-* cleary defined steps of development
-* full fixture setup same as development environment
+* ability to run commands from makefile directly in command line without worrying about env vars
+* cleary defined steps of development via new makefile as local management interface
+    * clean
+    * install
+    * migrate
+    * load fixtures (as similar as possible to dev)
+    * compile assets
+    * collect assets
+    * run
+    * run-celery
+    * (do development)
+    * test (`lint-<language>` and `test-<language>`)
 
 ## Setup
 
@@ -39,14 +47,14 @@ Before jumping into developing uktrade service ensure you understand what is req
 Running `./tests/check_requirements.sh` will check if you have all dependencies installed.
 
 * `python>=3.6`
-* `ruby==2.5.5` with `bundler` gem
+* `ruby==2.5.5` with `bundler==1.16.6` gem
 * `node==8.x`
 * `GNU parallel` used for running commands in parallel
 * `cf` cloud foundry for pulling cms fixtures from dev environment
 * `jq` for extracting json keys from command output
 * `curl` for making http requests from command line
 
-Having docker installed is not necessary, but highly recommended.
+Having docker is necessary for recommended and docker only workflows.
 
 * `docker>=18.09.3`
 * `docker-compose>=1.22.0`
@@ -59,7 +67,7 @@ In case you don't want to use docker you will have to install and manage databas
 
 ### Host file changes
 
-Also you will have to update your hosts file, most likely located in `/etc/hosts`.
+Update hosts file, most likely located in `/etc/hosts` with following lines.
 
     127.0.0.1     api.trade.great
     127.0.0.1     buyer.trade.great
@@ -75,7 +83,7 @@ Also you will have to update your hosts file, most likely located in `/etc/hosts
     127.0.0.1     international.trade.great
     127.0.0.1     invest.trade.great
 
-### Repository list file
+### Repolist file
 
 By default all services are included into your workflow, defined in `repolist` file. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
 
@@ -83,15 +91,15 @@ By default all services are included into your workflow, defined in `repolist` f
 export REPO_LIST_FILENAME=repolist-soo
 ```
 
-This will use `repolist-soo` as sourcefile for repolist.
+This will replace default `repolist` file to `repolist-soo` as source for repository definition..
 
-When cloning repos version name is taken into account - each line of repolist file follows `<repo-name>@<version>` format. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
+When cloning repos version name is taken into account - each line of repolist file follows `<repo-name>@<version>` format. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default github branch is pulled.
 
 ### Cms fixtures
 
 This step is necessary to run some services, mainly to serve landing pages which are stored in cms database.
 
-To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry directory-cms-dev app in directory-dev space to create dump.
+To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry `directory-cms-dev` app in `directory-dev` space to create dump.
 
 ```bash
 export $CF_USERNAME=<your-username>
@@ -99,40 +107,26 @@ export $CF_PASSWORD="<your-password>"
 ./scripts/eval.sh cms ./scripts/pull_fixtures.sh
 ```
 
-Once fixtures are present running won't make an effect.
+Once fixtures are downloaded running this script again won't make an effect.
 
 ## First run
 
 `make clone patch` to clone and patch all repos defined in repolist file. After finishing follow steps for workflow of your choice.
 
-* [Default](#default) dbs in docker, services on host
-* [Docker only](#docker-only) everything in docker
-* [Host only](#host-only) everything on host
-
-### Default
+### Recommended
 
 It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine, more resources available etc. On the other hand you will have to have all repo requirements satisfied on local.
 
 * `make ultimate` starts everything up; will take up to 1 hour, mainly because of cms migrations
-* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
-* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `./tests/check_ready.sh` will check if services are ready for browsing, this should fail because cold cache is not populated
+* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate cold cache
 * `ctrl+c` to quit celery
 * `./tests/check_ready.sh` should succeed
-* browse services
+* (do development/browse services)
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
 From now on when starting working task you just need to comment out irrelevant services to your work from `repolist` file. After that just run `make run` and it will start db containers and services on host.
-
-### Docker only
-
-* `make ultimate-docker` sets everything up in docker
-* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
-* `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
-* `ctrl+c` to quit celery
-* `./tests/check_ready.sh` should succeed
-* browse services
-* `make clean-docker` will shut down service and db containers and chown with current user all repos defined in the list
 
 ### Host only
 
@@ -143,19 +137,29 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 * `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
 * `./tests/check_ready.sh` should succeed
-* browse services
+* (do development/browse services)
 * `ctrl+c` kills runing servers
 
-## Usage
+### Docker only
 
-This is example workflow for databases in docker, services on host (default).
+* `make ultimate-docker` sets everything up in docker
+* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
+* `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/check_ready.sh` should succeed
+* (do development/browse services)
+* `make clean-docker` will shut down service and db containers and chown with current user all repos defined in the list
+
+## Next run
+
+This is example of recommended workflow.
 
 * `make run` starts everything up
 * open new terminal tab
 
     ```bash
     source scripts/activate.sh
-    work <repo>
+    work <repo>  # source repository environment variables and changes directory to repo
     fuser -k $PORT/tcp  # stops running server so you can debug directly
     make -f new_makefile run
     ```
@@ -177,7 +181,7 @@ This is example workflow for databases in docker, services on host (default).
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
-Please refer to makefile for instructions for each workflow.
+For more specific please refer to `makefile`.
 
 ### Tips
 
@@ -201,11 +205,11 @@ Please refer to makefile for instructions for each workflow.
 
 ### Testing
 
-When contributing ensure that entire setup works both for host and docker workflows. Please
+When contributing ensure that entire setup works both for host and docker workflows.
 
-To test host workflow please look at `tests/test_host.sh` and `tests/test_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
+To test workflows please look at `tests/test_host.sh` and `tests/test_docker.sh` scripts. Running them will copy this repository to temporary location and run full workflow setup with timing.
 
-You need to pass CF_USERNAME and CF_PASSWORD to the script to test with pulling and loading cms fixtures, otherwise healtcheck is going to fail.
+You need to pass `CF_USERNAME` and `CF_PASSWORD` to the script to test with pulling and loading cms fixtures, otherwise healtchech at the end will fail since services need landing pages to be present in cms database.
 
 ```bash
 export CF_USERNAME=<cf-username>
@@ -215,7 +219,7 @@ export CF_PASSWOR="<cf-password>"
 
 ### Integrating new service
 
-* add git repo slug to `repolist`, perhaps add `repolist-<service-name>` file with repos which are required to be running when developing `service-name`
+* add git repo slug to `repolist`, perhaps add `repolist-<service-acronym>` file with repos which are required to be running when developing `<service-name>`
 * add `patch/<service-name>` directory with new files and git patch which will have to be applied to repo
 * add acronym to ACRONYM_MAP in `scripts/config.sh` file
 * add corresponding service to `docker-compose.services.yml` file
