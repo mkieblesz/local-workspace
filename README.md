@@ -1,6 +1,6 @@
 # local-workspace
 
-This repo aims making it easier setup and develop uktrade apps on your local workspace.
+This repo aims to make setup and development of uktrade apps easier and faster.
 
 1. [Design Goals](#design-goals)
 2. [Setup](#setup)
