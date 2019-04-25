@@ -278,7 +278,8 @@ export CF_PASSWOR="<cf-password>"
     │   │   |
     │   │   └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
     │   |   |
-    │   |   |   ...
+    │   |   |   ultimate            # directory created by `tests/test_host.sh` script with setup of entire workspace
+    │   |   |   ultimate-docker     # directory created by `tests/test_docker.sh` script with setup of entire workspace
     │   |
     │   └───tests
     │   │   test_docker.sh          # tests entire setup from ground up for all in docker
