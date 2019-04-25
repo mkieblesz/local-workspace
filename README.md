@@ -160,7 +160,12 @@ This is example of recommended workflow.
     ```bash
     source scripts/activate.sh
     work <repo>  # source repository environment variables and changes directory to repo
-    fuser -k $PORT/tcp  # stops running server so you can debug directly
+    ```
+
+    Now you can run any commands without worrying about environment variables. To go into debugger mode you will have to start server in this terminal.
+
+    ```bash
+    fuser -k $PORT/tcp  # stops running server being run by parallel so you can debug directly
     make -f new_makefile run
     ```
 
