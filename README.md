@@ -154,12 +154,11 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 
 This is example of recommended workflow.
 
-* `make run` starts everything up
+* `make run` starts everything up (dbs and services) or `make run-dbs` if you only need to work on one service
 * open new terminal tab
 
     ```bash
-    source scripts/activate.sh
-    work <repo>  # source repository environment variables and changes directory to repo
+    source scripts/activate.sh <repo-name-or-acronym>  # source repository environment variables and changes directory to repo
     ```
 
     Now you can run any commands without worrying about environment variables. To go into debugger mode you will have to start server in this terminal.
@@ -169,30 +168,22 @@ This is example of recommended workflow.
     make -f new_makefile run
     ```
 
-* `ctrl+c` stops `<repo>` webserver
-* go back to tab where all services are running
-* `ctrl+c` kills runing servers
-* `make run` reruns all services
-* open new terminal tab
+    Now you can go into debugger. Once `./scripts/activate.sh` was run you can change environment to another repo with `work` function.
 
     ```bash
-    source scripts/activate.sh
-    work <another-repo>
-    fuser -k $PORT/tcp
-    make -f new_makefile run
+    work <anotehr-repo>  # deactivates current environment and sources another
     ```
 
-* `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
-For more specific please refer to `makefile`.
+Please refer to `makefile` for more options.
 
 ### Tips
 
-* debugging broken command scripts
+* debugging container not starting because of broken command script
 
-    When container has problems starting override default command in service definition in `docker-compose.yml` file and exec into container to debug.
+    When container has problems starting override default command in service definition in `docker-compose.services.yml` file and exec into container to debug.
 
     ```yml
     command: /bin/bash -x -c 'while true; do sleep 60; done'
@@ -200,7 +191,7 @@ For more specific please refer to `makefile`.
 
 * removing all containers
 
-    Docker creates container from image for the first time you run it, after it reuses container unless specified differently. Sometimes it's usefull to just remove all containers.
+    Docker creates container from image for the first time you run it, after it reuses container unless specified differently. Sometimes it's usefull to just remove all containers so all of them will get recreated after next run.
 
     ```bash
     docker rm -f -v $(docker ps -a | awk '{print $1}' | sed "1 d")
