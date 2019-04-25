@@ -180,7 +180,8 @@ This is example of recommended workflow.
     # uktrade functions
     work() {
         cd /home/mateusz/Projects/uktrade-workspace/local-workspace
-        source scripts/activate.sh $1
+        source scripts/activate.sh
+        work $1
     }
     ```
 
