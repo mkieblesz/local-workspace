@@ -28,8 +28,8 @@ rsync -av --exclude='tmp' --exclude='.git' . tmp/$TEST_NAME/local-workspace
     # run celery to process cold cache queue for 10 seconds
     nohup docker-compose -f docker-compose.services.yml exec cms bash -c "make -f new_makefile run-celery" &
 
-    # make healthcheck test for all endpoints until it succeeds
-    logduration ./tests/healthcheck.sh 100
+    # make healthcheck test for all endpoints until it succeeds (100 retries)
+    logduration ./tests/check_ready.sh 100
     parse_duration_log $DURATION_LOG_NAME
 
     # cleanup
