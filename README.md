@@ -176,6 +176,16 @@ This is example of recommended workflow.
     work <anotehr-repo>  # deactivates current environment and sources another
     ```
 
+    You can also add work function to your `.profile` so you will be able to activate working environment from any directory in command line.
+
+    ```bash
+    # uktrade functions
+    work() {
+        cd /home/mateusz/Projects/uktrade-workspace/local-workspace
+        source scripts/activate.sh $1
+    }
+    ```
+
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
