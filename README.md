@@ -1,120 +1,62 @@
 # local-workspace
 
-## Intro
+This repo aims making it easier setup and develop uktrade apps on your local workspace.
 
-1. Features.
+1. [Design Goals](#design-goals)
+2. [Setup](#setup)
+3. [First run](#first-run)
+4. [Usage](#usage)
+5. [Contributing](#contributing)
 
-    These features where tested on Ubuntu 18.04 only.
+## Design goals
 
-    * from cloning this repo to browsing development version of all services defined in `repolist` with one command
-    * `dbs in docker + services on host`, `docker only` and `host only (not tested)` workflows
-    * check out for more in [first run](#first-run)
+* single command starts everything from no database to **ready to browse state**
+* erase everything and respawn with no issues
+* simple and clear setup process for new developers
+* local environment as close as possible to production
+* ability to run predefined set of services on host and docker (currently 13 services)
+* transparent command execution, whatever is executed from this repo can be executed from service repo
+* ease of [integrating new repos](#integrating-new-service)
+* flat and simple [file stricture](#file-stricture)
 
-2. Repo updates.
+To allow all of the above happen some designe goals were set for each service repo.
 
-    * running management commands and tests from command line with no worry about environment variables
-
-        * .env file is separated out of makefile, activated by activate command, all/most of them point to local services
-        * .env.test file is separated out of makefile and explicitly imported in settings so can run tests from command lin
-
-    * dockerfiles for all services only to be built and used locally
-    * updated makefile structure, more or less following `https://github.com/getsentry/sentry/blob/master/Makefile`
-    * added fixtures necessary to explore services with authenticated user and cms pages
-
-3. Directory structure for uktrade workspace assumed by this repo.
-
-    ```text
-        uktrade                         # workspace folder containing all repos from github.com/uktrade
-        │
-        └───local-workspace             # THIS REPO
-        │   │   docker-compose.yml      # used for managing all database containers
-        │   │   docker-compose.services.yml  # used for managing all service containers
-        │   │   makefile                # workspace task management
-        │   │   repolist                # list of repos currently included in the workflow
-        │   │
-        │   └───docker                  # extra containers not having it's own repo in uktrade
-        │   │   │
-        │   │   └───redis
-        │   │   │   redis.conf          # modified default redis config, enables up to 200 databases
-        │   │   │   ...
-        │   │
-        │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
-        │   │   │
-        │   |   └───directory-api
-        │   │   │   makefile            # makefile is in each repo updated and simplified
-        │   │   │   .env                # env variables for local dev
-        │   │   │   .env.test           # extra env variables required for testing
-        │   │   │   git.patch           # git patch which will need to be made for the repo
-        │   │   │   ...
-        │   │   │
-        │   |   └───directory-cms
-        │   │   │
-        │   |   └───great-domestic-ui
-        │   |   |
-        │   |   |   ...
-        │   |
-        │   └───scripts
-        │   │   activate.sh             # used to activate working environment on host for repo
-        │   │   clone.sh                # clones all repos defined in `repolist` file
-        │   │   config.sh               # updates environment with utility functions and env vars
-        │   │   eval_all.sh             # passed command will be executed inside all repositories
-        │   │   eval.sh                 # passed command will be executed inside repository with activated environment
-        │   │   make_docker.sh          # executes make target in docker container for each repo
-        │   │   make_host.sh            # executes make target for each repo on host
-        │   │   make_parallel.sh        # executes make target for each repo on host in parallel
-        │   │   patch.sh                # copies files and applies git patch to repos listed in patches/ directory
-        │   │   update.sh               # pulls latest changes for each repo
-        │   |
-        │   └───logs
-        │   │   <number>.order_log      # file used to record last repo output which then is used by gnu parallel to multiplex output
-        │   │   common.duration_log     # timing of run commands using eval.sh and make_docker.sh scripts
-        │   │   <custom>.duration_log   # same as the above but used by benchmark scripts only
-        │   |
-        │   └───tmp
-        │   │   |
-        │   │   └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
-        │   |   |
-        │   |   |   ...
-        │   |
-        │   └───tests
-        │   │   benchmark_docker.sh     # tests entire setup from ground up for all in docker
-        │   │   benchmark_host.sh       # tests entire setup from ground up for dbs in docker rest on host
-        │   │   requirements.sh         # checks if system requirements are met
-        │   │   healthcheck.sh               # healthchecks running services
-        │
-        └───directory-api
-        │
-        └───directory-cms
-        │
-        └───great-domestic-ui
-        |
-        |   ...
-    ```
+* running all management commands from command line without worry about env vars
+* new makefile as local management interface, structure same for all repos regardless of language
+* cleary defined steps of development
+* full fixture setup same as development environment
 
 ## Setup
 
-1. Ensure system requirements are met.
+Before jumping into developing uktrade service ensure you understand what is required.
 
-    Run `./tests/requirements.sh` to ensure all requirements are met.
+### Program dependencies
 
-    * `python>=3.6`
-    * `ruby==2.5.5` with `bundler` gem
-    * `node==8.x`
-    * `GNU parallel` used for running commands in parallel
-    * `jq` used for extracting json keys from command line
+Running `./tests/check_requirements.sh` will check if you have all dependencies installed.
 
-    Add following when using docker:
-    * `docker>=18.09.3`
-    * `docker-compose>=1.22.0`
+* `python>=3.6`
+* `ruby==2.5.5` with `bundler` gem
+* `node==8.x`
+* `GNU parallel` used for running commands in parallel
+* `cf` cloud foundry for pulling cms fixtures from dev environment
+* `jq` for extracting json keys from command output
+* `curl` for making http requests from command line
 
-    Add following when running everything on host:
-    * `postgresql==9.5`
-    * `redis==3.2.12`
-    * `elasticsearch==5.6.8`
+Having docker installed is not necessary, but highly recommended.
 
-2. Update local hosts file, usually found in `/etc/hosts` with following lines.
+* `docker>=18.09.3`
+* `docker-compose>=1.22.0`
 
-    ```Text
+In case you don't want to use docker you will have to install and manage databases on host manually.
+
+* `postgresql==9.5`
+* `redis==3.2.12`
+* `elasticsearch==5.6.8`
+
+### Host file changes
+
+Also you will have to update your hosts file, most likely located in `/etc/hosts`.
+
     127.0.0.1     api.trade.great
     127.0.0.1     buyer.trade.great
     127.0.0.1     opportunities.trade.great
@@ -128,54 +70,77 @@
     127.0.0.1     forms.trade.great
     127.0.0.1     international.trade.great
     127.0.0.1     invest.trade.great
-    ```
 
-3. Update list of repos in `repolist` file to fit your needs.
+### Repository list file
 
-    Each line should have following format `<repo-name>@<version>`. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
+For selecting services which are included into current workflow `repolist` is used. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
 
-    Also specify different repolist file by exporting corresponding variable.
+```bash
+export REPO_LIST_FILENAME=repolist-soo
+```
 
-    ```bash
-    export REPO_LIST_FILENAME=repolist-soo
-    ```
+This will use `repolist-soo` as sourcefile for repolist.
 
-    This will use `repolist-soo` as sourcefile for repolist.
+When cloning repos version name is taken into account - each line of repolist file follows `<repo-name>@<version>` format. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
 
-    If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
+### Pull cms fixtures.
 
-4. Pull cms fixtures.
+This step is necessary to run some services, mainly to serve landing pages which are stored in cms.
 
-    This step is necessary to run some services, mainly to serve landing pages which are stored in cms.
+To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry directory-cms-dev app in directory-dev space to create dump.
 
-    To do that export cloud foundry username which is your email and password. This is necessary to login to cloud foundry directory-cms-dev app in directory-dev space to create dump.
+```bash
+export $CF_USERNAME=<your-username>
+export $CF_PASSWORD="<your-password>"
+./scripts/eval.sh cms ./scripts/pull_fixtures.sh
+```
 
-    ```bash
-    export $CF_USERNAME=<your-username>
-    export $CF_PASSWORD="<your-password>"
-    ./scripts/eval.sh cms ./scripts/pull_fixtures.sh
-    ```
-
-    Once fixtures are present running won't make an effect.
+Once fixtures are present running won't make an effect.
 
 ## First run
 
 `make clone patch` to clone and patch all repos defined in repolist file.
 
+### Default
+
 It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine, more resources available etc. On the other hand you will have to have all repo requirements satisfied on local.
 
 * `make ultimate` starts everything up; will take up to 1 hour, mainly because of cms migrations
-* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
+* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
 * `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
-* `./tests/healthcheck.sh` should succeed
+* `./tests/check_ready.sh` should succeed
 * browse services
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
 From now on when starting working task you just need to comment out irrelevant services to your work from `repolist` file. After that just run `make run` and it will start db containers and services on host.
 
-Here is an example workflow:
+### Docker only
+
+* `make ultimate-docker` sets everything up in docker
+* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
+* `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/check_ready.sh` should succeed
+* browse services
+* `make clean-docker` will shut down service and db containers and chown with current user all repos defined in the list
+
+### Host only
+
+First ensure dbs are running on host and redis config enables to run 200 databases.
+
+* `make ultimate-host` sets everything up in docker
+* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
+* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
+* `ctrl+c` to quit celery
+* `./tests/check_ready.sh` should succeed
+* browse services
+* `ctrl+c` kills runing servers
+
+## Usage
+
+This is example workflow for databases in docker, services on host (default).
 
 * `make run` starts everything up
 * open new terminal tab
@@ -204,41 +169,7 @@ Here is an example workflow:
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
-## First run in docker
-
-* `make ultimate-docker` sets everything up in docker
-* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
-* `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
-* `ctrl+c` to quit celery
-* `./tests/healthcheck.sh` should succeed
-* browse services
-* `make clean-docker` will shut down service and db containers and chown with current user all repos defined in the list
-
-Accordingly to [first run](#first-run) when starting working on the task just run dbs and service containers for repos defined in `repolist` with `make run-docker`.
-
-## First run all on host
-
-First ensure dbs are running on host and redis config enables to run 200 databases.
-
-* `make ultimate-host` sets everything up in docker
-* `./tests/healthcheck.sh` will healthcheck services, which will fail because cold cache is not populated
-* `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
-* `ctrl+c` to quit celery
-* `./tests/healthcheck.sh` should succeed
-* browse services
-* `ctrl+c` kills runing servers
-
-Accordingly to [first run](#first-run) when starting working on the task just run services for repos defined in `repolist` with `make run-services`.
-
-## Adding new service
-
-* add git repo slug to repolist
-* add `patch/<service-name>` directory with new files and git patch which will have to be applied to repo
-* ensure structure of makefile is same as in other services, same goes for other files
-* add acronym to ACRONYM_MAP in `scripts/config.sh` file
-* add corresponding service to `docker-compose.services.yml` file
-
-## Tips
+### Tips
 
 * debugging broken command scripts
 
@@ -256,30 +187,112 @@ Accordingly to [first run](#first-run) when starting working on the task just ru
     docker rm -f -v $(docker ps -a | awk '{print $1}' | sed "1 d")
     ```
 
-## Test
+## Contributing
 
-To test host workflow please look at `tests/benchmark_host.sh` and `tests/benchmark_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
+### Testing
+
+When contributing ensure that entire setup works both for host and docker workflows. Please
+
+To test host workflow please look at `tests/test_host.sh` and `tests/test_docker.sh` scripts. Running them will copy current repository to temporary location and run full workflow setup with timing.
 
 You need to pass CF_USERNAME and CF_PASSWORD to the script to test with pulling and loading cms fixtures, otherwise healtcheck is going to fail.
 
 ```bash
 export CF_USERNAME=<cf-username>
 export CF_PASSWOR="<cf-password>"
-./tests/benchmark_host.sh
+./tests/test_host.sh
 ```
 
-## TODO
+### Integrating new service
 
-### Tasks for this repo
+* add git repo slug to `repolist`, perhaps add `repolist-<service-name>` file with repos which are required to be running when developing `service-name`
+* add `patch/<service-name>` directory with new files and git patch which will have to be applied to repo
+* add acronym to ACRONYM_MAP in `scripts/config.sh` file
+* add corresponding service to `docker-compose.services.yml` file
+* ensure [design goals](#design-goals) are met
+
+### File stricture
+
+    uktrade                         # workspace folder containing all repos from github.com/uktrade
+    │
+    └───local-workspace             # THIS REPO
+    │   │   docker-compose.yml      # used for managing all database containers
+    │   │   docker-compose.services.yml  # used for managing all service containers
+    │   │   makefile                # workspace task management
+    │   │   repolist                # list of all repos
+    │   │   repolist-<service-name> # list of repos required by specific service workflow
+    │   │
+    │   └───docker                  # extra containers not having it's own repo in uktrade
+    │   │   │
+    │   │   └───redis
+    │   │   │   redis.conf          # modified default redis config, enables up to 200 databases
+    │   │   │   ...
+    │   │
+    │   └───patches                 # repo files which will need to be merged (currently they are just copied with "new_" prefix)
+    │   │   │
+    │   |   └───directory-api
+    │   │   │   makefile            # makefile is in each repo updated and simplified
+    │   │   │   .env                # env variables for local dev
+    │   │   │   .env.test           # extra env variables required for testing
+    │   │   │   git.patch           # git patch which will need to be made for the repo
+    │   │   │   ...
+    │   │   │
+    │   |   └───directory-cms
+    │   │   │
+    │   |   └───great-domestic-ui
+    │   |   |
+    │   |   |   ...
+    │   |
+    │   └───scripts
+    │   │   activate.sh             # used to activate working environment on host for repo
+    │   │   clone.sh                # clones all repos defined in `repolist` file
+    │   │   config.sh               # updates environment with utility functions and env vars
+    │   │   eval_all.sh             # passed command will be executed inside all repositories
+    │   │   eval.sh                 # passed command will be executed inside repository with activated environment
+    │   │   make_docker.sh          # executes make target in docker container for each repo
+    │   │   make_host.sh            # executes make target for each repo on host
+    │   │   make_parallel.sh        # executes make target for each repo on host in parallel
+    │   │   patch.sh                # copies files and applies git patch to repos listed in patches/ directory
+    │   │   update.sh               # pulls latest changes for each repo
+    │   |
+    │   └───logs
+    │   │   <number>.order_log      # file used to record last repo output which then is used by gnu parallel to multiplex output
+    │   │   common.duration_log     # timing of run commands using eval.sh and make_docker.sh scripts
+    │   │   <custom>.duration_log   # same as the above but used by test scripts only
+    │   |
+    │   └───tmp
+    │   │   |
+    │   │   └───volumes             # postgres, redis and elastic search docker volumes are stored so no need to remigrate each time
+    │   |   |
+    │   |   |   ...
+    │   |
+    │   └───tests
+    │   │   test_docker.sh          # tests entire setup from ground up for all in docker
+    │   │   test_host.sh            # tests entire setup from ground up for dbs in docker rest on host
+    │   │   requirements.sh         # checks if system requirements are met
+    │   │   check_ready.sh          # check if services are ready for browsing
+    │
+    └───directory-api
+    │
+    └───directory-cms
+    │
+    └───great-domestic-ui
+    |
+    |   ...
+
+### TODO
+
+Tasks for this repo
 
 * implement rest of test and celery targets
 * implement rest of make targets if any left
 * make it work on mac
+* check dependencies looks for global ruby, not ruby defined with .ruby-version file placed in service repo
 * inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
 * consider removing docker stuff (just leave main compose for running dbs) from workflows (just leave ultimate and ultimate-host)
 
-### Tasks for service repos
+Tasks for service repos
 
 * merge patches and new files; update `new_<filename>` references
 * remove compiled assets from repos and put it to build artifacts

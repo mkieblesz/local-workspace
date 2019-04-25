@@ -27,8 +27,6 @@ services:
     volumes:
       - '../directory-ui-buyer:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - ssoproxy
 
   exopps:
     image: local-workspace/export-opportunities
@@ -42,8 +40,6 @@ services:
       - ../export-opportunities/.new_env
     volumes:
       - '../export-opportunities:/usr/src/app'
-    depends_on:
-      - ssoproxy
 
   sso:
     image: local-workspace/directory-sso
@@ -71,8 +67,6 @@ services:
       - ../directory-sso-proxy/.new_env
     volumes:
       - '../directory-sso-proxy:/usr/src/app'
-    depends_on:
-      - sso
 
   supplier:
     image: local-workspace/directory-ui-supplier
@@ -87,9 +81,6 @@ services:
     volumes:
       - '../directory-ui-supplier:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - cms
-      - ssoproxy
 
   profile:
     image: local-workspace/directory-sso-profile
@@ -104,9 +95,6 @@ services:
     volumes:
       - '../directory-sso-profile:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - cms
-      - ssoproxy
 
   domestic:
     image: local-workspace/great-domestic-ui
@@ -121,11 +109,6 @@ services:
     volumes:
       - '../great-domestic-ui:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - api
-      - cms
-      - formsapi
-      - ssoproxy
 
   soo:
     image: local-workspace/navigator
@@ -140,8 +123,6 @@ services:
     volumes:
       - '../navigator:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - ssoproxy
 
   cms:
     image: local-workspace/directory-cms
@@ -182,9 +163,6 @@ services:
     volumes:
       - '../invest-ui:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - cms
-      - ssoproxy
 
   international:
     image: local-workspace/great-international-ui
@@ -199,7 +177,3 @@ services:
     volumes:
       - '../great-international-ui:/usr/src/app'
       - '/usr/src/app/node_modules'
-    depends_on:
-      - cms
-      - formsapi
-      - ssoproxy
