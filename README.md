@@ -134,6 +134,16 @@
 
     Each line should have following format `<repo-name>@<version>`. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
 
+    Also specify different repolist file by exporting corresponding variable.
+
+    ```bash
+    export REPO_LIST_FILENAME=repolist-soo
+    ```
+
+    This will use `repolist-soo` as sourcefile for repolist.
+
+    If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
+
 4. Pull cms fixtures.
 
     This step is necessary to run some services, mainly to serve landing pages which are stored in cms.
@@ -150,7 +160,7 @@
 
 ## First run
 
-`make clone patch` to clone and patch all repos defined in `repolist`. If you want to omit certain repos from your workflow you can comment them out with `#`. Note that some repos are dependent on others.
+`make clone patch` to clone and patch all repos defined in repolist file.
 
 It's recommended to run dbs in docker with the use of docker compose and services on host. This avoids complications with dbs setup and maintenance and ease of development - no need to execing into machine, more resources available etc. On the other hand you will have to have all repo requirements satisfied on local.
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+REPO_LIST_FILENAME=${REPO_LIST_FILENAME:-repolist}
+
 mkdir -p tmp logs
 
 # variables used across scripts/*
@@ -26,7 +28,7 @@ declare -A REPO_ACRONYM_MAP=(
 
 # populate REPO_LIST and VERSION_MAP from repolist file
 IFS=$'\n'  # split into array by new line character
-for REPO_DEFINITION in $(cat repolist); do
+for REPO_DEFINITION in $(cat $REPO_LIST_FILENAME); do
     FIRST_CHAR=$(echo $REPO_DEFINITION | head -c 1)
     # omit if line empty or starts with hash
     if [ -z $FIRST_CHAR ] || [ $FIRST_CHAR = "#" ]; then
