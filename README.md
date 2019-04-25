@@ -128,8 +128,6 @@ It's recommended to run dbs in docker with the use of docker compose and service
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
 
-From now on when starting working task you just need to comment out irrelevant services to your work from `repolist` file. After that just run `make run` and it will start db containers and services on host.
-
 ### Host only
 
 First ensure dbs are running on host and redis config enables to run 200 databases.
