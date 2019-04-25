@@ -85,7 +85,7 @@ Update hosts file, most likely located in `/etc/hosts` with following lines.
 
 ### Repolist file
 
-By default all services are included into your workflow, defined in `repolist` file. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
+By default all services listed in `repolist` file are included into your workflow. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
 
 ```bash
 export REPO_LIST_FILENAME=repolist-soo
