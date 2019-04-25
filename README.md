@@ -13,6 +13,10 @@ This repo aims making it easier setup and develop uktrade apps on your local wor
 * single command starts everything from no database to **ready to browse state**
 * erase everything and respawn with no issues
 * simple and clear setup process for new developers
+* different types of workflows
+    * dbs in docker and services on host
+    * all in docker
+    * all on host
 * local environment as close as possible to production
 * ability to run predefined set of services on host and docker (currently 13 services)
 * transparent command execution, whatever is executed from this repo can be executed from service repo
@@ -73,7 +77,7 @@ Also you will have to update your hosts file, most likely located in `/etc/hosts
 
 ### Repository list file
 
-For selecting services which are included into current workflow `repolist` is used. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
+By default all services are included into your workflow, defined in `repolist` file. It's possible to exclude services by prepending line with `#` or use different repolist file altogether by exporting `REPO_LIST_FILENAME` environment variable.
 
 ```bash
 export REPO_LIST_FILENAME=repolist-soo
@@ -99,7 +103,11 @@ Once fixtures are present running won't make an effect.
 
 ## First run
 
-`make clone patch` to clone and patch all repos defined in repolist file.
+`make clone patch` to clone and patch all repos defined in repolist file. After finishing follow steps for workflow of your choice.
+
+* [Default](#default) dbs in docker, services on host
+* [Docker only](#docker-only) everything in docker
+* [Host only](#host-only) everything on host
 
 ### Default
 
@@ -168,6 +176,8 @@ This is example workflow for databases in docker, services on host (default).
 * `ctrl+c` stops `<another-repo>` webserver
 * `ctrl+c` from tab where services are running
 * `make kill-dbs` shuts down db containers
+
+Please refer to makefile for instructions for each workflow.
 
 ### Tips
 
