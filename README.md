@@ -83,7 +83,7 @@ This will use `repolist-soo` as sourcefile for repolist.
 
 When cloning repos version name is taken into account - each line of repolist file follows `<repo-name>@<version>` format. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default branch is pulled as in github.
 
-### Pull cms fixtures.
+### Cms fixtures
 
 This step is necessary to run some services, mainly to serve landing pages which are stored in cms.
 
