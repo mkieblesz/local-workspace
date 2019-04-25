@@ -6,7 +6,9 @@ This repo aims to make setup and development of uktrade apps easier and faster.
 2. [Setup](#setup)
 3. [First run](#first-run)
 4. [Next run](#next-run)
-5. [Contributing](#contributing)
+5. [Utilities](#utilities)
+6. [Troubleshooting](#troubleshooting)
+7. [Contributing](#contributing)
 
 ## Design goals
 
@@ -179,7 +181,14 @@ This is example of recommended workflow.
 
 Please refer to `makefile` for more options.
 
-### Tips
+## Utilities
+
+* update all repos to latest version with `make update`
+* run command in all repos with `./scripts/eval_all.sh '<command>'`
+* reinstall all repo required packages with `make remove-installs create-venvs; ./scripts/make_host.sh install`
+* display duration of command execution for each repo with `source scripts/config.sh; parse_duration_log`
+
+## Troubleshooting
 
 * debugging container not starting because of broken command script
 
@@ -189,7 +198,7 @@ Please refer to `makefile` for more options.
     command: /bin/bash -x -c 'while true; do sleep 60; done'
     ```
 
-* removing all containers
+* problem with too many containers
 
     Docker creates container from image for the first time you run it, after it reuses container unless specified differently. Sometimes it's usefull to just remove all containers so all of them will get recreated after next run.
 
