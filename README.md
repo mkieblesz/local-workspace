@@ -158,7 +158,7 @@ This is example of recommended workflow.
 * open new terminal tab
 
     ```bash
-    source scripts/activate.sh <repo-name-or-acronym>  # source repository environment variables and changes directory to repo
+    source scripts/activate.sh domestic  # source great-domestic-ui repo environment variables and cd into it, can also use full name
     ```
 
     Now you can run any commands without worrying about environment variables. To go into debugger mode you will have to start server in current terminal tab.
@@ -171,7 +171,8 @@ This is example of recommended workflow.
     Now you can go into debugger. Once `./scripts/activate.sh` was run you can change environment to another repo with `work` function.
 
     ```bash
-    work <anotehr-repo>  # deactivates current environment and sources another
+    work soo  # deactivates domestic environment and sources navigator
+    work api  # deactivates soo environment and sources directory-api
     ```
 
     You can also add work function to your `.profile` so you will be able to activate working environment from any directory.
