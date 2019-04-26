@@ -132,8 +132,8 @@ It's recommended to run dbs in docker with the use of docker compose and service
 
 First ensure dbs are running on host and redis config enables to run 200 databases.
 
-* `make ultimate-host` sets everything up in docker
-* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
+* `make ultimate-host`
+* `./tests/check_ready.sh` will check if services are ready for browsing, this should fail because cold cache is not populated
 * `./scripts/eval.sh cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
 * `./tests/check_ready.sh` should succeed
@@ -143,7 +143,7 @@ First ensure dbs are running on host and redis config enables to run 200 databas
 ### Docker only
 
 * `make ultimate-docker` sets everything up in docker
-* `./tests/check_ready.sh` will check_ready services, which will fail because cold cache is not populated
+* `./tests/check_ready.sh`  will check if services are ready for browsing, this should fail because cold cache is not populated
 * `docker-compose -f docker-compose.services.yml exec cms make -f new_makefile run-celery` will run celery, keep it for few seconds to populate the cache
 * `ctrl+c` to quit celery
 * `./tests/check_ready.sh` should succeed
@@ -161,7 +161,7 @@ This is example of recommended workflow.
     source scripts/activate.sh <repo-name-or-acronym>  # source repository environment variables and changes directory to repo
     ```
 
-    Now you can run any commands without worrying about environment variables. To go into debugger mode you will have to start server in this terminal.
+    Now you can run any commands without worrying about environment variables. To go into debugger mode you will have to start server in current terminal tab.
 
     ```bash
     fuser -k $PORT/tcp  # stops running server being run by parallel so you can debug directly
@@ -174,7 +174,7 @@ This is example of recommended workflow.
     work <anotehr-repo>  # deactivates current environment and sources another
     ```
 
-    You can also add work function to your `.profile` so you will be able to activate working environment from any directory in command line.
+    You can also add work function to your `.profile` so you will be able to activate working environment from any directory.
 
     ```bash
     # uktrade functions
@@ -195,7 +195,7 @@ Please refer to `makefile` for more options.
 * update all repos to latest version with `make update` (proceed with caution!)
 * run command in all repos with `./scripts/eval_all.sh '<command>'`
 * reinstall all repo required packages with `make remove-installs create-venvs; ./scripts/make_host.sh install`
-* display duration of command execution for each repo with `source scripts/config.sh; parse_duration_log`
+* display duration of previous command execution for each repo with `source scripts/config.sh; parse_duration_log`
 
 ## Troubleshooting
 
