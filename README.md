@@ -93,7 +93,7 @@ By default all services listed in `repolist` file are included into your workflo
 export REPO_LIST_FILENAME=repolist-soo
 ```
 
-This will replace default `repolist` file to `repolist-soo` as source for repository definition..
+This will replace default `repolist` file to `repolist-soo` as source for repository definition.
 
 When cloning repos version name is taken into account - each line of repolist file follows `<repo-name>@<version>` format. Version can be git `branch`, `tag`, `release` or `commit hash`. If no version is specified default github branch is pulled.
 
