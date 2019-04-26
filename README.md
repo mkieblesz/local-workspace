@@ -193,7 +193,7 @@ Please refer to `makefile` for more options.
 
 ## Utilities
 
-* update all repos to latest version with `make update` (proceed with caution!)
+* update all repos to latest version with `make update`
 * run command in all repos with `./scripts/eval_all.sh '<command>'`
 * reinstall all repo required packages with `make remove-installs create-venvs; ./scripts/make_host.sh install`
 * display duration of previous command execution for each repo with `source scripts/config.sh; parse_duration_log`
