@@ -312,7 +312,7 @@ export CF_PASSWOR="<cf-password>"
 
 ### TODO
 
-Tasks for this repo
+Tasks for this repo:
 
 * implement rest of test and celery targets
 * implement rest of make targets if any left
@@ -320,9 +320,9 @@ Tasks for this repo
 * check dependencies looks for global ruby, not ruby defined with .ruby-version file placed in service repo
 * inclue rest of the service repos, in total should be around 25
 * consider changing eval to `https://stackoverflow.com/a/14061950/11060504`
-* consider removing docker stuff (just leave main compose for running dbs) from workflows (just leave ultimate and ultimate-host)
 
-Tasks for service repos
+Tasks for service repos:
 
 * merge patches and new files; update `new_<filename>` references
 * remove compiled assets from repos and put it to build artifacts
+* by default settings should have local development variables, not production - a lot of variables from `.env` files could be removed
